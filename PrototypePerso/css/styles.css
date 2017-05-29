@@ -1,0 +1,47 @@
+* {
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+	color: black;
+}
+
+.boxtitle {
+	position: fixed;
+	background-color: #dae1ed;
+	border: solid black 2px;
+	border-radius: 20px;
+	width: 60%;
+	left: 60%;
+	margin-left: -30%;
+	margin-top: -45%;
+}
+
+.box {
+	position: relative;
+	background-color: #dae1ed;
+	border: solid black 2px;
+	border-radius: 5px;
+	width: 20%;
+	font-size: 12px;
+	margin-bottom: 100%;
+	margin-top: 50%;
+}
+
+.box h2 {
+	font-size: 15px;
+	text-align: center;
+}
+
+#vue {
+	border: solid black 2px;
+	display: inline-block;
+	position: fixed;
+	top: 20%;
+	left: 30%;
+	background-color: blue;
+	height: 70%;
+	width: 60%;
+}
+

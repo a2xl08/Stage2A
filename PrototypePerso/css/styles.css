@@ -15,7 +15,8 @@ h1 {
 	width: 60%;
 	left: 60%;
 	margin-left: -30%;
-	margin-top: -45%;
+	margin-top: -325px;
+	z-index: 2;
 }
 
 .box {
@@ -26,7 +27,7 @@ h1 {
 	width: 20%;
 	font-size: 12px;
 	margin-bottom: 100%;
-	margin-top: 50%;
+	margin-top: 350px;
 }
 
 .box h2 {

@@ -3,21 +3,21 @@ sectionlist = d3.selectAll("section");
 // Initialisation de l'indice de section active
 var currentIndex = -1;
 
-// On obtient les positions des différentes sections grâce à ce code
-sectionPositions = [];
-var startPos;
-sectionlist.each(function(d,i) {
-  var top = this.getBoundingClientRect().top;
-  if(i === 0) {
-    startPos = top;
-  }
-  sectionPositions.push(top - startPos);
-});
-
 position();
 
 // Détermine notre position sur la page et adapte la vue. 
 function position() {
+  // On obtient les positions des différentes sections
+  sectionPositions = [];
+  var startPos;
+  sectionlist.each(function(d,i) {
+    var top = this.getBoundingClientRect().top;
+    if(i === 0) {
+      startPos = top;
+    }
+    sectionPositions.push(top - startPos);
+  });
+
   // Repérage de la position sur la page, le -500 correspond au décalage initial de la section 1
   var pos = window.pageYOffset - 500;
   // On détermine la section active
@@ -37,11 +37,11 @@ function position() {
 function majvue(index) {
 	if (index === 0){
     	d3.select("#vue").style("background-color", "blue");
-    } else if (index === 1){
+  } else if (index === 1){
     	d3.select("#vue").style("background-color", "red");
-    } else if (index === 2){
+  } else if (index === 2){
     	d3.select("#vue").style("background-color", "green");
-    }
+  }
 }
 
 // On déclenche la fonction position à chaque scroll de la page

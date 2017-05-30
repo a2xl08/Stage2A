@@ -14,6 +14,8 @@ sectionlist.each(function(d,i) {
   sectionPositions.push(top - startPos);
 });
 
+position();
+
 // Détermine notre position sur la page et adapte la vue. 
 function position() {
   // Repérage de la position sur la page, le -500 correspond au décalage initial de la section 1

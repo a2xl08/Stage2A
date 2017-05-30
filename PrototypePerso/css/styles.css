@@ -43,6 +43,9 @@ h1 {
 	top: 20%;
 	left: 30%;
 	background-color: #dae1ed;
+	transition-property: background-color;
+	transition-duration: 1s;
+	transition-timing-fonction: linear;
 	height: 70%;
 	width: 60%;
 }

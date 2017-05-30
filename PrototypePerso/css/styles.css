@@ -28,6 +28,7 @@ h1 {
 	font-size: 12px;
 	margin-bottom: 100%;
 	margin-top: 350px;
+	padding: 3px;
 }
 
 .box h2 {
@@ -41,7 +42,7 @@ h1 {
 	position: fixed;
 	top: 20%;
 	left: 30%;
-	background-color: blue;
+	background-color: #dae1ed;
 	height: 70%;
 	width: 60%;
 }

@@ -2,7 +2,6 @@ sectionlist = d3.selectAll("section");
 
 // Initialisation de l'indice de section active
 var currentIndex = -1;
-
 position();
 
 // Détermine notre position sur la page et adapte la vue. 
@@ -36,11 +35,14 @@ function position() {
 // argument index : indice de la nouvelle section
 function majvue(index) {
 	if (index === 0){
-    	d3.select("#vue").style("background-color", "blue");
+    	d3.select("#vue").style("background-color", "#b1bcce");
+      displayaxe1();
   } else if (index === 1){
-    	d3.select("#vue").style("background-color", "red");
+    	d3.select("#vue").style("background-color", "#efd2aa");
+      displayaxe2();
   } else if (index === 2){
-    	d3.select("#vue").style("background-color", "green");
+    	d3.select("#vue").style("background-color", "#b0d8af");
+      displayaxe3();
   }
 }
 

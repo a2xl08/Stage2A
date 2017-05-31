@@ -1,12 +1,167 @@
-var svg = d3.select("#vue").append("svg");
+var vue = document.getElementById("vue");
+var height = vue.offsetHeight - 2 * 15; // 15 est le padding de #vue
+var width = vue.offsetWidth - 2 * 15;
+var svg = d3.select("#vue").append("svg").attr("width", width).attr("height", height);
+var barpadding = 4;
+var displayaxe1;
+var displayaxe2;
+var displayaxe3;
+var arr1;
+var arr2;
+var arr3;
 
 d3.csv("data/speedfinal", function(data){
 	axe1 = data[0];
 	axe2 = data[1];
 	axe3 = data[2];
 
-	function displayaxe1(){
-		
-	}
+	arr1 = Object.keys(axe1).map(function (key) { return axe1[key]; });
+	arr2 = Object.keys(axe2).map(function (key) { return axe2[key]; });
+	arr3 = Object.keys(axe3).map(function (key) { return axe3[key]; });
+
+	// Barres de l'axe 1
+	rects1 = svg.selectAll("rect.axe1")
+		.data(arr1)
+		.enter()
+		.append("rect")
+		.attr("class", "axe1");
+
+	rects1.attr("width", width / arr1.length - barpadding)
+		.attr("x", function(d,i){
+			return 1+i*(width / arr1.length);
+		})
+		.attr("y", function(d){
+			return 0.75 * height - Math.round(3*d);
+		})
+		.attr("height", function(d){
+			return Math.round(3*d);
+		})
+		.attr("opacity", 0);
+
+	// Barres de l'axe 2
+	rects2 = svg.selectAll("rect.axe2")
+		.data(arr2)
+		.enter()
+		.append("rect")
+		.attr("class", "axe2");
+
+	rects2.attr("width", width / arr2.length - barpadding)
+		.attr("x", function(d,i){
+			return 1+i*(width / arr2.length);
+		})
+		.attr("y", function(d){
+			return 0.75 * height - Math.round(3*d);
+		})
+		.attr("height", function(d){
+			return Math.round(3*d);
+		})
+		.attr("opacity", 0);
+
+	// Barres de l'axe 3
+	rects3 = svg.selectAll("rect.axe3")
+		.data(arr3)
+		.enter()
+		.append("rect")
+		.attr("class", "axe3");
+
+	rects3.attr("width", width / arr3.length - barpadding)
+		.attr("x", function(d,i){
+			return 1+i*(width / arr3.length);
+		})
+		.attr("y", function(d){
+			return 0.75 * height - Math.round(3*d);
+		})
+		.attr("height", function(d){
+			return Math.round(3*d);
+		})
+		.attr("opacity", 0);
+
+	// Etiquettes axe 1
+	svg.selectAll("text.axe1")
+		.data(arr1)
+		.enter()
+		.append("text")
+		.attr("class", "axe1")
+		.text(function (d){
+			return Math.round(d);
+		})
+		.attr("x", function(d, i){
+			return 1+(i+0.5)*(width / arr1.length);
+		})
+		.attr("y", function (d){
+			return 20 + 0.75 * height - Math.round(3*d)
+		})
+		.attr("text-anchor", "middle");
+
+	// Etiquettes axe 2
+	svg.selectAll("text.axe2")
+		.data(arr2)
+		.enter()
+		.append("text")
+		.attr("class", "axe2")
+		.text(function (d){
+			return Math.round(d);
+		})
+		.attr("x", function(d, i){
+			return 1+(i+0.5)*(width / arr2.length);
+		})
+		.attr("y", function (d){
+			return 20 + 0.75 * height - Math.round(3*d)
+		})
+		.attr("text-anchor", "middle");
+
+	// Etiquettes axe 3
+	svg.selectAll("text.axe3")
+		.data(arr3)
+		.enter()
+		.append("text")
+		.attr("class", "axe3")
+		.text(function (d){
+			return Math.round(d);
+		})
+		.attr("x", function(d, i){
+			return 1+(i+0.5)*(width / arr3.length);
+		})
+		.attr("y", function (d){
+			return 20 + 0.75 * height - Math.round(3*d)
+		})
+		.attr("text-anchor", "middle");
+
+	// Titre du graphique
+	svg.append("text")
+		.attr("class", "graphtitle")
+		.attr("x", 10+1.5*(width / arr1.length) + "px")
+		.attr("y", 0.75 * height + 30 + "px")
+		.text("Vitesse sur l'axe en km/h");
 
 });
+
+function displayaxe1(){
+	svg.selectAll(".axe1")
+		.style("opacity", 1);
+	svg.selectAll(".axe2")
+		.style("opacity", 0);
+	svg.selectAll(".axe3")
+		.style("opacity", 0);
+}
+
+function displayaxe2(){
+	svg.selectAll(".axe1")
+		.style("opacity", 0);
+	svg.selectAll(".axe2")
+		.style("opacity", 1);
+	svg.selectAll(".axe3")
+		.style("opacity", 0);
+}
+
+function displayaxe3(){
+	svg.selectAll(".axe1")
+		.style("opacity", 0);
+	svg.selectAll(".axe2")
+		.style("opacity", 0);
+	svg.selectAll(".axe3")
+		.style("opacity", 1);
+}
+
+// Permet d'afficher l'axe 1 dès le chargement de la page. 
+document.addEventListener("DOMContentLoaded", displayaxe1);

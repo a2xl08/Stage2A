@@ -1,0 +1,32 @@
+svg rect.axe1 {
+	fill : #d87d1c;
+	stroke: black;
+	stroke-width: 2px;
+}
+
+svg rect.axe2 {
+	fill : #08090a;
+	stroke: white;
+	stroke-width: 2px;
+}
+
+svg rect.axe3 {
+	fill : #eac90b;
+	stroke: black;
+	stroke-width: 2px;
+}
+
+svg rect {
+	transition-property: opacity;
+	transition-duration: 1s;
+	transition-timing-fonction: linear;
+}
+
+svg text {
+	font-weight: bold;
+	font-family: sans-serif;
+}
+
+svg text.axe2 {
+	fill: white;
+}

@@ -7,6 +7,10 @@ h1 {
 	color: black;
 }
 
+body {
+	font-family: Arial, sans-serif;
+}
+
 .boxtitle {
 	position: fixed;
 	background-color: #dae1ed;

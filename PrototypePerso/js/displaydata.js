@@ -3,9 +3,6 @@ var height = vue.offsetHeight - 2 * 15; // 15 est le padding de #vue
 var width = vue.offsetWidth - 2 * 15;
 var svg = d3.select("#vue").append("svg").attr("width", width).attr("height", height);
 var barpadding = 4;
-var displayaxe1;
-var displayaxe2;
-var displayaxe3;
 var arr1;
 var arr2;
 var arr3;
@@ -91,7 +88,8 @@ d3.csv("data/speedfinal", function(data){
 		.attr("y", function (d){
 			return 20 + 0.75 * height - Math.round(3*d)
 		})
-		.attr("text-anchor", "middle");
+		.attr("text-anchor", "middle")
+		.attr("opacity", 0);
 
 	// Etiquettes axe 2
 	svg.selectAll("text.axe2")
@@ -108,7 +106,8 @@ d3.csv("data/speedfinal", function(data){
 		.attr("y", function (d){
 			return 20 + 0.75 * height - Math.round(3*d)
 		})
-		.attr("text-anchor", "middle");
+		.attr("text-anchor", "middle")
+		.attr("opacity", 0);
 
 	// Etiquettes axe 3
 	svg.selectAll("text.axe3")
@@ -125,7 +124,8 @@ d3.csv("data/speedfinal", function(data){
 		.attr("y", function (d){
 			return 20 + 0.75 * height - Math.round(3*d)
 		})
-		.attr("text-anchor", "middle");
+		.attr("text-anchor", "middle")
+		.attr("opacity", 0);
 
 	// Titre du graphique
 	svg.append("text")
@@ -138,28 +138,55 @@ d3.csv("data/speedfinal", function(data){
 
 function displayaxe1(){
 	svg.selectAll(".axe1")
+		.transition()
+		.duration(1000)
+		.delay(function(d,i){
+			return 50*i;
+		})
 		.style("opacity", 1);
 	svg.selectAll(".axe2")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 	svg.selectAll(".axe3")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 }
 
 function displayaxe2(){
 	svg.selectAll(".axe1")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 	svg.selectAll(".axe2")
+		.transition()
+		.duration(1000)
+		.delay(function(d,i){
+			return 50*i;
+		})
 		.style("opacity", 1);
 	svg.selectAll(".axe3")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 }
 
 function displayaxe3(){
 	svg.selectAll(".axe1")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 	svg.selectAll(".axe2")
+		.transition()
+		.duration(1000)
 		.style("opacity", 0);
 	svg.selectAll(".axe3")
+		.transition()
+		.duration(1000)
+		.delay(function(d,i){
+			return 50*i;
+		})
 		.style("opacity", 1);
 }
 

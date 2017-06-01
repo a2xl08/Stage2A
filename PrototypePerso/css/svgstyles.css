@@ -16,12 +16,6 @@ svg rect.axe3 {
 	stroke-width: 2px;
 }
 
-svg rect {
-	transition-property: opacity;
-	transition-duration: 1s;
-	transition-timing-fonction: linear;
-}
-
 svg text {
 	font-weight: bold;
 	font-family: sans-serif;

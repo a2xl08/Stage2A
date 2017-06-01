@@ -191,16 +191,16 @@ function displayactualize(){
 document.addEventListener("DOMContentLoaded", displayactualize);
 
 // La plage de scroll sur laquelle on gère la taille des barres
-var scrollheight = 200;
+var scrollheight = 300;
 
 function scrollsizes(index, pos){
 	var startsection = sectionPositions[index];
 	var alpha = (pos - startsection)/scrollheight;
 	if ((alpha>=0) && (alpha<=1)){
-		if (alpha>=0.9){
+		if (alpha>=0.95){
 			alpha=1;
 		}
-		if (alpha<=0.1){
+		if (alpha<=0.05){
 			alpha=0;
 		}
 		svg.selectAll("rect.axe"+(index+1))

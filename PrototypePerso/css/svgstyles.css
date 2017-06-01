@@ -19,6 +19,7 @@ svg rect.axe3 {
 svg text {
 	font-weight: bold;
 	font-family: sans-serif;
+	pointer-events: none;
 }
 
 svg text.axe2 {

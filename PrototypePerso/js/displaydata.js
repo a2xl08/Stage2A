@@ -136,14 +136,8 @@ d3.csv("data/speedfinal", function(data){
 
 });
 
+// On utilise des variations de transparence pour afficher les éléments
 function displayaxe1(){
-	svg.selectAll(".axe1")
-		.transition()
-		.duration(1000)
-		.delay(function(d,i){
-			return 50*i;
-		})
-		.style("opacity", 1);
 	svg.selectAll(".axe2")
 		.transition()
 		.duration(1000)
@@ -158,14 +152,7 @@ function displayaxe2(){
 	svg.selectAll(".axe1")
 		.transition()
 		.duration(1000)
-		.style("opacity", 0);
-	svg.selectAll(".axe2")
-		.transition()
-		.duration(1000)
-		.delay(function(d,i){
-			return 50*i;
-		})
-		.style("opacity", 1);
+		.style("opacity", 0);	
 	svg.selectAll(".axe3")
 		.transition()
 		.duration(1000)
@@ -181,14 +168,50 @@ function displayaxe3(){
 		.transition()
 		.duration(1000)
 		.style("opacity", 0);
-	svg.selectAll(".axe3")
-		.transition()
-		.duration(1000)
-		.delay(function(d,i){
-			return 50*i;
+}
+
+var displayers = [displayaxe1, displayaxe2, displayaxe3];
+
+function displayactualize(){
+	displayers[currentIndex]();
+	svg.selectAll("rect.axe"+(currentIndex+1))
+		.attr("y", function(d){
+			return 0.75 * height;
 		})
-		.style("opacity", 1);
+		.attr("height", function(d){
+			return 0;
+		});
+	svg.selectAll("text.axe"+(currentIndex+1))
+		.transition()
+		.delay(0)
+		.style("opacity", 0);
 }
 
 // Permet d'afficher l'axe 1 dès le chargement de la page. 
-document.addEventListener("DOMContentLoaded", displayaxe1);
+document.addEventListener("DOMContentLoaded", displayactualize);
+
+// La plage de scroll sur laquelle on gère la taille des barres
+var scrollheight = 200;
+
+function scrollsizes(index, pos){
+	var startsection = sectionPositions[index];
+	var alpha = (pos - startsection)/scrollheight;
+	if ((alpha>=0) && (alpha<=1)){
+		if (alpha>=0.9){
+			alpha=1;
+		}
+		if (alpha<=0.1){
+			alpha=0;
+		}
+		svg.selectAll("rect.axe"+(index+1))
+			.attr("y", function(d){
+				return 0.75 * height - Math.round(alpha*3*d);
+			})
+			.attr("height", function(d){
+				return Math.round(alpha*3*d);
+			})
+			.style("opacity", 1);
+		svg.selectAll("text.axe"+(index+1))
+			.style("opacity", alpha);
+	}
+};

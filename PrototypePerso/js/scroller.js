@@ -2,6 +2,7 @@ sectionlist = d3.selectAll("section");
 
 // Initialisation de l'indice de section active
 var currentIndex = -1;
+var sectionPositions;
 position();
 
 // Détermine notre position sur la page et adapte la vue. 
@@ -14,11 +15,12 @@ function position() {
     if(i === 0) {
       startPos = top;
     }
-    sectionPositions.push(top - startPos);
+    // Le décalage de 500 permet d'ajuster les sections lors du scroll
+    sectionPositions.push(500 + top - startPos);
   });
 
-  // Repérage de la position sur la page, le -500 correspond au décalage initial de la section 1
-  var pos = window.pageYOffset - 500;
+  // Repérage de la position sur la page
+  var pos = window.pageYOffset;
   // On détermine la section active
   var sectionIndex = d3.bisect(sectionPositions, pos);
   sectionIndex = Math.min(sectionlist.size() - 1, sectionIndex);
@@ -29,6 +31,7 @@ function position() {
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex);
   }
+  scrollsizes(currentIndex, pos+500);
 }
 
 // Fonction à appeler pour mettre la vue à jour

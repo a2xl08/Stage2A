@@ -7,7 +7,7 @@ var arr1;
 var arr2;
 var arr3;
 
-d3.csv("data/speedfinal", function(data){
+d3.csv("data/speedfinal.csv", function(data){
 	axe1 = data[0];
 	axe2 = data[1];
 	axe3 = data[2];

@@ -204,6 +204,8 @@ function scrollsizes(index, pos){
 			alpha=0;
 		}
 		svg.selectAll("rect.axe"+(index+1))
+			.transition()
+			.duration(30)
 			.attr("y", function(d){
 				return 0.75 * height - Math.round(alpha*3*d);
 			})
@@ -212,6 +214,8 @@ function scrollsizes(index, pos){
 			})
 			.style("opacity", 1);
 		svg.selectAll("text.axe"+(index+1))
+			.transition()
+			.duration(30)
 			.style("opacity", alpha);
 	}
 };

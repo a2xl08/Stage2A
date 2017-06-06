@@ -4,7 +4,7 @@
 
 body {
 	font-family: Arial, sans-serif;
-	background-color: rgb(9, 30, 99);
+	background-color: rgb(0, 6, 35);
 	color: white;
 }
 
@@ -15,14 +15,14 @@ body {
 #sections {
 	display: inline-block;
 	z-index: 1;
-	width: 39%;
+	width: 34%;
 	padding: 5px;
 	margin: auto;
 }
 
 /* La valeur qu'il faut pour scroller convenablement */
 section {
-	margin-bottom: 750px;
+	margin-bottom: 800px;
 }
 
 #sec1 {
@@ -34,7 +34,7 @@ section {
 	z-index: 1;
 	background-color: green;
 	display: inline-block;
-	width: 60%;
+	width: 65%;
 	padding: 5px;
 	margin: auto;
 	height: 100%;

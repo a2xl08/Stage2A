@@ -16,7 +16,7 @@ body {
 	display: inline-block;
 	z-index: 1;
 	width: 34%;
-	padding: 5px;
+	padding: 15px;
 	margin: auto;
 }
 
@@ -32,17 +32,16 @@ section {
 #vue {
 	position: fixed;
 	z-index: 1;
-	background-color: green;
 	display: inline-block;
 	width: 65%;
-	padding: 5px;
+	padding: 15px;
 	margin: auto;
 	height: 100%;
 }
 
 #reloadbox {
 	position: fixed;
-	z-index: 2;
+	z-index: 10;
 	background-color: gray;
 	border: solid black 2px;
 	border-radius: 10px;

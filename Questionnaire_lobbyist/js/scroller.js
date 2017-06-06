@@ -43,11 +43,11 @@ function position() {
 // argument index : indice de la nouvelle section
 function majvue(index) {
 	if (index === 0){
-    	d3.select("#vue").style("background-color", "green");
-  } else if (index === 1){
     	d3.select("#vue").style("background-color", "blue");
+  } else if (index === 1){
+      d3.select("#vue").style("background-color", "red");
   } else if (index === 2){
-    	d3.select("#vue").style("background-color", "red");
+    	d3.select("#vue").style("background-color", "green");
   }
 }
 

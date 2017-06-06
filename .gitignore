@@ -1,5 +1,6 @@
 *.zip
 *.txt
+.~lock.*
 
 Preambule_test/
 Stage2A_rapport_excluGIT/

@@ -29,7 +29,7 @@ section {
 	margin-top: 300px;
 }
 
-#vue {
+#fixpart {
 	position: fixed;
 	z-index: 1;
 	display: inline-block;
@@ -37,6 +37,16 @@ section {
 	padding: 15px;
 	margin: auto;
 	height: 100%;
+}
+
+#vue {
+	height: 85%;
+}
+
+#answers {
+	height: 14%;
+	padding: 5px;
+	background-color: orange;
 }
 
 #reloadbox {

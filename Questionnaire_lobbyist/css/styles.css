@@ -1,0 +1,59 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Arial, sans-serif;
+	background-color: rgb(9, 30, 99);
+	color: white;
+}
+
+#container {
+	display: inline-block;
+}
+
+#sections {
+	display: inline-block;
+	z-index: 1;
+	background-color: red;
+	width: 39%;
+	padding: 5px;
+	margin: auto;
+}
+
+section {
+	margin-bottom: 100%;
+	margin-top: 350px;
+}
+
+#vue {
+	position: fixed;
+	z-index: 1;
+	background-color: blue;
+	display: inline-block;
+	width: 60%;
+	padding: 5px;
+	margin: auto;
+	height: 100%;
+}
+
+#reloadbox {
+	position: fixed;
+	z-index: 2;
+	background-color: gray;
+	border: solid black 2px;
+	border-radius: 10px;
+	padding: 3px;
+	text-align: center;
+	width: 180px;
+	right: 25px;
+	top: 15px;
+	font-weight: bold;
+	font-size: 25px;
+	color: black;
+}
+
+#reloadbox:hover {
+	background-color: orange;
+	cursor: pointer;
+}

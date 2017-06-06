@@ -24,13 +24,13 @@ d3.csv("data/speedfinal.csv", function(data){
 		.attr("class", "axe1");
 
 	rects1.attr("width", width / arr1.length - barpadding)
-		.attr("x", function(d,i){
+		.attr("x", function (d,i){
 			return 1+i*(width / arr1.length);
 		})
-		.attr("y", function(d){
+		.attr("y", function (d){
 			return 0.75 * height - Math.round(3*d);
 		})
-		.attr("height", function(d){
+		.attr("height", function (d){
 			return Math.round(3*d);
 		})
 		.attr("opacity", 0);
@@ -43,13 +43,13 @@ d3.csv("data/speedfinal.csv", function(data){
 		.attr("class", "axe2");
 
 	rects2.attr("width", width / arr2.length - barpadding)
-		.attr("x", function(d,i){
+		.attr("x", function (d,i){
 			return 1+i*(width / arr2.length);
 		})
-		.attr("y", function(d){
+		.attr("y", function (d){
 			return 0.75 * height - Math.round(3*d);
 		})
-		.attr("height", function(d){
+		.attr("height", function (d){
 			return Math.round(3*d);
 		})
 		.attr("opacity", 0);
@@ -62,13 +62,13 @@ d3.csv("data/speedfinal.csv", function(data){
 		.attr("class", "axe3");
 
 	rects3.attr("width", width / arr3.length - barpadding)
-		.attr("x", function(d,i){
+		.attr("x", function (d,i){
 			return 1+i*(width / arr3.length);
 		})
-		.attr("y", function(d){
+		.attr("y", function (d){
 			return 0.75 * height - Math.round(3*d);
 		})
-		.attr("height", function(d){
+		.attr("height", function (d){
 			return Math.round(3*d);
 		})
 		.attr("opacity", 0);
@@ -82,7 +82,7 @@ d3.csv("data/speedfinal.csv", function(data){
 		.text(function (d){
 			return Math.round(d);
 		})
-		.attr("x", function(d, i){
+		.attr("x", function (d, i){
 			return 1+(i+0.5)*(width / arr1.length);
 		})
 		.attr("y", function (d){
@@ -100,7 +100,7 @@ d3.csv("data/speedfinal.csv", function(data){
 		.text(function (d){
 			return Math.round(d);
 		})
-		.attr("x", function(d, i){
+		.attr("x", function (d, i){
 			return 1+(i+0.5)*(width / arr2.length);
 		})
 		.attr("y", function (d){
@@ -118,7 +118,7 @@ d3.csv("data/speedfinal.csv", function(data){
 		.text(function (d){
 			return Math.round(d);
 		})
-		.attr("x", function(d, i){
+		.attr("x", function (d, i){
 			return 1+(i+0.5)*(width / arr3.length);
 		})
 		.attr("y", function (d){
@@ -175,10 +175,10 @@ var displayers = [displayaxe1, displayaxe2, displayaxe3];
 function displayactualize(){
 	displayers[currentIndex]();
 	svg.selectAll("rect.axe"+(currentIndex+1))
-		.attr("y", function(d){
+		.attr("y", function (d){
 			return 0.75 * height;
 		})
-		.attr("height", function(d){
+		.attr("height", function (d){
 			return 0;
 		});
 	svg.selectAll("text.axe"+(currentIndex+1))
@@ -206,10 +206,10 @@ function scrollsizes(index, pos){
 		svg.selectAll("rect.axe"+(index+1))
 			.transition()
 			.duration(30)
-			.attr("y", function(d){
+			.attr("y", function (d){
 				return 0.75 * height - Math.round(alpha*3*d);
 			})
-			.attr("height", function(d){
+			.attr("height", function (d){
 				return Math.round(alpha*3*d);
 			})
 			.style("opacity", 1);

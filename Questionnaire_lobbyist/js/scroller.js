@@ -16,7 +16,7 @@ function position() {
   // On obtient les positions des différentes sections
   sectionPositions = [];
   var startPos;
-  sectionlist.each(function(d,i) {
+  sectionlist.each(function (d,i) {
     var top = this.getBoundingClientRect().top;
     if(i === 0) {
       startPos = top;
@@ -43,11 +43,11 @@ function position() {
 // argument index : indice de la nouvelle section
 function majvue(index) {
 	if (index === 0){
-    	d3.select("#vue").style("background-color", "blue");
+    	d3.select("#vue").style("background-color", "rgb(193, 193, 193)");
   } else if (index === 1){
-      d3.select("#vue").style("background-color", "red");
+      d3.select("#vue").style("background-color", "rgb(145, 145, 145)");
   } else if (index === 2){
-    	d3.select("#vue").style("background-color", "green");
+    	d3.select("#vue").style("background-color", "rgb(68, 68, 68)");
   }
 }
 

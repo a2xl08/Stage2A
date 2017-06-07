@@ -39,6 +39,7 @@ function position() {
     majvue.call(this, sectionIndex);
   }
   scrollAnim(currentIndex, pos);
+  clickable();
 }
 
 // Fonction à appeler pour mettre la vue à jour

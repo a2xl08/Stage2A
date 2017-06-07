@@ -65,8 +65,8 @@ d3.csv("data/Noeud_positions.csv", function (data){
 					.enter()
 					.append("g")
 					.attr("class", "arc")
-					.attr("id", function (d,i){
-						return "theme"+i;
+					.attr("class", function (d,i){
+						return "cercle"+i;
 					})
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")");
 

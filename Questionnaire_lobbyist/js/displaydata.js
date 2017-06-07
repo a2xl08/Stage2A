@@ -14,7 +14,7 @@ NE RIEN EXECUTER ICI
 */
 
 // Largeur de la plage de scroll en pixels
-var scrollheight = 500;
+var scrollheight = 900;
 
 // Associée à la section indice 1
 
@@ -22,6 +22,7 @@ function scrollAnimTheme (pos){
 	var startsection = sectionPositions[0];
 	var alpha = (pos - startsection)/scrollheight;
 	var cercles = d3.selectAll("path")
+	var textes = d3.selectAll("text")
 	if ((alpha>=0) && (alpha<=1)){
 		// Facilite les transitions en cas de scroll brutal
 		if (alpha>=0.975){
@@ -61,6 +62,36 @@ function scrollAnimTheme (pos){
 				.attr("d", arc.outerRadius(function (){
 					return (1-0.5*(2*alpha-1))*outerRadius;
 				}))
+			textes.transition()
+				.duration(30)
+				.attr("transform", function (d,i) {
+					var string = "translate(";
+					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+					var textpos = this.getBoundingClientRect();
+					if (angle>Math.PI){
+						string += ((1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+					} else {
+						string += ((1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.sin(angle));
+					}
+					string += ', ';
+					string += (-(1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.cos(angle));
+					string += ")";
+					return string;
+				})
 		}
+	}
+}
+
+function clickable (){
+	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+		var cercles = d3.selectAll("path")
+						.style("cursor", "pointer");
+		cercles.on("click", function (d,i){
+			console.log("click");
+			var avirer = d3.selectAll("g:not(.cercle"+i+")")
+			avirer.transition()
+					.duration(500)
+					.attr("transform", "translate("+(-2500)+", "+2500+")")
+		})
 	}
 }

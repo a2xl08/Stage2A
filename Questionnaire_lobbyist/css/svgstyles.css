@@ -1,4 +1,4 @@
-svg g.arc > text {
+svg g > text {
 	fill: white;
 	font-weight: bold;
 	font-size: 12px;

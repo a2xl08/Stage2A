@@ -1,4 +1,5 @@
 var vue = document.getElementById("vue");
+var vuepos = vue.getBoundingClientRect();
 var height = vue.offsetHeight - 2 * 15; // 15 est le padding de #vue
 var width = vue.offsetWidth - 2 * 15;
 var svg = d3.select("#vue").append("svg").attr("width", width).attr("height", height);
@@ -8,6 +9,7 @@ var nbthemes;
 var themelist;
 var datafiltre;
 var piedata;
+var piezeddata;
 var outerRadius = width/10;
 
 d3.csv("data/Noeud_positions.csv", function (data){
@@ -29,6 +31,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 	themelist.splice(themelist.indexOf("estimated cost"), 1);
 	themelist.splice(themelist.indexOf("nb lobbyists"), 1);
 	themelist.splice(themelist.indexOf("Logo"), 1);
+	console.log(themelist);
 	
 	// On cherche le nombre d'acteurs qui se sont prononcés sur chaque thème
 	nbthemes = themelist.length;
@@ -43,16 +46,25 @@ d3.csv("data/Noeud_positions.csv", function (data){
 		}
 		piedata[i] = somme;
 	}
+	console.log(piedata);
 
+	piezeddata = pie(piedata);
+
+	console.log(piezeddata);
+
+	// Les parts de cammenbert sont des arcs d'innerRadius 0
 	var arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius(outerRadius);
 
 	var arcs = svg.selectAll("g.arc")
-					.data(pie(piedata))
+					.data(piezeddata)
 					.enter()
 					.append("g")
 					.attr("class", "arc")
+					.attr("id", function (d,i){
+						return "theme"+i;
+					})
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")");
 
 	arcs.append("path")
@@ -68,6 +80,23 @@ d3.csv("data/Noeud_positions.csv", function (data){
 				return "rgb(237, 28, 28)"
 			} 
 			return "black";
+		})
+
+	arcs.append("text")
+		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+"% de réponses)" })
+		.attr("transform", function (d,i) {
+			var string = "translate(";
+			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+			var textpos = this.getBoundingClientRect();
+			if (angle>Math.PI){
+				string += (1.2 * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+			} else {
+				string += (1.2 * outerRadius * Math.sin(angle));
+			}
+			string += ', ';
+			string += (-1.5 * outerRadius * Math.cos(angle));
+			string += ")";
+			return string;
 		})
 
 });

@@ -34,12 +34,12 @@ section {
 	z-index: 1;
 	display: inline-block;
 	width: 65%;
-	padding: 15px;
 	margin: auto;
 	height: 100%;
 }
 
 #vue {
+	padding: 15px;
 	height: 85%;
 }
 
@@ -58,8 +58,8 @@ section {
 	padding: 3px;
 	text-align: center;
 	width: 180px;
-	right: 25px;
-	top: 15px;
+	right: 35px;
+	top: 28px;
 	font-weight: bold;
 	font-size: 25px;
 	color: black;

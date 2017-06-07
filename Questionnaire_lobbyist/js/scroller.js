@@ -46,9 +46,7 @@ function majvue(index) {
     	d3.select("#vue").style("background-color", "rgb(193, 193, 193)");
   } else if (index === 1){
       d3.select("#vue").style("background-color", "rgb(145, 145, 145)");
-  } else if (index === 2){
-    	d3.select("#vue").style("background-color", "rgb(68, 68, 68)");
-  }
+  } 
 }
 
 // On déclenche la fonction position à chaque scroll de la page

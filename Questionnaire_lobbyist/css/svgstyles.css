@@ -1,0 +1,5 @@
+svg g.arc > text {
+	fill: white;
+	font-weight: bold;
+	font-size: 11px;
+}

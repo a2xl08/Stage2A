@@ -10,7 +10,10 @@ var themelist;
 var datafiltre;
 var piedata;
 var piezeddata;
+var arc;
+var arcs;
 var outerRadius = width/10;
+var setDefaultTheme;
 
 d3.csv("data/Noeud_positions.csv", function (data){
 	dataset=data;
@@ -53,11 +56,11 @@ d3.csv("data/Noeud_positions.csv", function (data){
 	console.log(piezeddata);
 
 	// Les parts de cammenbert sont des arcs d'innerRadius 0
-	var arc = d3.arc()
+	arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius(outerRadius);
 
-	var arcs = svg.selectAll("g.arc")
+	arcs = svg.selectAll("g.arc")
 					.data(piezeddata)
 					.enter()
 					.append("g")
@@ -84,7 +87,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 
 	arcs.append("text")
 		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+"% de réponses)" })
-		.style("font-size", 0.5*width/height+"em")
+		.style("font-size", 0.45*width/height+"em")
 		.attr("transform", function (d,i) {
 			var string = "translate(";
 			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
@@ -95,9 +98,21 @@ d3.csv("data/Noeud_positions.csv", function (data){
 				string += (1.2 * outerRadius * Math.sin(angle));
 			}
 			string += ', ';
-			string += (-1.5 * outerRadius * Math.cos(angle));
+			string += (-1.2 * outerRadius * Math.cos(angle));
 			string += ")";
 			return string;
 		})
+
+	// Cette fonction sert à réinitialiser la vue en cas de scroll brutal en arrière
+	setDefaultTheme = function (){
+		arcs.transition()
+			.duration(30)
+			.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")");
+
+		arcs.selectAll("text")
+			.transition()
+			.duration(30)
+			.attr("opacity", 1);
+	}
 
 });

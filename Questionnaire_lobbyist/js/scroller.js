@@ -5,6 +5,7 @@ var sectionPositions;
 
 majsectionspos();
 position();
+console.log(sectionPositions)
 
 function majsectionspos(){
   sectionlist = d3.select("#sections").selectAll("section");
@@ -21,7 +22,7 @@ function position() {
     if(i === 0) {
       startPos = top;
     }
-    // Le décalage de 500 permet d'ajuster les sections lors du scroll
+    // Le décalage de 350 permet d'ajuster les sections lors du scroll
     sectionPositions.push(350 + top - startPos);
   });
 
@@ -37,16 +38,29 @@ function position() {
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex);
   }
+  scrollAnim(currentIndex, pos);
 }
 
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
 function majvue(index) {
 	if (index === 0){
-    	d3.select("#vue").style("background-color", "rgb(193, 193, 193)");
-  } else if (index === 1){
-      d3.select("#vue").style("background-color", "rgb(145, 145, 145)");
-  } 
+      if (dataset){
+        setDefaultTheme();
+      }
+  }
+  
+  if (index%2 === 0){
+    d3.select("#vue").style("background-color", "rgb(193, 193, 193)");
+  } else {
+    d3.select("#vue").style("background-color", "rgb(145, 145, 145)");    
+  }
+}
+
+function scrollAnim(index, pos) {
+  if (index===1){
+    scrollAnimTheme(pos);
+  }
 }
 
 // On déclenche la fonction position à chaque scroll de la page

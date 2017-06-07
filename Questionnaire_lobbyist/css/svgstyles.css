@@ -3,3 +3,7 @@ svg g.arc > text {
 	font-weight: bold;
 	font-size: 12px;
 }
+
+#vue svg {
+	overflow: visible;
+}

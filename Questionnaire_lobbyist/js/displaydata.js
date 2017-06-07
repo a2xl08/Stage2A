@@ -8,6 +8,9 @@ total de la page et des données dans dataset
 Ces fonctions seront appelées dans le scroller
 au cours du scroll utilisateur
 
+NE DEFINIR QUE DES VARIABLES ET DES FONCTIONS
+NE RIEN EXECUTER ICI
+
 */
 
 // Largeur de la plage de scroll en pixels
@@ -18,6 +21,7 @@ var scrollheight = 500;
 function scrollAnimTheme (pos){
 	var startsection = sectionPositions[0];
 	var alpha = (pos - startsection)/scrollheight;
+	var cercles = d3.selectAll("path")
 	if ((alpha>=0) && (alpha<=1)){
 		// Facilite les transitions en cas de scroll brutal
 		if (alpha>=0.975){
@@ -43,7 +47,20 @@ function scrollAnimTheme (pos){
 					
 				});
 
-
+			cercles.transition()
+					.duration(30)
+					.attr("d", arc.endAngle(function (d){
+						return d.endAngle;
+					}))
+		} else {
+			cercles.transition()
+				.duration(30)
+				.attr("d", arc.endAngle(function (d){
+					return d.endAngle + 2*Math.PI*(2*alpha-1);
+				}))
+				.attr("d", arc.outerRadius(function (){
+					return (1-0.5*(2*alpha-1))*outerRadius;
+				}))
 		}
 	}
 }

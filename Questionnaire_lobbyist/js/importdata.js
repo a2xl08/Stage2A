@@ -1,7 +1,7 @@
 var vue = document.getElementById("vue");
 var vuepos = vue.getBoundingClientRect();
-var height = vue.offsetHeight - 2 * 15; // 15 est le padding de #vue
-var width = vue.offsetWidth - 2 * 15;
+var height = vue.offsetHeight - 2 * 5; // 5 est le padding de #vue
+var width = vue.offsetWidth - 2 * 5;
 var svg = d3.select("#vue").append("svg").attr("width", width).attr("height", height);
 var pie = d3.pie();
 var dataset;
@@ -84,6 +84,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 
 	arcs.append("text")
 		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+"% de réponses)" })
+		.style("font-size", 0.5*width/height+"em")
 		.attr("transform", function (d,i) {
 			var string = "translate(";
 			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);

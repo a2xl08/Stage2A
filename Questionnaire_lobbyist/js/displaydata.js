@@ -45,9 +45,9 @@ function scrollAnimPie (index, pos){
 				.attr("transform", function (d,i){
 					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 					if (angle>Math.PI){
-						return "translate("+(0.5*width+2*alpha*0.2*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.2*height*Math.cos(angle)))+")"		
+						return "translate("+(0.5*width+2*alpha*0.3*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.3*height*Math.cos(angle)))+")"		
 					} else {
-						return "translate("+(0.5*width+2*alpha*0.125*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.125*height*Math.cos(angle)))+")"
+						return "translate("+(0.5*width+2*alpha*0.2*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.2*height*Math.cos(angle)))+")"
 					}
 					
 				});
@@ -94,10 +94,10 @@ function scrollTransitPie (index, pos){
 	var alpha = (pos - startsection)/scrollheight;
 	if ((alpha>=0) && (alpha<=1)){
 		// Facilite les transitions en cas de scroll brutal
-		if (alpha>=0.95){
+		if (alpha>=0.9){
 			alpha=1;
 		}
-		if (alpha<=0.05){
+		if (alpha<=0.1){
 			alpha=0;
 		}
 		// Animations

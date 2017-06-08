@@ -16,12 +16,15 @@ var outerRadius = width/10;
 var setDefaultTheme;
 // Nombre de lobbyists restants
 var nbloby;
+// Tableau recensant les nbloby successifs : utile pour accéder aux éléments graphiques dont la référence a été perdue
+var tabnbloby;
 
 
 d3.csv("data/Noeud_positions.csv", function (data){
 	dataset=data;
 	datafiltre=dataset.slice();
 	nbloby = dataset.length
+	tabnbloby=[nbloby];
 	console.log(dataset);
 
 	// Faire ici l'initialisation de la vue
@@ -72,7 +75,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 					.append("g")
 					.attr("class", "arc")
 					.attr("class", function (d,i){
-						return "cercle"+i;
+						return "cercle"+i+" "+"loby"+nbloby+" cercle"+i+"loby"+nbloby;
 					})
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")");
 

@@ -14,7 +14,7 @@ NE RIEN EXECUTER ICI
 */
 
 // Largeur de la plage de scroll en pixels
-var scrollheight = 900;
+var scrollheight = 850;
 // Durée des transitions
 var timetransition = 500;
 // Tableau qui recence les choix utilisateurs
@@ -84,6 +84,29 @@ function scrollAnimPie (index, pos){
 					return string;
 				})
 		}
+	}
+}
+
+function scrollTransitPie (index, pos){
+	var startsection = sectionPositions[index-1];
+	var alpha = (pos - startsection)/scrollheight;
+	if ((alpha>=0) && (alpha<=1)){
+		// Facilite les transitions en cas de scroll brutal
+		if (alpha>=0.95){
+			alpha=1;
+		}
+		if (alpha<=0.05){
+			alpha=0;
+		}
+		// Animations
+		var old = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-2]);
+		var newer = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-1]);
+		old.transition()
+			.duration(30)
+			.attr("opacity", 1-alpha);
+		newer.transition()
+			.duration(30)
+			.attr("opacity", alpha);
 	}
 }
 
@@ -157,6 +180,7 @@ function clickable (){
 
 			// On charge les données pour le choix suivant
 			loadNewData();
+			generatePie();
 
 		})
 	} else {
@@ -201,7 +225,7 @@ function loadNewData (){
 	}
 }
 
-// Recherche de la position SUPPORTS/OPPOSES
+// Affichage d'une nouvelle pie à partir de themelist et piezeddata
 function generatePie (){
 	arc = d3.arc()
                 .innerRadius(0)
@@ -235,7 +259,7 @@ function generatePie (){
 
 	arcs.append("text")
 		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
-		.style("font-size", 0.45*width/height+"em")
+		.style("font-size", 0.6*width/height+"em")
 		.attr("transform", function (d,i) {
 			var string = "translate(";
 			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);

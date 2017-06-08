@@ -64,10 +64,12 @@ function scrollAnim(index, pos) {
     scrollAnimPie(index, pos);
   } // Index 2 transition thème - position
   else if (index===2){
-
+    scrollTransitPie(index, pos);
   } // Index 3 position
   else if (index===3){
     scrollAnimPie(index, pos);
+  } else if (index===4){
+    scrollTransitPie(index, pos);
   }
 }
 

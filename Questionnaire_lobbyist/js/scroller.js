@@ -68,8 +68,18 @@ function scrollAnim(index, pos) {
   } // Index 3 position
   else if (index===3){
     scrollAnimPie(index, pos);
-  } else if (index===4){
+  } // Index 4 transition position - type
+  else if (index===4){
     scrollTransitPie(index, pos);
+  } // Index 5 type
+  else if (index===5){
+    scrollAnimPie(index, pos);
+  } // Index 6 transition type - country
+  else if (index===6){
+    scrollTransitPie(index, pos);
+  } // Index 7 country
+  else if (index===7){
+    scrollAnimPie(index, pos);
   }
 }
 

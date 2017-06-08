@@ -87,6 +87,8 @@ function scrollAnimPie (index, pos){
 	}
 }
 
+// Associée aux sections de transition
+
 function scrollTransitPie (index, pos){
 	var startsection = sectionPositions[index-1];
 	var alpha = (pos - startsection)/scrollheight;
@@ -113,7 +115,7 @@ function scrollTransitPie (index, pos){
 // Gestion du choix utilisateur : click
 
 function clickable (){
-	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
+	if ((window.innerHeight + window.scrollY) + 15 >= document.body.offsetHeight){
 		var cercles = d3.selectAll("g.loby"+nbloby+" path")
 						.style("cursor", "pointer");
 		cercles.on("click", function (d,i){
@@ -222,6 +224,69 @@ function loadNewData (){
 		}
 		piezeddata = pie(piedata);
 		themelist = ["SUPPORTS", "OPPOSES"];
+	} else if (choices.length===2) {
+		/* L'utilisateur a choisi son thème
+		ainsi que sa position par rapport à ce thème. 
+		Charger maintenant la catégorie de lobbyist */
+
+		// On filtre les données selon la position choisie
+		for (var i=0; i<datafiltre.length; i++){
+			if (datafiltre[i][choices[0]]===choices[1]){
+				//console.log("On garde !")
+			} else {
+				datafiltre[i]=0;
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+
+		// On génère le jeu de variables graphiques
+		themelist=[];
+		piedata=[];
+		for (var i=0; i<datafiltre.length; i++){
+			var donnee = datafiltre[i]["Type"]
+			var indice = themelist.indexOf(donnee);
+			if (indice===-1){
+				themelist.push(donnee);
+				piedata.push(1);
+			} else {
+				piedata[indice]++;
+			}
+		}
+		piezeddata = pie(piedata);
+	} else if (choices.length===3) {
+		/* L'utilisateur a choisi son thème
+		ainsi que sa position par rapport à ce thème. 
+		Il vient de choisir le type de structure qui lui convient. 
+		Charger maintenant le pays de lobby */
+
+		// On filtre les données selon le type choisi
+		for (var i=0; i<datafiltre.length; i++){
+			if (datafiltre[i]["Type"]===choices[2]){
+				//console.log("On garde !")
+			} else {
+				datafiltre[i]=0;
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+
+		// On génère le jeu de variables graphiques
+		themelist=[];
+		piedata=[];
+		for (var i=0; i<datafiltre.length; i++){
+			var donnee = datafiltre[i]["Country"]
+			var indice = themelist.indexOf(donnee);
+			if (indice===-1){
+				themelist.push(donnee);
+				piedata.push(1);
+			} else {
+				piedata[indice]++;
+			}
+		}
+		piezeddata = pie(piedata);
 	}
 }
 

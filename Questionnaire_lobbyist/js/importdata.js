@@ -14,9 +14,15 @@ var arc;
 var arcs;
 var outerRadius = width/10;
 var setDefaultTheme;
+// Nombre de lobbyists restants
+var nbloby;
+
 
 d3.csv("data/Noeud_positions.csv", function (data){
 	dataset=data;
+	datafiltre=dataset.slice();
+	nbloby = dataset.length
+	console.log(dataset);
 
 	// Faire ici l'initialisation de la vue
 	// Renseigner les fonctions modifiant la vue en dehors
@@ -86,7 +92,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 		})
 
 	arcs.append("text")
-		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+"% de réponses)" })
+		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+" réponses)" })
 		.style("font-size", 0.45*width/height+"em")
 		.attr("transform", function (d,i) {
 			var string = "translate(";

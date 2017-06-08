@@ -17,7 +17,8 @@ NE RIEN EXECUTER ICI
 var scrollheight = 900;
 // Durée des transitions
 var timetransition = 500;
-
+// Tableau qui recence les choix utilisateurs
+var choices = [];
 // Associée aux sections dont les données sont traitées
 
 function scrollAnimPie (pos){
@@ -92,7 +93,6 @@ function clickable (){
 						.style("cursor", "pointer");
 		cercles.on("click", function (d,i){
 			// On vire les cercles non selectionnés
-			console.log("click");
 			var avirer = d3.selectAll("g:not(.cercle"+i+")")
 			avirer.transition()
 					.duration(timetransition)
@@ -125,10 +125,10 @@ function clickable (){
 			// Création des nouvelles sections	
 			d3.select("#sections")
 				.append("section")
-				.attr("class", "newsection")
+				.attr("class", "datatransit")
 				.append("p")
 				.text(function (){
-					return "Ceci est un test"
+					return "Chargement de nouvelles données"
 				})
 			d3.select("#sections")
 				.append("section")
@@ -138,10 +138,51 @@ function clickable (){
 					return "Ceci est un test"
 				})
 
+			// Mémorisation du choix utilisateur
+			var indice = Number(selected.attr("class").slice(6));
+			choices.push(themelist[indice]);
+			nbloby = piedata[indice];
+			console.log("nbloby = "+nbloby);
+
+			// On charge les données pour le choix suivant
+			loadNewData();
+
 		})
 	} else {
 		var cercles = d3.selectAll("path")
 						.style("cursor", "default");
 		cercles.on("click", function (){});
 	}
+}
+
+// On charge les nouvelles données
+function loadNewData (){
+	if (nbloby===1){
+		console.log("FINI, afficher résultat")
+	} else if (choices.length===1) {
+		/* Seul le thème a été choisi, 
+		charger la position SUPPORTS/OPPOSES 
+		du thème choisi */
+
+		// On filtre les données selon le thème choisi
+		for (var i=0; i<datafiltre.length; i++){
+			if (datafiltre[i][choices[0]]){
+				//console.log("On garde !")
+			} else {
+				datafiltre[i]=0;
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+	}
+}
+
+// Recherche de la position SUPPORTS/OPPOSES
+function generatePie2 (){
+
+}
+
+function displayResult (){
+
 }

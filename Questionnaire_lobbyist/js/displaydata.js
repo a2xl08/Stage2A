@@ -15,10 +15,12 @@ NE RIEN EXECUTER ICI
 
 // Largeur de la plage de scroll en pixels
 var scrollheight = 900;
+// Durée des transitions
+var timetransition = 500;
 
-// Associée à la section indice 1
+// Associée aux sections dont les données sont traitées
 
-function scrollAnimTheme (pos){
+function scrollAnimPie (pos){
 	var startsection = sectionPositions[0];
 	var alpha = (pos - startsection)/scrollheight;
 	var cercles = d3.selectAll("path")
@@ -82,16 +84,64 @@ function scrollAnimTheme (pos){
 	}
 }
 
+// Gestion du choix utilisateur : click
+
 function clickable (){
 	if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight){
 		var cercles = d3.selectAll("path")
 						.style("cursor", "pointer");
 		cercles.on("click", function (d,i){
+			// On vire les cercles non selectionnés
 			console.log("click");
 			var avirer = d3.selectAll("g:not(.cercle"+i+")")
 			avirer.transition()
-					.duration(500)
-					.attr("transform", "translate("+(-2500)+", "+2500+")")
+					.duration(timetransition)
+					.attr("transform", "translate("+(-2500)+", "+2500+")");
+
+			// Traitement de l'élément cliqué
+			var selected = d3.select("g.cercle"+i);
+			selected.transition()
+					.duration(timetransition)
+					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")")
+			selected.select("path")
+					.transition()
+					.duration(timetransition)
+					.attr("d", arc.outerRadius(function (){
+						return outerRadius;
+					}))
+			selected.select("text")
+					.transition()
+					.duration(timetransition)
+					.attr("transform", function (){
+						var textpos = this.getBoundingClientRect();
+						var string="translate(";
+						string += (-textpos.right + textpos.left)/2;
+						string += ", ";
+						string += (-0.3*height);
+						string += ")";
+						return string;
+					})
+
+			// Création des nouvelles sections	
+			d3.select("#sections")
+				.append("section")
+				.attr("class", "newsection")
+				.append("p")
+				.text(function (){
+					return "Ceci est un test"
+				})
+			d3.select("#sections")
+				.append("section")
+				.attr("class", "newsection")
+				.append("p")
+				.text(function (){
+					return "Ceci est un test"
+				})
+
 		})
+	} else {
+		var cercles = d3.selectAll("path")
+						.style("cursor", "default");
+		cercles.on("click", function (){});
 	}
 }

@@ -60,7 +60,7 @@ function majvue(index) {
 
 function scrollAnim(index, pos) {
   if (index===1){
-    scrollAnimTheme(pos);
+    scrollAnimPie(pos);
   }
 }
 

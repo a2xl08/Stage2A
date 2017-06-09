@@ -74,11 +74,23 @@ function scrollAnim(index, pos) {
   } // Index 5 type
   else if (index===5){
     scrollAnimPie(index, pos);
-  } // Index 6 transition type - country
+  } // Index 6 transition type - secteur
   else if (index===6){
     scrollTransitPie(index, pos);
-  } // Index 7 country
+  } // Index 7 secteur
   else if (index===7){
+    scrollAnimPie(index, pos);
+  } // Index 8 transition Secteur - Country
+  else if (index===8){
+    scrollTransitPie(index, pos);
+  } // Index 9 Country
+  else if (index===9){
+    scrollAnimPie(index, pos);
+  } // Index 10 transition Country Name
+  else if (index===10){
+    scrollTransitPie(index, pos);
+  } // Index 11 Name
+  else if (index===11){
     scrollAnimPie(index, pos);
   }
 }

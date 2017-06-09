@@ -70,7 +70,6 @@ function scrollAnimPie (index, pos){
 				.duration(30)
 				.attr("transform", function (d,i) {
 					var string = "translate(";
-					console.log(i);
 					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 					var textpos = this.getBoundingClientRect();
 					if (angle>Math.PI){
@@ -153,6 +152,14 @@ function clickable (){
 						return string;
 					})
 
+			// Mémorisation du choix utilisateur
+			var indice = Number(selected.attr("class")[6]);
+			choices.push(themelist[indice]);
+			nbloby = piedata[indice];
+			console.log("nbloby = "+nbloby);
+			tabnbloby.push(nbloby);
+			console.log(tabnbloby);
+
 			// Création des nouvelles sections	
 			d3.select("#sections")
 				.append("section")
@@ -161,24 +168,19 @@ function clickable (){
 				.text(function (){
 					return "Chargement de nouvelles données"
 				})
-			d3.select("#sections")
-				.append("section")
-				.attr("class", "newsection")
-				.append("p")
-				.text(function (){
-					return "Ceci est un test"
-				})
+			// Si nbloby = 1, une section suffit pour afficher le résultat
+			if (nbloby!==1){
+				d3.select("#sections")
+					.append("section")
+					.attr("class", "newsection")
+					.append("p")
+					.text(function (){
+						return "Ceci est un test"
+					})
+			}
 
 			// MAJ des coordonnées des sections
 			majsectionspos();
-
-			// Mémorisation du choix utilisateur
-			var indice = Number(selected.attr("class")[6]);
-			choices.push(themelist[indice]);
-			nbloby = piedata[indice];
-			console.log("nbloby = "+nbloby);
-			tabnbloby.push(nbloby);
-			console.log(tabnbloby);
 
 			// On charge les données pour le choix suivant
 			loadNewData();
@@ -195,7 +197,36 @@ function clickable (){
 // On charge les nouvelles données
 function loadNewData (){
 	if (nbloby===1){
-		console.log("FINI, afficher résultat")
+		// On filtre les données pour ne garder que le résultat
+		var nbchoix = choices.length;
+		for (var i=0; i<datafiltre.length; i++){
+			if (nbchoix>=1){
+				if (datafiltre[i][choices[0]]!==choices[1]){
+					datafiltre[i]=0
+				}
+			}
+			if (nbchoix>=2){
+				if (datafiltre[i]["Type"]!==choices[2]){
+					datafiltre[i]=0
+				}
+			}
+			if (nbchoix>=3){
+				if (datafiltre[i]["Country"]!==choices[3]){
+					datafiltre[i]=0
+				}
+			}
+			if (nbchoix>=4){
+				if (datafiltre[i]["ConsultationOrganizationName"]!==choices[4]){
+					datafiltre[i]=0
+				}
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+
+		// nbloby=1, pas besoin de variables graphiques
+
 	} else if (choices.length===1) {
 		/* Seul le thème a été choisi, 
 		charger la position SUPPORTS/OPPOSES 
@@ -259,7 +290,7 @@ function loadNewData (){
 		/* L'utilisateur a choisi son thème
 		ainsi que sa position par rapport à ce thème. 
 		Il vient de choisir le type de structure qui lui convient. 
-		Charger maintenant le pays de lobby */
+		Charger maintenant le secteur de lobby */
 
 		// On filtre les données selon le type choisi
 		for (var i=0; i<datafiltre.length; i++){
@@ -277,7 +308,74 @@ function loadNewData (){
 		themelist=[];
 		piedata=[];
 		for (var i=0; i<datafiltre.length; i++){
+			var donnee = datafiltre[i]["Secteur"]
+			var indice = themelist.indexOf(donnee);
+			if (indice===-1){
+				themelist.push(donnee);
+				piedata.push(1);
+			} else {
+				piedata[indice]++;
+			}
+		}
+		piezeddata = pie(piedata);
+	} else if (choices.length===4) {
+		/* L'utilisateur a choisi son thème
+		ainsi que sa position par rapport à ce thème. 
+		Il a choisi le type de structure qui lui convient. 
+		Il vient de choisir le secteur qui lui convient. 
+		Charger maintenant le pays de lobby */
+
+		// On filtre les données selon le secteur choisi
+		for (var i=0; i<datafiltre.length; i++){
+			if (datafiltre[i]["Secteur"]===choices[3]){
+				//console.log("On garde !")
+			} else {
+				datafiltre[i]=0;
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+
+		// On génère le jeu de variables graphiques
+		themelist=[];
+		piedata=[];
+		for (var i=0; i<datafiltre.length; i++){
 			var donnee = datafiltre[i]["Country"]
+			var indice = themelist.indexOf(donnee);
+			if (indice===-1){
+				themelist.push(donnee);
+				piedata.push(1);
+			} else {
+				piedata[indice]++;
+			}
+		}
+		piezeddata = pie(piedata);
+	} else if (choices.length===5) {
+		/* L'utilisateur a choisi son thème,
+		sa position par rapport à ce thème ainsi que 
+		le type de structure qui lui convient et son secteur. 
+		Il vient de choisir son pays de prédilection. 
+		On prop */
+
+		// On filtre les données selon le type choisi
+		for (var i=0; i<datafiltre.length; i++){
+			if (datafiltre[i]["Country"]===choices[4]){
+				//console.log("On garde !")
+			} else {
+				datafiltre[i]=0;
+			}
+		} 
+		while (datafiltre.indexOf(0)!==-1){
+			datafiltre.splice(datafiltre.indexOf(0), 1);
+		}
+
+		// On génère le jeu de variables graphiques
+		themelist=[];
+		piedata=[];
+		for (var i=0; i<datafiltre.length; i++){
+			var donnee = datafiltre[i]["ConsultationOrganizationName"]
+			console.log(donnee)
 			var indice = themelist.indexOf(donnee);
 			if (indice===-1){
 				themelist.push(donnee);
@@ -341,6 +439,6 @@ function generatePie (){
 		})
 }
 
-function displayResult (){
-
+function displayResult (pos){
+	
 }

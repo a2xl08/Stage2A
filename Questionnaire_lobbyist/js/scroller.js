@@ -39,6 +39,7 @@ function position() {
     majvue.call(this, sectionIndex);
   }
   scrollAnim(currentIndex, pos);
+  hoverize();
   clickable();
 }
 

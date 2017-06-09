@@ -66,7 +66,6 @@ function scrollAnimPie (index, pos){
 						return d.endAngle;
 					}))
 					.attr("d", arc.outerRadius(function (d){
-					console.log(scalablesize(d.data))
 					return outerRadius;
 				}))
 		} else {
@@ -76,7 +75,6 @@ function scrollAnimPie (index, pos){
 					return d.endAngle + 2*Math.PI*(2*alpha-1);
 				}))
 				.attr("d", arc.outerRadius(function (d){
-					console.log(scalablesize(d.data))
 					return (1-0.2*(2*alpha-1)*(1/scalablesize(d.data)))*outerRadius;
 				}))
 			textes.transition()
@@ -124,15 +122,41 @@ function scrollTransitPie (index, pos){
 	}
 }
 
-// Gestion du choix utilisateur : click
+// Gestion du survol
+function hoverize (){
+	var cercles = d3.selectAll("g.loby"+nbloby+" path");
+	if ((window.innerHeight + window.scrollY) + 15 >= document.body.offsetHeight){
 
+		cercles.on("mouseover", function (d,i){
+			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
+			avirer.transition()
+				.duration(timetransition)
+				.attr("opacity", 0.3)
+		})
+
+		cercles.on("mouseout", function (d,i){
+			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
+			avirer.transition()
+				.duration(timetransition)
+				.attr("opacity", 1)
+		})
+
+	} else {
+		cercles.on("mouseover", function(){});
+		cercles.on("mouseout", function(){});
+	}
+}
+
+// Gestion du choix utilisateur : click
 function clickable (){
 	if ((window.innerHeight + window.scrollY) + 15 >= document.body.offsetHeight){
 		var cercles = d3.selectAll("g.loby"+nbloby+" path")
 						.style("cursor", "pointer");
 		cercles.on("click", function (d,i){
 			// On supprime l'écoute de l'événement
-			//cercles.on("click", function (){});
+			cercles.on("mouseover", function (){});
+			cercles.on("mouseout", function (){});
+			cercles.on("click", function (){});
 
 			// On vire les cercles non selectionnés
 			var avirer = d3.selectAll("g:not(.cercle"+i+"loby"+nbloby+")")

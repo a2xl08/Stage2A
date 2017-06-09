@@ -52,7 +52,7 @@ section {
 #reloadbox {
 	position: fixed;
 	z-index: 10;
-	background-color: gray;
+	background-color: rgb(191, 191, 191);
 	border: solid black 2px;
 	border-radius: 10px;
 	padding: 3px;

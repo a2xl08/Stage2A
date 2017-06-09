@@ -7,3 +7,12 @@ svg g text {
 #vue svg {
 	overflow: visible;
 }
+
+text.result {
+	font-size: 20px;
+	fill: white;
+}
+
+text.result.nom {
+	font-size: 30px;
+}

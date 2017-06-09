@@ -59,8 +59,10 @@ function majvue(index) {
 }
 
 function scrollAnim(index, pos) {
-  // Index 1 thème
-  if (index===1){
+  if (nbloby===1){
+    displayResult(pos);
+  } // Index 1 thème
+  else if (index===1){
     scrollAnimPie(index, pos);
   } // Index 2 transition thème - position
   else if (index===2){

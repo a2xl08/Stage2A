@@ -19,6 +19,8 @@ var scrollheight = 850;
 var timetransition = 500;
 // Tableau qui recence les choix utilisateurs
 var choices = [];
+// Pas vertical d'affichage du résultat
+var pas = 40;
 
 // Associée aux sections dont les données sont traitées
 
@@ -122,7 +124,6 @@ function clickable (){
 			//cercles.on("click", function (){});
 
 			// On vire les cercles non selectionnés
-			console.log("g:not(.cercle"+i+"loby"+nbloby+")")
 			var avirer = d3.selectAll("g:not(.cercle"+i+"loby"+nbloby+")")
 			avirer.transition()
 					.duration(timetransition)
@@ -184,8 +185,11 @@ function clickable (){
 
 			// On charge les données pour le choix suivant
 			loadNewData();
-			generatePie();
-
+			if (nbloby===1){
+				generateResult();
+			} else {
+				generatePie();
+			}
 		})
 	} else {
 		var cercles = d3.selectAll("path")
@@ -200,23 +204,28 @@ function loadNewData (){
 		// On filtre les données pour ne garder que le résultat
 		var nbchoix = choices.length;
 		for (var i=0; i<datafiltre.length; i++){
-			if (nbchoix>=1){
+			if (nbchoix>=2){
 				if (datafiltre[i][choices[0]]!==choices[1]){
 					datafiltre[i]=0
 				}
 			}
-			if (nbchoix>=2){
+			if (nbchoix>=3){
 				if (datafiltre[i]["Type"]!==choices[2]){
 					datafiltre[i]=0
 				}
 			}
-			if (nbchoix>=3){
-				if (datafiltre[i]["Country"]!==choices[3]){
+			if (nbchoix>=4){
+				if (datafiltre[i]["Secteur"]!==choices[3]){
 					datafiltre[i]=0
 				}
 			}
-			if (nbchoix>=4){
-				if (datafiltre[i]["ConsultationOrganizationName"]!==choices[4]){
+			if (nbchoix>=5){
+				if (datafiltre[i]["Country"]!==choices[4]){
+					datafiltre[i]=0
+				}
+			}
+			if (nbchoix>=6){
+				if (datafiltre[i]["ConsultationOrganizationName"]!==choices[5]){
 					datafiltre[i]=0
 				}
 			}
@@ -225,7 +234,7 @@ function loadNewData (){
 			datafiltre.splice(datafiltre.indexOf(0), 1);
 		}
 
-		// nbloby=1, pas besoin de variables graphiques
+		// nbloby=1, On génère le résultat dans generateResult
 
 	} else if (choices.length===1) {
 		/* Seul le thème a été choisi, 
@@ -375,7 +384,6 @@ function loadNewData (){
 		piedata=[];
 		for (var i=0; i<datafiltre.length; i++){
 			var donnee = datafiltre[i]["ConsultationOrganizationName"]
-			console.log(donnee)
 			var indice = themelist.indexOf(donnee);
 			if (indice===-1){
 				themelist.push(donnee);
@@ -439,6 +447,82 @@ function generatePie (){
 		})
 }
 
+function generateResult (){
+	// nbloby === 1
+
+	svg.append("text")
+		.attr("class", "result nom")
+		.attr("opacity", 0)
+		.text(datafiltre[0]["ConsultationOrganizationName"]);
+
+	svg.append("text")
+		.attr("class", "result secteur")
+		.attr("opacity", 0)
+		.text(datafiltre[0]["Secteur"]);
+
+	svg.append("text")
+		.attr("class", "result country")
+		.attr("opacity", 0)
+		.text(datafiltre[0]["Country"]);
+
+	svg.append("text")
+		.attr("class", "result costs")
+		.attr("opacity", 0)
+		.text("Estimated costs: "+datafiltre[0]["estimated cost"]+" $");
+
+	svg.select("text.nom")
+		.attr("x", function(){
+			var textpos = this.getBoundingClientRect();
+			return width/2 - (textpos.right - textpos.left)/2;
+		})
+		.attr("y", function(){
+			return height/3;
+		});
+
+	svg.select("text.secteur")
+		.attr("x", function(){
+			var textpos = this.getBoundingClientRect();
+			return width/2 - (textpos.right - textpos.left)/2;
+		})
+		.attr("y", function(){
+			return height/3 + 1.5*pas;
+		});
+
+	svg.select("text.country")
+		.attr("x", function(){
+			var textpos = this.getBoundingClientRect();
+			return width/2 - (textpos.right - textpos.left)/2;
+		})
+		.attr("y", function(){
+			return height/3 + 1.5*pas + 1*pas;
+		});
+
+	svg.select("text.costs")
+		.attr("x", function(){
+			var textpos = this.getBoundingClientRect();
+			return width/2 - (textpos.right - textpos.left)/2;
+		})
+		.attr("y", function(){
+			return height/3 + 1.5*pas + 2*pas;
+		});
+
+}
+
 function displayResult (pos){
-	
+	var startsection = sectionPositions[currentIndex-1];
+	var alpha = (pos - startsection)/scrollheight;
+	if ((alpha>=0) && (alpha<=1)){
+		// Facilite les transitions en cas de scroll brutal
+		if (alpha>=0.9){
+			alpha=1;
+		}
+		if (alpha<=0.1){
+			alpha=0;
+		}
+		// Animations
+		var disques = d3.selectAll("g");
+		var res = d3.selectAll("text.result");
+		disques.attr("opacity", 1-alpha);
+		res.attr("opacity", alpha);
+	}
 }

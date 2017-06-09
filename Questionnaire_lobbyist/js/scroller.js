@@ -2,6 +2,7 @@
 var sectionlist;
 var currentIndex = -1;
 var sectionPositions;
+var maxindex;
 
 majsectionspos();
 position();
@@ -25,6 +26,7 @@ function position() {
     // Le décalage de 350 permet d'ajuster les sections lors du scroll
     sectionPositions.push(350 + top - startPos);
   });
+  maxindex = sectionPositions.length-1;
 
   // Repérage de la position sur la page
   var pos = window.pageYOffset;
@@ -46,7 +48,7 @@ function position() {
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
 function majvue(index) {
-	 
+	//displayPie();
 }
 
 function scrollAnim(index, pos) {

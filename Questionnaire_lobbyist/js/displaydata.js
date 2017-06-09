@@ -14,7 +14,7 @@ NE RIEN EXECUTER ICI
 */
 
 // Largeur de la plage de scroll en pixels
-var scrollheight = 850;
+var scrollheight = 870;
 // Durée des transitions
 var timetransition = 500;
 // Tableau qui recence les choix utilisateurs
@@ -113,9 +113,15 @@ function scrollTransitPie (index, pos){
 		// Animations
 		var old = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-2]);
 		var newer = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-1]);
-		old.transition()
+		if (1-alpha <= 0.1){
+			old.transition()
+			.duration(30)
+			.attr("opacity", 0);
+		} else {
+			old.transition()
 			.duration(30)
 			.attr("opacity", 1-alpha);
+		}
 		newer.transition()
 			.duration(30)
 			.attr("opacity", alpha);
@@ -132,6 +138,11 @@ function hoverize (){
 			avirer.transition()
 				.duration(0.5*timetransition)
 				.attr("opacity", 0.3)
+
+			avirer.select("path")
+				.transition()
+				.duration(0.5*timetransition)
+				.attr("fill", "gray");
 		})
 
 		cercles.on("mouseout", function (d,i){
@@ -139,6 +150,14 @@ function hoverize (){
 			avirer.transition()
 				.duration(0.5*timetransition)
 				.attr("opacity", 1)
+
+			avirer.select("path")
+				.transition()
+				.duration(0.5*timetransition)
+				.attr("fill", function (d,i){
+					return color(i);
+				});
+
 		})
 
 	} else {
@@ -218,7 +237,7 @@ function clickable (){
 			// Création des nouvelles sections	
 			d3.select("#sections")
 				.append("section")
-				.attr("class", "datatransit")
+				.attr("id", "sec"+(currentIndex+1))
 				.append("p")
 				.text(function (){
 					return "Chargement de nouvelles données"
@@ -227,7 +246,7 @@ function clickable (){
 			if (nbloby!==1){
 				d3.select("#sections")
 					.append("section")
-					.attr("class", "newsection")
+					.attr("id", "sec"+(currentIndex+2))
 					.append("p")
 					.text(function (){
 						return "Ceci est un test"
@@ -575,5 +594,19 @@ function displayResult (pos){
 		var res = d3.selectAll("text.result");
 		disques.attr("opacity", 1-alpha);
 		res.attr("opacity", alpha);
+	}
+}
+
+/* Les fonctions qui suivent permettent d'assurer 
+les retour en arrière lorsque l'utilisateur scroll */
+
+function displayPie(){
+
+	// Suppression des sections
+	if ((currentIndex%2===1) && ((maxindex-currentIndex)>1)){
+		console.log("Remove"+currentIndex)
+		d3.selectAll("#sec"+(currentIndex+1)).remove();
+		d3.selectAll("#sec"+(currentIndex+2)).remove();
+		majsectionspos();
 	}
 }

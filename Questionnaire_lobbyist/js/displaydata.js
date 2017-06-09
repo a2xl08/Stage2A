@@ -130,14 +130,14 @@ function hoverize (){
 		cercles.on("mouseover", function (d,i){
 			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
 			avirer.transition()
-				.duration(timetransition)
+				.duration(0.5*timetransition)
 				.attr("opacity", 0.3)
 		})
 
 		cercles.on("mouseout", function (d,i){
 			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
 			avirer.transition()
-				.duration(timetransition)
+				.duration(0.5*timetransition)
 				.attr("opacity", 1)
 		})
 
@@ -195,6 +195,25 @@ function clickable (){
 			console.log("nbloby = "+nbloby);
 			tabnbloby.push(nbloby);
 			console.log(tabnbloby);
+
+			// Affichage du choix utilisateur dans #answers
+			var nbchoix = choices.length;
+			if (nbchoix===1){
+				var element = d3.select("span.theme");
+				element.text(choices[0]);
+			} else if (nbchoix===2){
+				var element = d3.select("span.position");
+				element.text(choices[1]);
+			} else if (nbchoix===3){
+				var element = d3.select("span.type");
+				element.text(choices[2]);
+			} else if (nbchoix===4){
+				var element = d3.select("span.secteur");
+				element.text(choices[3]);
+			} else if (nbchoix===5){
+				var element = d3.select("span.country");
+				element.text(choices[4]);
+			}
 
 			// Création des nouvelles sections	
 			d3.select("#sections")
@@ -476,6 +495,7 @@ function generatePie (){
 function generateResult (){
 	// nbloby === 1
 
+	// Création des éléments graphiques
 	svg.append("text")
 		.attr("class", "result nom")
 		.attr("opacity", 0)
@@ -531,6 +551,11 @@ function generateResult (){
 		.attr("y", function(){
 			return height/3 + 1.5*pas + 2*pas;
 		});
+
+	// MAJ des données de answers
+	d3.select("span.type").text(datafiltre[0]["Type"]);
+	d3.select("span.secteur").text(datafiltre[0]["Secteur"]);
+	d3.select("span.country").text(datafiltre[0]["Country"]);
 
 }
 

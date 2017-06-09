@@ -46,7 +46,18 @@ section {
 #answers {
 	height: 14%;
 	padding: 5px;
-	background-color: gray;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-content: space-around;
+}
+
+#answers p {
+	width: 49%;
+	padding: 3px;
+	margin: 0px;
+	font-size: 17px;
 }
 
 #reloadbox {

@@ -22,6 +22,12 @@ var choices = [];
 // Pas vertical d'affichage du résultat
 var pas = 45;
 
+// Cette fonction ajuste la taille des disques en fonction de la donnée
+function scalablesize (d){
+	var max = tabnbloby[tabnbloby.length-1];
+	return d/max+0.2
+}
+
 // Associée aux sections dont les données sont traitées
 
 function scrollAnimPie (index, pos){
@@ -59,14 +65,19 @@ function scrollAnimPie (index, pos){
 					.attr("d", arc.endAngle(function (d){
 						return d.endAngle;
 					}))
+					.attr("d", arc.outerRadius(function (d){
+					console.log(scalablesize(d.data))
+					return outerRadius;
+				}))
 		} else {
 			cercles.transition()
 				.duration(30)
 				.attr("d", arc.endAngle(function (d){
 					return d.endAngle + 2*Math.PI*(2*alpha-1);
 				}))
-				.attr("d", arc.outerRadius(function (){
-					return (1-0.5*(2*alpha-1))*outerRadius;
+				.attr("d", arc.outerRadius(function (d){
+					console.log(scalablesize(d.data))
+					return (1-0.2*(2*alpha-1)*(1/scalablesize(d.data)))*outerRadius;
 				}))
 			textes.transition()
 				.duration(30)
@@ -75,12 +86,12 @@ function scrollAnimPie (index, pos){
 					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 					var textpos = this.getBoundingClientRect();
 					if (angle>Math.PI){
-						string += ((1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+						string += ((1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
 					} else {
-						string += ((1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.sin(angle));
+						string += ((1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.sin(angle));
 					}
 					string += ', ';
-					string += (-(1.2 - 0.5*(2*alpha-1)) * outerRadius * Math.cos(angle));
+					string += (-(1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.cos(angle));
 					string += ")";
 					return string;
 				})

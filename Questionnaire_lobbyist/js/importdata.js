@@ -82,16 +82,7 @@ d3.csv("data/Noeud_positions.csv", function (data){
 	arcs.append("path")
 		.attr("d", arc)
 		.attr("fill", function (d,i){
-			if (i===0){
-				return "rgb(39, 107, 216)"
-			} else if (i===1) {
-				return "rgb(173, 96, 29)"
-			} else if (i===2) {
-				return "rgb(28, 173, 45)"
-			} else if (i===3) {
-				return "rgb(237, 28, 28)"
-			} 
-			return "black";
+			return color(i);
 		})
 
 	arcs.append("text")

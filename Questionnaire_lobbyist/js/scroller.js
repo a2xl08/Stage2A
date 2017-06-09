@@ -45,17 +45,7 @@ function position() {
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
 function majvue(index) {
-	if (index === 0){
-      if (dataset){
-        setDefaultTheme();
-      }
-  }
-  
-  if (index%2 === 0){
-    d3.select("#vue").style("background-color", "rgb(193, 193, 193)");
-  } else {
-    d3.select("#vue").style("background-color", "rgb(145, 145, 145)");    
-  }
+	 
 }
 
 function scrollAnim(index, pos) {

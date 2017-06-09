@@ -20,7 +20,7 @@ var timetransition = 500;
 // Tableau qui recence les choix utilisateurs
 var choices = [];
 // Pas vertical d'affichage du résultat
-var pas = 40;
+var pas = 45;
 
 // Associée aux sections dont les données sont traitées
 
@@ -47,9 +47,9 @@ function scrollAnimPie (index, pos){
 				.attr("transform", function (d,i){
 					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 					if (angle>Math.PI){
-						return "translate("+(0.5*width+2*alpha*0.3*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.3*height*Math.cos(angle)))+")"		
+						return "translate("+(0.5*width+2*alpha*0.25*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.3*height*Math.cos(angle)))+")"		
 					} else {
-						return "translate("+(0.5*width+2*alpha*0.2*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.2*height*Math.cos(angle)))+")"
+						return "translate("+(0.5*width+2*alpha*0.15*width*Math.sin(angle))+", "+(0.5*height+(-2*alpha*0.2*height*Math.cos(angle)))+")"
 					}
 					
 				});
@@ -416,16 +416,7 @@ function generatePie (){
 	arcs.append("path")
 		.attr("d", arc)
 		.attr("fill", function (d,i){
-			if (i===0){
-				return "rgb(39, 107, 216)"
-			} else if (i===1) {
-				return "rgb(173, 96, 29)"
-			} else if (i===2) {
-				return "rgb(28, 173, 45)"
-			} else if (i===3) {
-				return "rgb(237, 28, 28)"
-			} 
-			return "black";
+			return color(i);
 		})
 
 	arcs.append("text")

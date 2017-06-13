@@ -10,9 +10,16 @@ h1 {
 }
 
 #vue {
+	position: relative;
 	width: 90%;
 	height: 75%;
 	margin: auto;
+}
+
+#vue canvas {
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 #starter {

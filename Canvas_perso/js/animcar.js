@@ -11,7 +11,6 @@ function carNextPos(index) {
 }
 
 function drawCanvas() {
-	console.log("newcanvas")
 	// Cette fonction itère le canvas et gère l'animation
 	clearCanvas();
 	drawreliefs();
@@ -24,9 +23,31 @@ function drawCanvas() {
 function startAnim (){
 	starter.removeEventListener("click", startAnim);
 
-	console.log("click")
 	reliefsDOMInsert();
-	d3.timer(drawCanvas)
+	d3.timer(drawCanvas);
 }
 
-var listen = starter.addEventListener("click", startAnim)
+starter.addEventListener("click", startAnim);
+
+var moncanvas = document.querySelector(".visible")
+moncanvas.addEventListener("click", function (e){
+
+	console.log("click")
+
+	// On repère les coordonnées du clic
+	var mouseX = e.layerX;
+	var mouseY = e.layerY;
+	console.log([mouseX, mouseY]);
+
+	// On obtient la couleur du pixel puis le noeud
+	var col = ctxhid.getImageData(mouseX, mouseY, 1, 1).data;
+	var colString = "rgb(" + col[0] + "," + col[1] + ","+ col[2] + ")";
+	console.log(colString)
+	var node = colToNode[colString];
+	console.log(node)
+
+	if (node){
+		node.attr("fillStyle", "blue")
+	}
+
+})

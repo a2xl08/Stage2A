@@ -7,10 +7,20 @@ var carwidth;
 
 var base = d3.select("#vue");
 var canvas = base.append("canvas")
+				.attr("class", "visible")
 				.attr("width", width)
 				.attr("height", height);
 
+// Ce canvas caché nous aidera à identifier les
+// éléments lors du clic : 1 elem = 1 couleur
+var hidden = base.append("canvas")
+				.attr("width", width)
+				.attr("height", height)
+				.style("display", "none");
+var colToNode = {};
+
 var ctx = canvas.node().getContext("2d");
+var ctxhid = hidden.node().getContext("2d");
 
 // Création d'un élément factice qui recevra nos faux noeuds
 detachedContainer = document.createElement("custom")
@@ -26,6 +36,16 @@ function clearCanvas(){
   ctx.rect(0,0,canvas.attr("width"),canvas.attr("height"));
   ctx.fill();
   ctx.restore();
+
+  	// clear hidden canvas and reset colors associations
+  ctxhid.save()
+  ctxhid.translate(0,0);
+  ctxhid.fillStyle = "white";
+  ctxhid.rect(0,0,canvas.attr("width"),canvas.attr("height"));
+  ctxhid.fill();
+  ctxhid.restore();
+  colToNode = {};
+  nextCol = 0;
 }
 
 function drawcar(x,y){
@@ -88,11 +108,39 @@ function drawreliefs() {
 	var elements = CustomDOM.selectAll("custom.rect.reliefs");
 	elements.each(function (d){
 		var node = d3.select(this);
+		var newCol = genHiddenColor();
 
 		ctx.save()
 		ctx.translate(0,0)
 		ctx.fillStyle = node.attr("fillStyle");
 		ctx.fillRect(node.attr("x"), node.attr("y"), node.attr("width"), node.attr("height"));
 		ctx.restore()
+
+		ctxhid.save()
+		ctxhid.translate(0,0)
+		ctxhid.fillStyle = newCol;
+		ctxhid.fillRect(node.attr("x"), node.attr("y"), node.attr("width"), node.attr("height"));
+		ctxhid.restore()
+
+		colToNode[newCol] = node;
+
 	});
+}
+
+var nextCol=0;
+function genHiddenColor(){
+	var ret = [];
+    // via http://stackoverflow.com/a/15804183
+    if(nextCol < 16777215){
+      ret.push(nextCol & 0xff); // R
+      ret.push((nextCol & 0xff00) >> 8); // G 
+      ret.push((nextCol & 0xff0000) >> 16); // B
+
+      nextCol += 1;
+    } else {
+    	console.log("Stock de couleurs épuisé")
+    	return "error"
+    }
+    var col = "rgb(" + ret.join(',') + ")";
+    return col;
 }

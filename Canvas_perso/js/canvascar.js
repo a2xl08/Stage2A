@@ -3,7 +3,7 @@ var vuepos = vue.getBoundingClientRect();
 var height = vue.offsetHeight - 2 * 10; // 15 est le padding de #vue
 var width = vue.offsetWidth - 2 * 10;
 
-var carwidth = 50;
+var carwidth;
 
 var base = d3.select("#vue");
 var canvas = base.append("canvas")
@@ -22,7 +22,7 @@ function clearCanvas(){
 	// clear canvas
   ctx.save()
   ctx.translate(0,0);
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = "white";
   ctx.rect(0,0,canvas.attr("width"),canvas.attr("height"));
   ctx.fill();
   ctx.restore();
@@ -30,16 +30,9 @@ function clearCanvas(){
 
 function drawcar(x,y){
 
-	// Corps de la voiture
-	ctx.save();
-	ctx.translate(x,y);
-	ctx.fillStyle = "red";
-	ctx.fillRect(0,0,carwidth,0.5*carwidth);
-	ctx.restore();
-
 	// Roue gauche
 	ctx.save();
-	ctx.translate(x+0.2*carwidth, y+(0.7)*carwidth);
+	ctx.translate(x+0.2*carwidth, y+(0.45)*carwidth);
 	ctx.fillStyle = "black";
 	ctx.beginPath();
 	ctx.moveTo(0,0);
@@ -50,7 +43,7 @@ function drawcar(x,y){
 
 	// Roue droite
 	ctx.save();
-	ctx.translate(x+carwidth-0.3*carwidth, y+(0.7)*carwidth);
+	ctx.translate(x+carwidth-0.3*carwidth, y+(0.45)*carwidth);
 	ctx.fillStyle = "black";
 	ctx.beginPath();
 	ctx.moveTo(0,0);
@@ -58,6 +51,13 @@ function drawcar(x,y){
 	ctx.closePath()
 	ctx.fill()
 	ctx.restore()
+
+	// Corps de la voiture
+	ctx.save();
+	ctx.translate(x,y);
+	ctx.fillStyle = "red";
+	ctx.fillRect(0,0,carwidth,0.5*carwidth);
+	ctx.restore();
 
 }
 

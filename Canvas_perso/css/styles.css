@@ -27,6 +27,7 @@ h1 {
 #starter:hover {
 	background-color: green;
 	cursor: pointer;
+	font-weight: bold;
 }
 
 .box {

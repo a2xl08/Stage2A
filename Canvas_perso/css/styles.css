@@ -1,0 +1,35 @@
+* {
+	box-sizing: border-box;
+}
+
+h1 {
+	text-align: center;
+}
+
+#vue {
+	background-color: blue;
+	width: 90%;
+	height: 75%;
+	margin: auto;
+}
+
+#starter {
+	margin: auto;
+	width: 80px;
+	text-align: center;
+	margin-top: 10px;
+	background-color: orange;
+	padding: 5px;
+}
+
+#starter:hover {
+	background-color: green;
+	cursor: pointer;
+}
+
+.box {
+	background-color: gray;
+	padding: 10px;
+	border: solid black 2px;
+	border-radius: 10px;
+}

@@ -33,16 +33,14 @@ function clearCanvas(){
   ctx.save()
   ctx.translate(0,0);
   ctx.fillStyle = "white";
-  ctx.rect(0,0,canvas.attr("width"),canvas.attr("height"));
-  ctx.fill();
+  ctx.fillRect(0,0,canvas.attr("width"),canvas.attr("height"));
   ctx.restore();
 
   	// clear hidden canvas and reset colors associations
   ctxhid.save()
   ctxhid.translate(0,0);
   ctxhid.fillStyle = "white";
-  ctxhid.rect(0,0,canvas.attr("width"),canvas.attr("height"));
-  ctxhid.fill();
+  ctxhid.fillRect(0,0,canvas.attr("width"),canvas.attr("height"));
   ctxhid.restore();
   colToNode = {};
   nextCol = 0;

@@ -17,22 +17,22 @@ function drawCanvas() {
 	carwidth = Math.round(width/numreliefs);
 	var newpos = carNextPos(carindex);
 	carindex = (carindex + 1)%(numreliefs)
-	drawcar(newpos[0], newpos[1]);
+	drawcar(Math.round(newpos[0]), Math.round(newpos[1]));
+
+	window.requestAnimationFrame(drawCanvas);
 }
 
 function startAnim (){
 	starter.removeEventListener("click", startAnim);
 
 	reliefsDOMInsert();
-	d3.timer(drawCanvas);
+	window.requestAnimationFrame(drawCanvas);
 }
 
 starter.addEventListener("click", startAnim);
 
 var moncanvas = document.querySelector(".visible")
 moncanvas.addEventListener("click", function (e){
-
-	console.log("click")
 
 	// On repère les coordonnées du clic
 	var mouseX = e.layerX;

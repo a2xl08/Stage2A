@@ -1,6 +1,7 @@
 *.zip
 *.txt
 .~lock.*
+.git/
 
 Preambule_test/
 Stage2A_rapport_excluGIT/

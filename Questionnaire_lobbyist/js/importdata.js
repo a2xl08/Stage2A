@@ -77,7 +77,7 @@ d3.csv("data/Noeud19juin.csv", function (data){
 					.append("g")
 					.attr("class", "arc")
 					.attr("class", function (d,i){
-						return "cercle"+i+" "+"loby"+nbloby+" cercle"+i+"loby"+nbloby;
+						return "cercle"+i+" "+"loby"+0+" cercle"+i+"loby"+0;
 					})
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")");
 

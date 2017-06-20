@@ -28,9 +28,15 @@ function scalablesize (d){
 	return d/max+0.2
 }
 
-function scalabletext (d){
-	var max = tabnbloby[tabnbloby.length-1];
-	return d/(2*max)+0.3
+// Cette fonction est appelée pour positionner le texte
+// Elle permet d'éviter les recoupements entre les dernières
+// tranches de la pie. 
+function coefeloign (d){
+	if ((d.index>3) && (d.index!==piezeddata.length-1)){
+		return 1.5;
+	} else {
+		return 1.2;
+	}
 }
 
 // Associée aux sections dont les données sont traitées
@@ -38,8 +44,8 @@ function scalabletext (d){
 function scrollAnimPie (index, pos){
 	var startsection = sectionPositions[index-1];
 	var alpha = (pos - startsection)/scrollheight;
-	var cercles = d3.selectAll("g.loby"+nbloby+" path")
-	var textes = d3.selectAll("g.loby"+nbloby+" text")
+	var cercles = d3.selectAll("g.loby"+choices.length+" path")
+	var textes = d3.selectAll("g.loby"+choices.length+" text")
 	if ((alpha>=0) && (alpha<=1)){
 		// Facilite les transitions en cas de scroll brutal
 		if (alpha>=0.975){
@@ -88,13 +94,16 @@ function scrollAnimPie (index, pos){
 					var string = "translate(";
 					var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 					var textpos = this.getBoundingClientRect();
-					if (angle>Math.PI){
-						string += ((1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+										// attention position 								// position initiale du dernier quart
+					if ((angle>Math.PI) && (d.index!==1) && (d.index===piezeddata.length-1) && (choices.length!==0)){
+						string += ((coefeloign(d)-0.4*(2*alpha-1)) * outerRadius * Math.sin(angle));
+					} else if (angle>Math.PI){
+						string += ((coefeloign(d)-0.4*(2*alpha-1)) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
 					} else {
-						string += ((1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.sin(angle));
+						string += ((coefeloign(d)-0.4*(2*alpha-1)) * outerRadius * Math.sin(angle));
 					}
 					string += ', ';
-					string += (-(1.2 - 0.2*(2*alpha-1)*(1/scalablesize(d.data))) * outerRadius * Math.cos(angle));
+					string += (-(coefeloign(d)-0.4*(2*alpha-1)) * outerRadius * Math.cos(angle));
 					string += ")";
 					return string;
 				})
@@ -116,8 +125,8 @@ function scrollTransitPie (index, pos){
 			alpha=0;
 		}
 		// Animations
-		var old = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-2]);
-		var newer = d3.selectAll("g.loby"+tabnbloby[tabnbloby.length-1]);
+		var old = d3.selectAll("g.loby"+(choices.length-1));
+		var newer = d3.selectAll("g.loby"+choices.length);
 		if (1-alpha <= 0.1){
 			old.transition()
 			.duration(30)
@@ -135,11 +144,11 @@ function scrollTransitPie (index, pos){
 
 // Gestion du survol
 function hoverize (){
-	var cercles = d3.selectAll("g.loby"+nbloby+" path");
+	var cercles = d3.selectAll("g.loby"+choices.length+" path");
 	if ((window.innerHeight + window.scrollY) + 15 >= document.body.offsetHeight){
 
 		cercles.on("mouseover", function (d,i){
-			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
+			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+choices.length);
 			avirer.transition()
 				.duration(0.5*timetransition)
 				.attr("opacity", 0.3)
@@ -151,7 +160,7 @@ function hoverize (){
 		})
 
 		cercles.on("mouseout", function (d,i){
-			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+nbloby);
+			var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+choices.length);
 			avirer.transition()
 				.duration(0.5*timetransition)
 				.attr("opacity", 1)
@@ -174,7 +183,7 @@ function hoverize (){
 // Gestion du choix utilisateur : click
 function clickable (){
 	if ((window.innerHeight + window.scrollY) + 15 >= document.body.offsetHeight){
-		var cercles = d3.selectAll("g.loby"+nbloby+" path")
+		var cercles = d3.selectAll("g.loby"+choices.length+" path")
 						.style("cursor", "pointer");
 		cercles.on("click", function (d,i){
 			// On supprime l'écoute de l'événement
@@ -183,13 +192,13 @@ function clickable (){
 			cercles.on("click", function (){});
 
 			// On vire les cercles non selectionnés
-			var avirer = d3.selectAll("g:not(.cercle"+i+"loby"+nbloby+")")
+			var avirer = d3.selectAll("g:not(.cercle"+i+"loby"+choices.length+")")
 			avirer.transition()
 					.duration(timetransition)
 					.attr("transform", "translate("+(-2500)+", "+2500+")");
 
 			// Traitement de l'élément cliqué
-			var selected = d3.select("g.cercle"+i+"loby"+nbloby);
+			var selected = d3.select("g.cercle"+i+"loby"+choices.length);
 			selected.transition()
 					.duration(timetransition)
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")")
@@ -476,6 +485,7 @@ function loadNewData (){
 
 // Affichage d'une nouvelle pie à partir de themelist et piezeddata
 function generatePie (){
+	console.log(piezeddata);
 	arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius(outerRadius);
@@ -486,7 +496,7 @@ function generatePie (){
 					.append("g")
 					.attr("class", "arc")
 					.attr("class", function (d,i){
-						return "cercle"+i+" "+"loby"+nbloby+" cercle"+i+"loby"+nbloby;
+						return "cercle"+i+" "+"loby"+choices.length+" cercle"+i+"loby"+choices.length;
 					})
 					.attr("transform", "translate("+(0.5*width)+", "+(0.5*height)+")")
 					.attr("opacity", 0);
@@ -506,13 +516,16 @@ function generatePie (){
 			var string = "translate(";
 			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
 			var textpos = this.getBoundingClientRect();
-			if (angle>Math.PI){
-				string += (1.2 * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+								// attention position
+			if ((angle>Math.PI) && (d.index!==1) && (d.index===piezeddata.length-1)){
+				string += (coefeloign(d) * outerRadius * Math.sin(angle));
+			} else if (angle>Math.PI){
+				string += (coefeloign(d) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
 			} else {
-				string += (1.2 * outerRadius * Math.sin(angle));
+				string += (coefeloign(d) * outerRadius * Math.sin(angle));
 			}
 			string += ', ';
-			string += (-1.2 * outerRadius * Math.cos(angle));
+			string += (-coefeloign(d) * outerRadius * Math.cos(angle));
 			string += ")";
 			return string;
 		})

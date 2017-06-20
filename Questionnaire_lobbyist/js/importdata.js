@@ -20,7 +20,7 @@ var nbloby;
 var tabnbloby;
 
 
-d3.csv("data/Noeud_positions.csv", function (data){
+d3.csv("data/Noeud19juin.csv", function (data){
 	dataset=data;
 	datafiltre=dataset.slice();
 	nbloby = dataset.length
@@ -31,18 +31,20 @@ d3.csv("data/Noeud_positions.csv", function (data){
 	// Renseigner les fonctions modifiant la vue en dehors
 
 	// On cherche la liste des thèmes
+	// Par élimination, chaque ligne correspond à 
+	// l'élimination d'un attribut qui n'est pas un thème
+	// climatique. 
 	themelist = Object.keys(data[0]);
-	themelist.splice(themelist.indexOf("ConsultationOrganizationId"), 1);
-	themelist.splice(themelist.indexOf("ConsultationOrganizationName"), 1);
-	themelist.splice(themelist.indexOf("CommonName"), 1);
-	themelist.splice(themelist.indexOf("Country"), 1);
+	themelist.splice(themelist.indexOf("ID"), 1);
+	themelist.splice(themelist.indexOf("Lobby ID"), 1);
+	themelist.splice(themelist.indexOf("Nom"), 1);
+	themelist.splice(themelist.indexOf("Abréviation"), 1);
+	themelist.splice(themelist.indexOf("Pays/Région"), 1);
 	themelist.splice(themelist.indexOf("Type"), 1);
-	themelist.splice(themelist.indexOf("Website"), 1);
-	themelist.splice(themelist.indexOf("Secteur"), 1);
-	themelist.splice(themelist.indexOf("Operating revenue (Turnover) th USD 2014"), 1);
-	themelist.splice(themelist.indexOf("estimated cost"), 1);
-	themelist.splice(themelist.indexOf("nb lobbyists"), 1);
-	themelist.splice(themelist.indexOf("Logo"), 1);
+	themelist.splice(themelist.indexOf("Secteurs d’activité"), 1);
+	themelist.splice(themelist.indexOf("Dépenses Lobby (€)"), 1);
+	themelist.splice(themelist.indexOf("Personnes impliquées"), 1);
+	themelist.splice(themelist.indexOf("Equivalent Temps plein"), 1);
 	console.log(themelist);
 	
 	// On cherche le nombre d'acteurs qui se sont prononcés sur chaque thème

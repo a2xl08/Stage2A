@@ -28,6 +28,11 @@ function scalablesize (d){
 	return d/max+0.2
 }
 
+function scalabletext (d){
+	var max = tabnbloby[tabnbloby.length-1];
+	return d/(2*max)+0.3
+}
+
 // Associée aux sections dont les données sont traitées
 
 function scrollAnimPie (index, pos){
@@ -288,17 +293,17 @@ function loadNewData (){
 				}
 			}
 			if (nbchoix>=4){
-				if (datafiltre[i]["Secteur"]!==choices[3]){
+				if (datafiltre[i]["Secteurs d’activité"]!==choices[3]){
 					datafiltre[i]=0
 				}
 			}
 			if (nbchoix>=5){
-				if (datafiltre[i]["Country"]!==choices[4]){
+				if (datafiltre[i]["Pays/Région"]!==choices[4]){
 					datafiltre[i]=0
 				}
 			}
 			if (nbchoix>=6){
-				if (datafiltre[i]["ConsultationOrganizationName"]!==choices[5]){
+				if (datafiltre[i]["Nom"]!==choices[5]){
 					datafiltre[i]=0
 				}
 			}
@@ -329,14 +334,14 @@ function loadNewData (){
 		// On génère le jeu de variable pour les éléments graphiques
 		piedata = [0,0]; // SUPPORTS, OPPOSES
 		for (var i=0; i<datafiltre.length; i++){
-			if (datafiltre[i][choices[0]]==="SUPPORTS"){
+			if (datafiltre[i][choices[0]]==="SUPPORT"){
 				piedata[0]++;
-			} else if (datafiltre[i][choices[0]]==="OPPOSES"){
+			} else if (datafiltre[i][choices[0]]==="OPPOSE"){
 				piedata[1]++;
 			}
 		}
 		piezeddata = pie(piedata);
-		themelist = ["SUPPORTS", "OPPOSES"];
+		themelist = ["SUPPORT", "OPPOSE"];
 	} else if (choices.length===2) {
 		/* L'utilisateur a choisi son thème
 		ainsi que sa position par rapport à ce thème. 
@@ -390,7 +395,7 @@ function loadNewData (){
 		themelist=[];
 		piedata=[];
 		for (var i=0; i<datafiltre.length; i++){
-			var donnee = datafiltre[i]["Secteur"]
+			var donnee = datafiltre[i]["Secteurs d’activité"]
 			var indice = themelist.indexOf(donnee);
 			if (indice===-1){
 				themelist.push(donnee);
@@ -409,7 +414,7 @@ function loadNewData (){
 
 		// On filtre les données selon le secteur choisi
 		for (var i=0; i<datafiltre.length; i++){
-			if (datafiltre[i]["Secteur"]===choices[3]){
+			if (datafiltre[i]["Secteurs d’activité"]===choices[3]){
 				//console.log("On garde !")
 			} else {
 				datafiltre[i]=0;
@@ -423,7 +428,7 @@ function loadNewData (){
 		themelist=[];
 		piedata=[];
 		for (var i=0; i<datafiltre.length; i++){
-			var donnee = datafiltre[i]["Country"]
+			var donnee = datafiltre[i]["Pays/Région"]
 			var indice = themelist.indexOf(donnee);
 			if (indice===-1){
 				themelist.push(donnee);
@@ -442,7 +447,7 @@ function loadNewData (){
 
 		// On filtre les données selon le type choisi
 		for (var i=0; i<datafiltre.length; i++){
-			if (datafiltre[i]["Country"]===choices[4]){
+			if (datafiltre[i]["Pays/Région"]===choices[4]){
 				//console.log("On garde !")
 			} else {
 				datafiltre[i]=0;
@@ -456,7 +461,7 @@ function loadNewData (){
 		themelist=[];
 		piedata=[];
 		for (var i=0; i<datafiltre.length; i++){
-			var donnee = datafiltre[i]["ConsultationOrganizationName"]
+			var donnee = datafiltre[i]["Nom"]
 			var indice = themelist.indexOf(donnee);
 			if (indice===-1){
 				themelist.push(donnee);
@@ -494,7 +499,9 @@ function generatePie (){
 
 	arcs.append("text")
 		.text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
-		.style("font-size", 0.6*width/height+"em")
+		.style("font-size", function (d){
+			return 0.6*width/height+"em"
+		})
 		.attr("transform", function (d,i) {
 			var string = "translate(";
 			var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
@@ -518,22 +525,22 @@ function generateResult (){
 	svg.append("text")
 		.attr("class", "result nom")
 		.attr("opacity", 0)
-		.text(datafiltre[0]["ConsultationOrganizationName"]);
+		.text(datafiltre[0]["Nom"]);
 
 	svg.append("text")
 		.attr("class", "result secteur")
 		.attr("opacity", 0)
-		.text(datafiltre[0]["Secteur"]);
+		.text(datafiltre[0]["Secteurs d’activité"]);
 
 	svg.append("text")
 		.attr("class", "result country")
 		.attr("opacity", 0)
-		.text(datafiltre[0]["Country"]);
+		.text(datafiltre[0]["Pays/Région"]);
 
 	svg.append("text")
 		.attr("class", "result costs")
 		.attr("opacity", 0)
-		.text("Estimated costs: "+datafiltre[0]["estimated cost"]+" $");
+		.text("Estimated costs: "+datafiltre[0]["Dépenses Lobby (€)"]+" €");
 
 	svg.select("text.nom")
 		.attr("x", function(){
@@ -573,8 +580,8 @@ function generateResult (){
 
 	// MAJ des données de answers
 	d3.select("span.type").text(datafiltre[0]["Type"]);
-	d3.select("span.secteur").text(datafiltre[0]["Secteur"]);
-	d3.select("span.country").text(datafiltre[0]["Country"]);
+	d3.select("span.secteur").text(datafiltre[0]["Secteurs d’activité"]);
+	d3.select("span.country").text(datafiltre[0]["Pays/Région"]);
 
 }
 

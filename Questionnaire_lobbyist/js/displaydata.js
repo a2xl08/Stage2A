@@ -33,7 +33,7 @@ function scalablesize (d){
 // tranches de la pie. 
 function coefeloign (d){
 	if ((d.index>3) && (d.index!==piezeddata.length-1)){
-		return 1.5;
+		return 1.5 - 0.3*(d.index%2);
 	} else {
 		return 1.2;
 	}
@@ -553,7 +553,7 @@ function generateResult (){
 	svg.append("text")
 		.attr("class", "result costs")
 		.attr("opacity", 0)
-		.text("Estimated costs: "+datafiltre[0]["Dépenses Lobby (€)"]+" €");
+		.text("Dépenses Lobby : "+datafiltre[0]["Dépenses Lobby (€)"]+" €");
 
 	svg.select("text.nom")
 		.attr("x", function(){

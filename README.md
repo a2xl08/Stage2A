@@ -8,3 +8,4 @@ Branches utilisées :
 * canvasperso : Découverte de canvas, dossier Canvas_perso
 * networkviz : Etape 3, Visualisation du réseau, réalisé sur une organisation Github avec Skoli, copie dans le dossier Stage2AVisualisationReseau
 * whalobynewdata : Importation des dernières données dans le questionnaire lobbyists, dossier Questionnaire_lobbyist
+* appdev : Premier développement de la plateforme, copie dans le dossier AppDev1

@@ -1,3 +1,8 @@
+/* Comme l'import des données se fait au sein d'une fonction
+appelée de manière asynchrone : d3.csv, les variables
+globales sont définies ici afin qu'elles soient accessibles
+à tous les scripts */ 
+
 // Variables globales
 // Données des noeuds
 var dataset;
@@ -14,13 +19,30 @@ var lobyist;
 // Liste des thèmes
 var themelist;
 
+// Données regroupées pour les diffénrentes sections
+// Section 1 : SUPPORT vs OPPOSE
+var dataByPos;
+// Section 2 : Division par type
+var dataByPosType;
+// Section 3 : Division par secteur
+var dataByPosSecteur;
+// Section 4 : Rassemblement des secteurs, déplacement
+var secteurslist;
+// Section 5 : Regroupement par secteur
+var dataBySecteurPos;
+// Section 6 : Organisations regroupées par secteur
+// Utilisation de dataset
+// Section 7 : Affichage des liens
+
 var nodes;
 // Faux DOM d'objets graphiques (un SVG-like)
 var circles;
+var circlePos;
+var circlePosType;
+var circlePosSecteur;
+var circleSecteurPos;
 var simulation;
-// Permet de lancer une portion de code uniquement
-// au tick n°1
-var firstick = 1;
+
 // IDToIndex : Name --> son index correspondant dans dataset
 var IDToIndex;
 // La liste des IDs utilisés
@@ -49,122 +71,6 @@ function scalablesizes (x){
 	}
 	return coef * radius;
 }
-
-function drawCanvas (){
-
-		clearCanvas();
-		// On remplit l'annuaire
-		// Dictionnaire inversé pour faciliter les liens
-		if (firstick){
-			var NestedData = d3.nest()
-							.key(function (d){return d.ID})
-							.rollup(function (v){return v[0].index})
-							.entries(dataset);
-			IDToIndex = {};
-			console.log(NestedData)
-			NestedData.forEach(function (d){
-				console.log([d.key, d.value])
-				IDToIndex[d.key] = d.value;
-			})
-			firstick=0;	
-		}
-
-		// Traçage des liens
-		ctx.strokeStyle = linkcolor;
-		ctx.lineWidth = 1;
-		affiliations.forEach(function (d){
-			ctx.beginPath()
-			var beginindex = IDToIndex[d.source.ID];
-			var endindex = IDToIndex[d.target.ID];
-			var x1 = Math.round(dataset[beginindex].x);
-			var x2 = Math.round(dataset[endindex].x);
-			var y1 = Math.round(dataset[beginindex].y);
-			var y2 = Math.round(dataset[endindex].y);
-			var xmid = 0.5*(x1+x2);
-			var ymid = 0.5*(y1+y2);
-			var dx = x2-x1;
-			var dy = y2-y1;
-			ctx.moveTo(x1, y1);
-			ctx.quadraticCurveTo(xmid + curvecoef*dy, ymid - curvecoef*dx, x2, y2);
-			ctx.stroke();
-		});
-
-		// Les cercles
-
-		// Le halo proportionnel aux dépenses
-		circles.each(function (d){
-			// Affichage du halo
-			ctx.beginPath();
-			ctx.moveTo(d.x, d.y);
-			ctx.arc(d.x, d.y, d3.select(this).attr("r"), 0, 2*Math.PI);
-			ctx.fillStyle = d3.select(this).attr("fillHalo");
-			ctx.fill();
-		})
-
-		// Le noyau
-		circles.each(function (d){
-			// Affichage du cercle
-			ctx.beginPath();
-			ctx.moveTo(d.x, d.y);
-			ctx.arc(d.x, d.y, radius, 0, 2*Math.PI);
-			ctx.fillStyle = d3.select(this).attr("fillStyle");
-			ctx.fill();
-
-			// Dessin dans le canvas caché
-			var newcol = genHiddenColor();
-			var node = d3.select(this);
-			ctxhid.fillStyle = newcol;
-			ctxhid.beginPath();
-			ctxhid.moveTo(d.x, d.y);
-			ctxhid.arc(d.x, d.y, d3.select(this).attr("r"), 0, 2*Math.PI);
-			ctxhid.fill();
-
-			// Ajout de la couleur au répertoire
-			colToNode[newcol] = node;
-		})
-
-}
-
-// Ce code permet de faire du drag&slide sur les nodes
-canvas
-      .call(d3.drag()
-          .subject(dragsubject)
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
-hidden
-      .call(d3.drag()
-          .subject(dragsubject)
-          .on("start", dragstarted)
-          .on("drag", dragged)
-          .on("end", dragended));
-
-function dragsubject() {
-	console.log("subject found")
-    return simulation.find(d3.event.x, d3.event.y);
-}
-
-function dragstarted() {
-	console.log("start")
-  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
-  d3.event.subject.fx = d3.event.subject.x;
-  d3.event.subject.fy = d3.event.subject.y;
-}
-
-function dragged() {
-	console.log("move")
-  d3.event.subject.fx = d3.event.x;
-  d3.event.subject.fy = d3.event.y;
-}
-
-function dragended() {
-	console.log("end")
-  if (!d3.event.active) simulation.alphaTarget(0);
-  d3.event.subject.fx = null;
-  d3.event.subject.fy = null;
-}
-
 
 
 
@@ -198,6 +104,8 @@ d3.csv("data/Affiliation19juin.csv", function (data){
 			lobyist = dataset[i];
 		}
 	}
+
+	// On charge les couleurs
 	setcolor();
 
 	// On récupère la liste des thèmes 
@@ -273,47 +181,256 @@ d3.csv("data/Affiliation19juin.csv", function (data){
 			}	
 		}
 	}
-	console.log(depmax)
 
-	// On renseigne les forces
-	simulation = d3.forceSimulation().nodes(dataset)
-					.force("center", d3.forceCenter(width/2,height/2))
-					.force("charge", d3.forceManyBody().strength(-1))
-					.force("link", d3.forceLink(affiliations)
-						.id(function (d){
-							return d.ID;
-						})
-						.strength(function (d){
-							return 0.4;
-						})
-					)
-					.force("collide", d3.forceCollide().radius(function (d){
-						return 2*radius + 2*scalablesizes(d["Dépenses Lobby (€)"]);
-					}))
-					// Permettent d'éviter le hors champ lors du drag
-					.force("x", d3.forceX(width/2).strength(0.005))
-					.force("y", d3.forceY(height/2).strength(0.005));		
+	// Créer ici les listes de données par regroupement
+	// Section 1 par position
+	dataByPos = d3.nest()
+					.key(function (d){return d[theme]})
+					.rollup(function (v){
+						var res = {};
+						var somme = 0;
+						for (var i=0; i<v.length; i++){
+							var depense = Number(v[i]["Dépenses Lobby (€)"]);
+							if (depense){
+								somme += depense;
+							}
+						}
+						res["Dépenses Lobby (€)"] = somme;
+						return res;
+					})
+					.entries(dataset);
+	console.log(dataByPos);
 
-	simulation.alphaMin(0.02);	
+	// Section 2 par type et position
+	dataByPosType = d3.nest()
+					.key(function (d){
+						var res = [];
+						res.push(d[theme]);
+						res.push(d.Type);
+						return res;
+					})
+					.rollup(function (v){
+						var res = {};
+						var somme = 0;
+						for (var i=0; i<v.length; i++){
+							var depense = Number(v[i]["Dépenses Lobby (€)"]);
+							if (depense){
+								somme += depense;
+							}
+						}
+						res["Dépenses Lobby (€)"] = somme;
+						return res;
+					})
+					.entries(dataset);
+	console.log(dataByPosType);
 
-	// Binding des data avec les noeuds
-	circles = CustomDOM.selectAll("custom.circle")
+	// Section 3 par secteur et position
+	dataByPosSecteur = d3.nest()
+					.key(function (d){
+						var res = [];
+						res.push(d[theme]);
+						res.push(d["Secteurs d’activité"]);
+						return res;
+					})
+					.rollup(function (v){
+						var res = {};
+						var somme = 0;
+						for (var i=0; i<v.length; i++){
+							var depense = Number(v[i]["Dépenses Lobby (€)"]);
+							if (depense){
+								somme += depense;
+							}
+						}
+						res["Dépenses Lobby (€)"] = somme;
+						return res;
+					})
+					.entries(dataset);
+	console.log(dataByPosSecteur);
+
+	// Section 5 : Par secteur
+	dataBySecteurPos = d3.nest()
+					.key(function (d){return d["Secteurs d’activité"]})
+					.rollup(function (v){
+						var res = {};
+						var sommesup = 0;
+						var sommeopp = 0;
+						var somme = 0;
+						for (var i=0; i<v.length; i++){
+							var depense = Number(v[i]["Dépenses Lobby (€)"]);
+							if (depense){
+								somme += depense;
+								if (v[i][theme]==="SUPPORT"){
+									sommesup += depense;
+								} else if (v[i][theme]==="OPPOSE") {
+									sommeopp += depense;
+								}
+							}
+						}
+						res["SUPPORT"] = sommesup;
+						res["OPPOSE"] = sommeopp;
+						res["TOTAL"] = somme;
+						return res;
+					})
+					.entries(dataset);
+	secteurslist = [];
+	for (var i=0; i<dataBySecteurPos.length; i++){
+		secteurslist.push(dataBySecteurPos[i].key)
+	}
+
+
+	// Créer ici les éléments graphqiues (faux DOM)
+	// Les noeuds qui correspondent aux organisations
+	circles = CustomDOM.selectAll("custom.actor")
 				.data(dataset)
 				.enter()
 				.append("custom")
-				.attr("class", "circle")
+				.attr("class", "actor")
 				// Cet attribut "r" sert à adapter le
 				// halo aux dépenses Lobby
 				.attr("r", function (d){
 					return scalablesizes(d["Dépenses Lobby (€)"]);
 				})
-				.attr("fillStyle", function (d){return colornode(d)})
-				.attr("fillHalo", function (d){return colorhalo(d)});
+				.attr("fillStyle", colornode)
+				.attr("fillHalo", colorhalo);
 
-	console.log(circles)
+	// Pour la section 1 : SUPPORT vs OPPOSE
+	circlePos = CustomDOM.selectAll("custom.pos")
+				.data(dataByPos)
+				.enter()
+				.append("custom")
+				.attr("class", "pos")
+				.attr("r", function (d){
+					return scalablesizes(d.value["Dépenses Lobby (€)"])
+				})
+				.attr("fillStyle", function (d){
+					if (lobyist && lobyist[theme]){
+						if (lobyist[theme]===d.key){
+							return allycolor;
+						} else {
+							return ennemycolor;
+						}
+					} else {
+						if (d.key === "SUPPORT"){
+							return supportcolor;
+						} else {
+							return opposecolor;
+						}
+					}
+				})
+				.attr("fillHalo", function (d){
+					if (lobyist && lobyist[theme]){
+						if (lobyist[theme]===d.key){
+							return allycolorhalo;
+						} else {
+							return ennemycolorhalo;
+						}
+					} else {
+						if (d.key === "SUPPORT"){
+							return supportcolorhalo;
+						} else {
+							return opposecolorhalo;
+						}
+					}
+				});
 
-	simulation.on("tick", drawCanvas);
+	// Pour la section 2 : Division par type
+	circlePosType = CustomDOM.selectAll("custom.postype")
+						.data(dataByPosType)
+						.enter()
+						.append("custom")
+						.attr("class", "postype")
+						.attr("r", function (d){
+							return scalablesizes(d.value["Dépenses Lobby (€)"])
+						})
+						.attr("fillStyle", function (d){
+							if (lobyist && lobyist[theme]){
+								if (lobyist[theme]===d.key.split(",")[0]){
+									return allycolor;
+								} else {
+									return ennemycolor;
+								}
+							} else {
+								if (d.key.split(",")[0] === "SUPPORT"){
+									return supportcolor;
+								} else {
+									return opposecolor;
+								}
+							}
+						})
+						.attr("fillHalo", function (d){
+							if (lobyist && lobyist[theme]){
+								if (lobyist[theme]===d.key.split(",")[0]){
+									return allycolorhalo;
+								} else {
+									return ennemycolorhalo;
+								}
+							} else {
+								if (d.key.split(",")[0] === "SUPPORT"){
+									return supportcolorhalo;
+								} else {
+									return opposecolorhalo;
+								}
+							}
+						});
 
-	
+	// Pour la section 3 : Division par secteur
+	circlePosSecteur = CustomDOM.selectAll("custom.possecteur")
+						.data(dataByPosSecteur)
+						.enter()
+						.append("custom")
+						.attr("class", "possecteur")
+						.attr("r", function (d){
+							return scalablesizes(d.value["Dépenses Lobby (€)"])								
+						})
+						.attr("fillStyle", function (d){
+							if (lobyist && lobyist[theme]){
+								if (lobyist[theme]===d.key.split(",")[0]){
+									return allycolor;
+								} else {
+									return ennemycolor;
+								}
+							} else {
+								if (d.key.split(",")[0] === "SUPPORT"){
+									return supportcolor;
+								} else {
+									return opposecolor;
+								}
+							}
+						})
+						.attr("fillHalo", function (d){
+							if (lobyist && lobyist[theme]){
+								if (lobyist[theme]===d.key.split(",")[0]){
+									return allycolorhalo;
+								} else {
+									return ennemycolorhalo;
+								}
+							} else {
+								if (d.key.split(",")[0] === "SUPPORT"){
+									return supportcolorhalo;
+								} else {
+									return opposecolorhalo;
+								}
+							}
+						});	
+
+	// Section 4 : Mêmes cercles
+
+	// Section 5 : Fusion en secteurs
+	setMeanSectorColors();
+	circleSecteurPos = CustomDOM.selectAll("custom.secteurpos")
+						.data(dataBySecteurPos)
+						.enter()
+						.append("custom")
+						.attr("class", "secteurpos")
+						.attr("r", function (d){
+							return scalablesizes(d.value["TOTAL"])
+						})
+						.attr("fillStyle", sectorcolor)
+						.attr("fillHalo", sectorhalo);
+
+	// Initialisation après l'import des données : 
+	// Affichage de la section 1
+	setupSec1();
+	animSec1();
 
 });

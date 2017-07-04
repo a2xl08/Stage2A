@@ -195,7 +195,7 @@ d3.csv("data/Affiliation19juin.csv", function (data){
 	}
 	if (lobyist){
 		d3.select("#answers span.nom")
-			.text(lobyist["Nom"]);
+			.text(lobyist["Abréviation"]);
 		d3.select("#answers span.type")
 			.text(lobyist["Type"]);
 		d3.select("#answers span.secteur")

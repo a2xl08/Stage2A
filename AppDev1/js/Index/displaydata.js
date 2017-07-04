@@ -615,6 +615,7 @@ function generateResult (){
 	d3.select("span.type").text(datafiltre[0]["Type"]);
 	d3.select("span.secteur").text(datafiltre[0]["Secteurs d’activité"]);
 	d3.select("span.country").text(datafiltre[0]["Pays/Région"]);
+	d3.select("span.nom").text(datafiltre[0]["Abréviation"]);
 
 }
 

@@ -184,6 +184,17 @@ function hoverize (){
 	}
 }
 
+// On gère la couleur des #answers au choix utilisateur
+function resetcolors (){
+	d3.select("p.nom").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.country").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.secteur").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.type").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.theme").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.position").attr("style", "color: rgb(186, 186, 186)");
+	d3.select("p.fonction").attr("style", "color: rgb(186, 186, 186)");
+}
+
 // Gestion du choix utilisateur : click
 function clickable (){
 	if ((window.innerHeight + window.scrollY) + 70 >= document.body.offsetHeight){
@@ -238,18 +249,28 @@ function clickable (){
 			if (nbchoix===1){
 				var element = d3.select("span.theme");
 				element.text(choices[0]);
+				resetcolors();
+				d3.select("p.theme").attr("style", "color: rgb(45, 82, 252)");
 			} else if (nbchoix===2){
 				var element = d3.select("span.position");
 				element.text(choices[1]);
+				resetcolors();
+				d3.select("p.position").attr("style", "color: rgb(45, 82, 252)");
 			} else if (nbchoix===3){
 				var element = d3.select("span.type");
 				element.text(choices[2]);
+				resetcolors();
+				d3.select("p.type").attr("style", "color: rgb(45, 82, 252)");
 			} else if (nbchoix===4){
 				var element = d3.select("span.secteur");
 				element.text(choices[3]);
+				resetcolors();
+				d3.select("p.secteur").attr("style", "color: rgb(45, 82, 252)");
 			} else if (nbchoix===5){
 				var element = d3.select("span.country");
 				element.text(choices[4]);
+				resetcolors();
+				d3.select("p.country").attr("style", "color: rgb(45, 82, 252)");
 			}
 
 			// Création des nouvelles sections	

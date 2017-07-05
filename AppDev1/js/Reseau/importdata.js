@@ -96,9 +96,17 @@ function numlinkradius (d){
   return coef*CONST.RADIUS;
 }
 
+function getFullName(x){
+  if (x["Nom2"]){
+    return x["Nom2"]
+  } else {
+    return x["Nom1"]
+  }
+}
 
 
-d3.csv("data/Noeud19juin.csv", function (data){
+
+d3.csv("data/Noeud4juillet.csv", function (data){
   // On récupère les données
   dataset=data;
   CONST.ALL_NODES = data.slice();
@@ -150,207 +158,207 @@ d3.csv("data/Affiliation19juin.csv", function (data){
 });
 
 function initviz(){
-	// Récupération du choix utilisateur
-	// On crée la liste des ID (c'est un intervalle discontinu)
-	AllIDlist = [];
-	for (var i=0; i<dataset.length; i++){
-		AllIDlist.push(dataset[i].ID);
-	}
+  // Récupération du choix utilisateur
+  // On crée la liste des ID (c'est un intervalle discontinu)
+  AllIDlist = [];
+  for (var i=0; i<dataset.length; i++){
+    AllIDlist.push(dataset[i].ID);
+  }
 
-	if (params["id"]){
-		if (AllIDlist.indexOf(params["id"])!==-1){
-			lobyID = Number(params["id"]);
-		}
-	} // Sinon lobyID est undefined
-	
+  if (params["id"]){
+    if (AllIDlist.indexOf(params["id"])!==-1){
+      lobyID = Number(params["id"]);
+    }
+  } // Sinon lobyID est undefined
+  
 
-	// On récupèrer le lobyist choisi et la liste des IDs
-	for (var i=0; i<dataset.length; i++){
-		if (Number(dataset[i].ID) === lobyID){
-			lobyist = dataset[i];
-			break;
-		}
-	}
+  // On récupèrer le lobyist choisi et la liste des IDs
+  for (var i=0; i<dataset.length; i++){
+    if (Number(dataset[i].ID) === lobyID){
+      lobyist = dataset[i];
+      break;
+    }
+  }
 
-	// On récupère la liste des thèmes 
-	// et le thème choisi
-	themelist = Object.keys(dataset[0]);
-	themelist.splice(themelist.indexOf("ID"), 1);
-	themelist.splice(themelist.indexOf("Lobby ID"), 1);
-	themelist.splice(themelist.indexOf("Nom"), 1);
-	themelist.splice(themelist.indexOf("Abréviation"), 1);
-	themelist.splice(themelist.indexOf("Pays/Région"), 1);
-	themelist.splice(themelist.indexOf("Type"), 1);
-	themelist.splice(themelist.indexOf("Secteurs d’activité"), 1);
-	themelist.splice(themelist.indexOf("Dépenses Lobby (€)"), 1);
-	themelist.splice(themelist.indexOf("Personnes impliquées"), 1);
-	themelist.splice(themelist.indexOf("Equivalent Temps plein"), 1);
-	if (params["theme"]){
-		var urlthemeid = Number(params["theme"])
-		if ((urlthemeid>=0) && (urlthemeid<themelist.length)){
-			theme = themelist[urlthemeid];
-		}
-	}
+  // On récupère la liste des thèmes 
+  // et le thème choisi
+  themelist = Object.keys(dataset[0]);
+  themelist.splice(themelist.indexOf("ID"), 1);
+  themelist.splice(themelist.indexOf("Lobby ID"), 1);
+  themelist.splice(themelist.indexOf("Nom2"), 1);
+  themelist.splice(themelist.indexOf("Nom1"), 1);
+  themelist.splice(themelist.indexOf("Pays/Région"), 1);
+  themelist.splice(themelist.indexOf("Type"), 1);
+  themelist.splice(themelist.indexOf("Secteurs d’activité"), 1);
+  themelist.splice(themelist.indexOf("Dépenses Lobby (€)"), 1);
+  themelist.splice(themelist.indexOf("Personnes impliquées"), 1);
+  themelist.splice(themelist.indexOf("Equivalent Temps plein"), 1);
+  if (params["theme"]){
+    var urlthemeid = Number(params["theme"])
+    if ((urlthemeid>=0) && (urlthemeid<themelist.length)){
+      theme = themelist[urlthemeid];
+    }
+  }
 
-	// Créer les liens de retour vers le thème
-	createlinks();
+  // Créer les liens de retour vers le thème
+  createlinks();
 
-	// S'il n'y a pas de thème, afficher les liens
-	if (!theme){
-		displaylinksError();
-	}
+  // S'il n'y a pas de thème, afficher les liens
+  if (!theme){
+    displaylinksError();
+  }
 
-	// Si l'utilisateur n'a pas choisi de lobyist
-	// Ou si le lobyist choisi ne s'est pas prononcé
-	// Afficher le lien vers le questionnaire
-	if ((!(lobyist)) || (!(lobyist[theme]))) {
-		var lobylink = document.getElementById("backloby");
-		// Un lien redirige l'utilisateur vers le questionnaire
-		lobylink.style.display = "block";
-	}
+  // Si l'utilisateur n'a pas choisi de lobyist
+  // Ou si le lobyist choisi ne s'est pas prononcé
+  // Afficher le lien vers le questionnaire
+  if ((!(lobyist)) || (!(lobyist[theme]))) {
+    var lobylink = document.getElementById("backloby");
+    // Un lien redirige l'utilisateur vers le questionnaire
+    lobylink.style.display = "block";
+  }
 
-	// Remplissage des #answers
-	if (theme){
-		d3.select("#answers span.theme")
-			.text(theme);
-	}
-	if (lobyist){
-		d3.select("#answers span.nom")
-			.text(lobyist["Abréviation"]);
-		d3.select("#answers span.type")
-			.text(lobyist["Type"]);
-		d3.select("#answers span.secteur")
-			.text(lobyist["Secteurs d’activité"]);
-		d3.select("#answers span.country")
-			.text(lobyist["Pays/Région"]);
-		if (lobyist[theme]){
-			d3.select("#answers span.position")
-				.text(lobyist[theme]);
-		}
-	}
+  // Remplissage des #answers
+  if (theme){
+    d3.select("#answers span.theme")
+      .text(theme);
+  }
+  if (lobyist){
+    d3.select("#answers span.nom")
+      .text(lobyist["Nom1"]);
+    d3.select("#answers span.type")
+      .text(lobyist["Type"]);
+    d3.select("#answers span.secteur")
+      .text(lobyist["Secteurs d’activité"]);
+    d3.select("#answers span.country")
+      .text(lobyist["Pays/Région"]);
+    if (lobyist[theme]){
+      d3.select("#answers span.position")
+        .text(lobyist[theme]);
+    }
+  }
 
-	// On charge les couleurs
-	setcolor();
+  // On charge les couleurs
+  setcolor();
 
-	// On retire les acteurs non pertinents : 
-	// Ceux qui ne se sont pas prononcé
-	for (var i=0; i<nbloby; i++){
-		if (dataset[i][theme]){} else {
-			dataset[i]=0;
-		}
-	}
-	while (dataset.indexOf(0)!==-1){
-		dataset.splice(dataset.indexOf(0),1);
-	}
-	nbloby=dataset.length;
+  // On retire les acteurs non pertinents : 
+  // Ceux qui ne se sont pas prononcé
+  for (var i=0; i<nbloby; i++){
+    if (dataset[i][theme]){} else {
+      dataset[i]=0;
+    }
+  }
+  while (dataset.indexOf(0)!==-1){
+    dataset.splice(dataset.indexOf(0),1);
+  }
+  nbloby=dataset.length;
 
-	// Idem, on ne conserve que les liens pertinents
-	// ie qui relient des acteurs pertinents
-	idlist=[];
-	for (var i=0; i<nbloby; i++){
-		idlist.push(dataset[i].ID)
-	}
-	for (var i=0; i<affiliations.length; i++){
-		if ((idlist.indexOf(affiliations[i].source)===-1) 
-			|| (idlist.indexOf(affiliations[i].target)===-1))
-			{
-				affiliations[i]=0;
-			}
-	}
-	while (affiliations.indexOf(0)!==-1){
-		affiliations.splice(affiliations.indexOf(0),1);
-	}
+  // Idem, on ne conserve que les liens pertinents
+  // ie qui relient des acteurs pertinents
+  idlist=[];
+  for (var i=0; i<nbloby; i++){
+    idlist.push(dataset[i].ID)
+  }
+  for (var i=0; i<affiliations.length; i++){
+    if ((idlist.indexOf(affiliations[i].source)===-1) 
+      || (idlist.indexOf(affiliations[i].target)===-1))
+      {
+        affiliations[i]=0;
+      }
+  }
+  while (affiliations.indexOf(0)!==-1){
+    affiliations.splice(affiliations.indexOf(0),1);
+  }
 
-	// On ne conserve que les liens actionnaires directs pertinents
-	idActlist = [];
-	for (var i=0; i<actionnaires.length; i++){
-		idActlist.push(actionnaires[i].ID);
-	}
-	for (var i=0; i<actionnairesDirect.length; i++){
-		if ((idlist.indexOf(actionnairesDirect[i].source)===-1) 
-			|| (idlist.indexOf(actionnairesDirect[i].target)===-1))
-			{
-				actionnairesDirect[i]=0;
-			}
-	}
-	while (actionnairesDirect.indexOf(0)!==-1){
-		actionnairesDirect.splice(actionnairesDirect.indexOf(0),1);
-	}
+  // On ne conserve que les liens actionnaires directs pertinents
+  idActlist = [];
+  for (var i=0; i<actionnaires.length; i++){
+    idActlist.push(actionnaires[i].ID);
+  }
+  for (var i=0; i<actionnairesDirect.length; i++){
+    if ((idlist.indexOf(actionnairesDirect[i].source)===-1) 
+      || (idlist.indexOf(actionnairesDirect[i].target)===-1))
+      {
+        actionnairesDirect[i]=0;
+      }
+  }
+  while (actionnairesDirect.indexOf(0)!==-1){
+    actionnairesDirect.splice(actionnairesDirect.indexOf(0),1);
+  }
 
-	// On ne conserve que les liens actionnaires indirects pertinents
-	for (var i=0; i<actionnairesIndirect.length; i++){
-		if ((idActlist.indexOf(actionnairesIndirect[i].source)===-1) 
-			|| (idlist.indexOf(actionnairesIndirect[i].target)===-1))
-			{
-				actionnairesIndirect[i]=0;
-			}
-	}
-	while (actionnairesIndirect.indexOf(0)!==-1){
-		actionnairesIndirect.splice(actionnairesIndirect.indexOf(0),1);
-	}
+  // On ne conserve que les liens actionnaires indirects pertinents
+  for (var i=0; i<actionnairesIndirect.length; i++){
+    if ((idActlist.indexOf(actionnairesIndirect[i].source)===-1) 
+      || (idlist.indexOf(actionnairesIndirect[i].target)===-1))
+      {
+        actionnairesIndirect[i]=0;
+      }
+  }
+  while (actionnairesIndirect.indexOf(0)!==-1){
+    actionnairesIndirect.splice(actionnairesIndirect.indexOf(0),1);
+  }
 
-	// On ne conserve que les actionnaires pertinents
-	// Ceux qui sont actionnaires d'un élément de dataset
-	// MAJ de idActlist
-	idActlist = [];
-	for (var i=0; i<actionnairesIndirect.length; i++){
-		if (idActlist.indexOf(actionnairesIndirect[i].source)===-1){
-			idActlist.push(actionnairesIndirect[i].source);
-		}
-	}
-	for (var i=0; i<actionnaires.length; i++){
-		if (idActlist.indexOf(actionnaires[i].ID)===-1){
-			actionnaires[i]=0;
-		}
-	}
-	while (actionnaires.indexOf(0)!==-1){
-		actionnaires.splice(actionnaires.indexOf(0),1);
-	}
+  // On ne conserve que les actionnaires pertinents
+  // Ceux qui sont actionnaires d'un élément de dataset
+  // MAJ de idActlist
+  idActlist = [];
+  for (var i=0; i<actionnairesIndirect.length; i++){
+    if (idActlist.indexOf(actionnairesIndirect[i].source)===-1){
+      idActlist.push(actionnairesIndirect[i].source);
+    }
+  }
+  for (var i=0; i<actionnaires.length; i++){
+    if (idActlist.indexOf(actionnaires[i].ID)===-1){
+      actionnaires[i]=0;
+    }
+  }
+  while (actionnaires.indexOf(0)!==-1){
+    actionnaires.splice(actionnaires.indexOf(0),1);
+  }
 
-	// On compte le nombre de liens
-	numlinks = {};
-	for (var i=0; i<actionnairesIndirect.length; i++){
-		if (numlinks.hasOwnProperty(actionnairesIndirect[i].source)){
-			numlinks[actionnairesIndirect[i].source]++;
-		} else {
-			numlinks[actionnairesIndirect[i].source]=1;
-		}
-	}
+  // On compte le nombre de liens
+  numlinks = {};
+  for (var i=0; i<actionnairesIndirect.length; i++){
+    if (numlinks.hasOwnProperty(actionnairesIndirect[i].source)){
+      numlinks[actionnairesIndirect[i].source]++;
+    } else {
+      numlinks[actionnairesIndirect[i].source]=1;
+    }
+  }
 
-	// On ne garde que les actionnaires ayant au moins 2 liens
-	for (var i=0; i<actionnaires.length; i++){
-		if (numlinks[actionnaires[i].ID]===1){
-			// On retire de actionnaires
-			for (var j=0; j<actionnairesIndirect.length; j++){
-				if (actionnairesIndirect[j].source===actionnaires[i].ID){
-					actionnairesIndirect[j]=0;
-				}
-			}
-			actionnaires[i]=0;
-		}
-	}
-	while (actionnaires.indexOf(0)!==-1){
-		actionnaires.splice(actionnaires.indexOf(0),1);
-	}
-	while (actionnairesIndirect.indexOf(0)!==-1){
-		actionnairesIndirect.splice(actionnairesIndirect.indexOf(0),1);
-	}
+  // On ne garde que les actionnaires ayant au moins 2 liens
+  for (var i=0; i<actionnaires.length; i++){
+    if (numlinks[actionnaires[i].ID]===1){
+      // On retire de actionnaires
+      for (var j=0; j<actionnairesIndirect.length; j++){
+        if (actionnairesIndirect[j].source===actionnaires[i].ID){
+          actionnairesIndirect[j]=0;
+        }
+      }
+      actionnaires[i]=0;
+    }
+  }
+  while (actionnaires.indexOf(0)!==-1){
+    actionnaires.splice(actionnaires.indexOf(0),1);
+  }
+  while (actionnairesIndirect.indexOf(0)!==-1){
+    actionnairesIndirect.splice(actionnairesIndirect.indexOf(0),1);
+  }
 
-	console.log(dataset);
-	console.log(affiliations);
-	console.log(actionnairesDirect);
-	console.log(actionnairesIndirect);
+  console.log(dataset);
+  console.log(affiliations);
+  console.log(actionnairesDirect);
+  console.log(actionnairesIndirect);
 
-	// On calcule la dépense maximale
-	// Utile pour adapter les halos aux dépenses
-	for (var i=0; i<nbloby; i++){
-		var depense = Number(dataset[i]["Dépenses Lobby (€)"]);
-		if (depense){
-			if (depense>depmax){
-				depmax = depense;
-			}	
-		}
-	}
+  // On calcule la dépense maximale
+  // Utile pour adapter les halos aux dépenses
+  for (var i=0; i<nbloby; i++){
+    var depense = Number(dataset[i]["Dépenses Lobby (€)"]);
+    if (depense){
+      if (depense>depmax){
+        depmax = depense;
+      }  
+    }
+  }
 }
 
 function createdatasets (){

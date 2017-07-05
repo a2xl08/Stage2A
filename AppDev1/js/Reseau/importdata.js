@@ -78,74 +78,74 @@ CONST.CURVECOEF = 0.1;
 // Cette fonction permet d'ajuster le diamètre
 // des noeuds aux dépenses du lobyist
 function scalablesizes (x){
-	// Le coef doit valoir 1 pour les NaN !
-	var coef = 1;
-	if (Number(x)){
-		coef = 1 + 7*Math.pow(x/depmax,1/3);
-	}
-	return coef * CONST.RADIUS;
+  // Le coef doit valoir 1 pour les NaN !
+  var coef = 1;
+  if (Number(x)){
+    coef = 1 + 7*Math.pow(x/depmax,1/3);
+  }
+  return coef * CONST.RADIUS;
 }
 
 function agregcoef (d){
-	return Math.max(0.9*Math.pow(d.value["count"],1/2.5),1);
+  return Math.max(0.9*Math.pow(d.value["count"],1/2.5),1);
 }
 
 function numlinkradius (d){
-	var coef = 2;
-	coef += numlinks[d.ID]/2;
-	return coef*CONST.RADIUS;
+  var coef = 2;
+  coef += numlinks[d.ID]/2;
+  return coef*CONST.RADIUS;
 }
 
 
 
 d3.csv("data/Noeud19juin.csv", function (data){
-	// On récupère les données
-	dataset=data;
-	CONST.ALL_NODES = data.slice();
-	nbloby=dataset.length;
+  // On récupère les données
+  dataset=data;
+  CONST.ALL_NODES = data.slice();
+  nbloby=dataset.length;
 
 });
 
 d3.csv("data/Noeuds-ActionnairesIndirect.csv", function (data){
-	// On récupère les données
-	actionnaires = data;
-	CONST.ALL_ACTIONNAIRES_NODES = data.slice();
+  // On récupère les données
+  actionnaires = data;
+  CONST.ALL_ACTIONNAIRES_NODES = data.slice();
 
 });
 
 d3.csv("data/liensActionnairesDirect.csv", function (data){
-	// On récupère les données
-	actionnairesDirect = data;
-	CONST.ALL_ACTIONNAIRES_DIRECTS = data.slice();
+  // On récupère les données
+  actionnairesDirect = data;
+  CONST.ALL_ACTIONNAIRES_DIRECTS = data.slice();
 
 });
 
 d3.csv("data/liensActionnairesIndirect.csv", function (data){
-	// On récupère les données
-	actionnairesIndirect = data;
-	CONST.ALL_ACTIONNAIRES_INDIRECTS = data.slice();
+  // On récupère les données
+  actionnairesIndirect = data;
+  CONST.ALL_ACTIONNAIRES_INDIRECTS = data.slice();
 
 });
 
 d3.csv("data/Affiliation19juin.csv", function (data){
-	affiliations = data;
-	CONST.ALL_AFFILIATIONS = data.slice();
+  affiliations = data;
+  CONST.ALL_AFFILIATIONS = data.slice();
 
-	// On prépare l'affichage des données
-	// Récupération choix utilisateur, épuration
-	initviz();
+  // On prépare l'affichage des données
+  // Récupération choix utilisateur, épuration
+  initviz();
 
-	// On crée les listes de données utiles
-	createdatasets();
+  // On crée les listes de données utiles
+  createdatasets();
 
-	// On crée les éléments graphiques
-	creategraphDOM();
-	
+  // On crée les éléments graphiques
+  creategraphDOM();
+  
 
-	// Initialisation après l'import des données : 
-	// Affichage de la section 1
-	setupSec1();
-	animSec1();
+  // Initialisation après l'import des données : 
+  // Affichage de la section 1
+  setupSec1();
+  animSec1();
 
 });
 
@@ -354,269 +354,269 @@ function initviz(){
 }
 
 function createdatasets (){
-	// Créer ici les listes de données par regroupement
-	// Section 1 par position
-	dataByPos = d3.nest()
-					.key(function (d){return d[theme]})
-					.rollup(function (v){
-						var res = {};
-						var somme = 0;
-						for (var i=0; i<v.length; i++){
-							var depense = Number(v[i]["Dépenses Lobby (€)"]);
-							if (depense){
-								somme += depense;
-							}
-						}
-						res["Dépenses Lobby (€)"] = somme;
-						res["count"] = v.length
-						return res;
-					})
-					.entries(dataset);
-	console.log(dataByPos);
+  // Créer ici les listes de données par regroupement
+  // Section 1 par position
+  dataByPos = d3.nest()
+          .key(function (d){return d[theme]})
+          .rollup(function (v){
+            var res = {};
+            var somme = 0;
+            for (var i=0; i<v.length; i++){
+              var depense = Number(v[i]["Dépenses Lobby (€)"]);
+              if (depense){
+                somme += depense;
+              }
+            }
+            res["Dépenses Lobby (€)"] = somme;
+            res["count"] = v.length
+            return res;
+          })
+          .entries(dataset);
+  console.log(dataByPos);
 
-	// Section 2 par type et position
-	dataByPosType = d3.nest()
-					.key(function (d){
-						var res = [];
-						res.push(d[theme]);
-						res.push(d.Type);
-						return res;
-					})
-					.rollup(function (v){
-						var res = {};
-						var somme = 0;
-						for (var i=0; i<v.length; i++){
-							var depense = Number(v[i]["Dépenses Lobby (€)"]);
-							if (depense){
-								somme += depense;
-							}
-						}
-						res["Dépenses Lobby (€)"] = somme;
-						res["count"] = v.length;
-						return res;
-					})
-					.entries(dataset);
-	console.log(dataByPosType);
+  // Section 2 par type et position
+  dataByPosType = d3.nest()
+          .key(function (d){
+            var res = [];
+            res.push(d[theme]);
+            res.push(d.Type);
+            return res;
+          })
+          .rollup(function (v){
+            var res = {};
+            var somme = 0;
+            for (var i=0; i<v.length; i++){
+              var depense = Number(v[i]["Dépenses Lobby (€)"]);
+              if (depense){
+                somme += depense;
+              }
+            }
+            res["Dépenses Lobby (€)"] = somme;
+            res["count"] = v.length;
+            return res;
+          })
+          .entries(dataset);
+  console.log(dataByPosType);
 
-	// Section 3 par secteur et position
-	dataByPosSecteur = d3.nest()
-					.key(function (d){
-						var res = [];
-						res.push(d[theme]);
-						res.push(d["Secteurs d’activité"]);
-						return res;
-					})
-					.rollup(function (v){
-						var res = {};
-						var somme = 0;
-						for (var i=0; i<v.length; i++){
-							var depense = Number(v[i]["Dépenses Lobby (€)"]);
-							if (depense){
-								somme += depense;
-							}
-						}
-						res["Dépenses Lobby (€)"] = somme;
-						res["count"] = v.length;
-						return res;
-					})
-					.entries(dataset);
-	console.log(dataByPosSecteur);
+  // Section 3 par secteur et position
+  dataByPosSecteur = d3.nest()
+          .key(function (d){
+            var res = [];
+            res.push(d[theme]);
+            res.push(d["Secteurs d’activité"]);
+            return res;
+          })
+          .rollup(function (v){
+            var res = {};
+            var somme = 0;
+            for (var i=0; i<v.length; i++){
+              var depense = Number(v[i]["Dépenses Lobby (€)"]);
+              if (depense){
+                somme += depense;
+              }
+            }
+            res["Dépenses Lobby (€)"] = somme;
+            res["count"] = v.length;
+            return res;
+          })
+          .entries(dataset);
+  console.log(dataByPosSecteur);
 
-	// Section 5 : Par secteur
-	dataBySecteurPos = d3.nest()
-					.key(function (d){return d["Secteurs d’activité"]})
-					.rollup(function (v){
-						var res = {};
-						var sommesup = 0;
-						var sommeopp = 0;
-						var somme = 0;
-						for (var i=0; i<v.length; i++){
-							var depense = Number(v[i]["Dépenses Lobby (€)"]);
-							if (depense){
-								somme += depense;
-								if (v[i][theme]==="SUPPORT"){
-									sommesup += depense;
-								} else if (v[i][theme]==="OPPOSE") {
-									sommeopp += depense;
-								}
-							}
-						}
-						res["SUPPORT"] = sommesup;
-						res["OPPOSE"] = sommeopp;
-						res["TOTAL"] = somme;
-						res["count"] = v.length;
-						return res;
-					})
-					.entries(dataset);
-	secteurslist = [];
-	for (var i=0; i<dataBySecteurPos.length; i++){
-		secteurslist.push(dataBySecteurPos[i].key)
-	}
+  // Section 5 : Par secteur
+  dataBySecteurPos = d3.nest()
+          .key(function (d){return d["Secteurs d’activité"]})
+          .rollup(function (v){
+            var res = {};
+            var sommesup = 0;
+            var sommeopp = 0;
+            var somme = 0;
+            for (var i=0; i<v.length; i++){
+              var depense = Number(v[i]["Dépenses Lobby (€)"]);
+              if (depense){
+                somme += depense;
+                if (v[i][theme]==="SUPPORT"){
+                  sommesup += depense;
+                } else if (v[i][theme]==="OPPOSE") {
+                  sommeopp += depense;
+                }
+              }
+            }
+            res["SUPPORT"] = sommesup;
+            res["OPPOSE"] = sommeopp;
+            res["TOTAL"] = somme;
+            res["count"] = v.length;
+            return res;
+          })
+          .entries(dataset);
+  secteurslist = [];
+  for (var i=0; i<dataBySecteurPos.length; i++){
+    secteurslist.push(dataBySecteurPos[i].key)
+  }
 }
 
 function creategraphDOM (){
-	// Créer ici les éléments graphqiues (faux DOM)
-	// Les noeuds qui correspondent aux organisations
-	circles = CustomDOM.selectAll("custom.actor")
-				.data(dataset)
-				.enter()
-				.append("custom")
-				.attr("class", "actor")
-				// Cet attribut "r" sert à adapter le
-				// halo aux dépenses Lobby
-				.attr("r", function (d){
-					return scalablesizes(d["Dépenses Lobby (€)"]);
-				})
-				.attr("fillStyle", colornode)
-				.attr("fillHalo", colorhalo);
+  // Créer ici les éléments graphqiues (faux DOM)
+  // Les noeuds qui correspondent aux organisations
+  circles = CustomDOM.selectAll("custom.actor")
+        .data(dataset)
+        .enter()
+        .append("custom")
+        .attr("class", "actor")
+        // Cet attribut "r" sert à adapter le
+        // halo aux dépenses Lobby
+        .attr("r", function (d){
+          return scalablesizes(d["Dépenses Lobby (€)"]);
+        })
+        .attr("fillStyle", colornode)
+        .attr("fillHalo", colorhalo);
 
-	// Pour la section 1 : SUPPORT vs OPPOSE
-	circlePos = CustomDOM.selectAll("custom.pos")
-				.data(dataByPos)
-				.enter()
-				.append("custom")
-				.attr("class", "pos")
-				.attr("r", function (d){
-					return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])
-				})
-				.attr("fillStyle", function (d){
-					if (lobyist && lobyist[theme]){
-						if (lobyist[theme]===d.key){
-							return allycolor;
-						} else {
-							return ennemycolor;
-						}
-					} else {
-						if (d.key === "SUPPORT"){
-							return supportcolor;
-						} else {
-							return opposecolor;
-						}
-					}
-				})
-				.attr("fillHalo", function (d){
-					if (lobyist && lobyist[theme]){
-						if (lobyist[theme]===d.key){
-							return allycolorhalo;
-						} else {
-							return ennemycolorhalo;
-						}
-					} else {
-						if (d.key === "SUPPORT"){
-							return supportcolorhalo;
-						} else {
-							return opposecolorhalo;
-						}
-					}
-				});
+  // Pour la section 1 : SUPPORT vs OPPOSE
+  circlePos = CustomDOM.selectAll("custom.pos")
+        .data(dataByPos)
+        .enter()
+        .append("custom")
+        .attr("class", "pos")
+        .attr("r", function (d){
+          return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])
+        })
+        .attr("fillStyle", function (d){
+          if (lobyist && lobyist[theme]){
+            if (lobyist[theme]===d.key){
+              return allycolor;
+            } else {
+              return ennemycolor;
+            }
+          } else {
+            if (d.key === "SUPPORT"){
+              return supportcolor;
+            } else {
+              return opposecolor;
+            }
+          }
+        })
+        .attr("fillHalo", function (d){
+          if (lobyist && lobyist[theme]){
+            if (lobyist[theme]===d.key){
+              return allycolorhalo;
+            } else {
+              return ennemycolorhalo;
+            }
+          } else {
+            if (d.key === "SUPPORT"){
+              return supportcolorhalo;
+            } else {
+              return opposecolorhalo;
+            }
+          }
+        });
 
-	// Pour la section 2 : Division par type
-	circlePosType = CustomDOM.selectAll("custom.postype")
-						.data(dataByPosType)
-						.enter()
-						.append("custom")
-						.attr("class", "postype")
-						.attr("r", function (d){
-							return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])
-						})
-						.attr("fillStyle", function (d){
-							if (lobyist && lobyist[theme]){
-								if (lobyist[theme]===d.key.split(",")[0]){
-									return allycolor;
-								} else {
-									return ennemycolor;
-								}
-							} else {
-								if (d.key.split(",")[0] === "SUPPORT"){
-									return supportcolor;
-								} else {
-									return opposecolor;
-								}
-							}
-						})
-						.attr("fillHalo", function (d){
-							if (lobyist && lobyist[theme]){
-								if (lobyist[theme]===d.key.split(",")[0]){
-									return allycolorhalo;
-								} else {
-									return ennemycolorhalo;
-								}
-							} else {
-								if (d.key.split(",")[0] === "SUPPORT"){
-									return supportcolorhalo;
-								} else {
-									return opposecolorhalo;
-								}
-							}
-						});
+  // Pour la section 2 : Division par type
+  circlePosType = CustomDOM.selectAll("custom.postype")
+            .data(dataByPosType)
+            .enter()
+            .append("custom")
+            .attr("class", "postype")
+            .attr("r", function (d){
+              return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])
+            })
+            .attr("fillStyle", function (d){
+              if (lobyist && lobyist[theme]){
+                if (lobyist[theme]===d.key.split(",")[0]){
+                  return allycolor;
+                } else {
+                  return ennemycolor;
+                }
+              } else {
+                if (d.key.split(",")[0] === "SUPPORT"){
+                  return supportcolor;
+                } else {
+                  return opposecolor;
+                }
+              }
+            })
+            .attr("fillHalo", function (d){
+              if (lobyist && lobyist[theme]){
+                if (lobyist[theme]===d.key.split(",")[0]){
+                  return allycolorhalo;
+                } else {
+                  return ennemycolorhalo;
+                }
+              } else {
+                if (d.key.split(",")[0] === "SUPPORT"){
+                  return supportcolorhalo;
+                } else {
+                  return opposecolorhalo;
+                }
+              }
+            });
 
-	// Pour la section 3 : Division par secteur
-	circlePosSecteur = CustomDOM.selectAll("custom.possecteur")
-						.data(dataByPosSecteur)
-						.enter()
-						.append("custom")
-						.attr("class", "possecteur")
-						.attr("r", function (d){
-							return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])								
-						})
-						.attr("fillStyle", function (d){
-							if (lobyist && lobyist[theme]){
-								if (lobyist[theme]===d.key.split(",")[0]){
-									return allycolor;
-								} else {
-									return ennemycolor;
-								}
-							} else {
-								if (d.key.split(",")[0] === "SUPPORT"){
-									return supportcolor;
-								} else {
-									return opposecolor;
-								}
-							}
-						})
-						.attr("fillHalo", function (d){
-							if (lobyist && lobyist[theme]){
-								if (lobyist[theme]===d.key.split(",")[0]){
-									return allycolorhalo;
-								} else {
-									return ennemycolorhalo;
-								}
-							} else {
-								if (d.key.split(",")[0] === "SUPPORT"){
-									return supportcolorhalo;
-								} else {
-									return opposecolorhalo;
-								}
-							}
-						});	
+  // Pour la section 3 : Division par secteur
+  circlePosSecteur = CustomDOM.selectAll("custom.possecteur")
+            .data(dataByPosSecteur)
+            .enter()
+            .append("custom")
+            .attr("class", "possecteur")
+            .attr("r", function (d){
+              return agregcoef(d)*scalablesizes(d.value["Dépenses Lobby (€)"])                
+            })
+            .attr("fillStyle", function (d){
+              if (lobyist && lobyist[theme]){
+                if (lobyist[theme]===d.key.split(",")[0]){
+                  return allycolor;
+                } else {
+                  return ennemycolor;
+                }
+              } else {
+                if (d.key.split(",")[0] === "SUPPORT"){
+                  return supportcolor;
+                } else {
+                  return opposecolor;
+                }
+              }
+            })
+            .attr("fillHalo", function (d){
+              if (lobyist && lobyist[theme]){
+                if (lobyist[theme]===d.key.split(",")[0]){
+                  return allycolorhalo;
+                } else {
+                  return ennemycolorhalo;
+                }
+              } else {
+                if (d.key.split(",")[0] === "SUPPORT"){
+                  return supportcolorhalo;
+                } else {
+                  return opposecolorhalo;
+                }
+              }
+            });  
 
-	// Section 4 : Mêmes cercles
+  // Section 4 : Mêmes cercles
 
-	// Section 5 : Fusion en secteurs
-	setMeanSectorColors();
-	circleSecteurPos = CustomDOM.selectAll("custom.secteurpos")
-						.data(dataBySecteurPos)
-						.enter()
-						.append("custom")
-						.attr("class", "secteurpos")
-						.attr("r", function (d){
-							return agregcoef(d)*scalablesizes(d.value["TOTAL"])
-						})
-						.attr("fillStyle", sectorcolor)
-						.attr("fillHalo", sectorhalo);
+  // Section 5 : Fusion en secteurs
+  setMeanSectorColors();
+  circleSecteurPos = CustomDOM.selectAll("custom.secteurpos")
+            .data(dataBySecteurPos)
+            .enter()
+            .append("custom")
+            .attr("class", "secteurpos")
+            .attr("r", function (d){
+              return agregcoef(d)*scalablesizes(d.value["TOTAL"])
+            })
+            .attr("fillStyle", sectorcolor)
+            .attr("fillHalo", sectorhalo);
 
-	// Section 6 : Organisations groupées par secteur
-	// Cercles des organisations : circles
+  // Section 6 : Organisations groupées par secteur
+  // Cercles des organisations : circles
 
-	// Section 7 : Affichage du réseau d'affiliations
-	// circles et affiliations
+  // Section 7 : Affichage du réseau d'affiliations
+  // circles et affiliations
 
-	// Section 8 : Affichage supplémentaire des actionnaires
-	circleActs = CustomDOM.selectAll("custom.act")
-					.data(actionnaires)
-					.enter()
-					.append("custom")
-					.attr("class", "act")
-					.attr("r", numlinkradius)
-	allActors = dataset.concat(actionnaires);
+  // Section 8 : Affichage supplémentaire des actionnaires
+  circleActs = CustomDOM.selectAll("custom.act")
+          .data(actionnaires)
+          .enter()
+          .append("custom")
+          .attr("class", "act")
+          .attr("r", numlinkradius)
+  allActors = dataset.concat(actionnaires);
 }

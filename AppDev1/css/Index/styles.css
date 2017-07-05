@@ -82,7 +82,7 @@ a#network:hover {
   flex-wrap: wrap;
   flex-direction: row;
   justify-content: flex-start;
-  align-content: flex-start;
+  align-content: flex-end;
 }
 
 #answers p {
@@ -114,6 +114,26 @@ a#network:hover {
   margin-bottom: -3px;
   display: inline-block;
   overflow: hidden;
+}
+
+#answers > p.nom {
+  display: none;
+}
+
+#answers > p.country {
+  display: none;
+}
+
+#answers > p.secteur {
+  display: none;
+}
+
+#answers > p.type {
+  display: none;
+}
+
+#answers > p.position {
+  display: none;
 }
 
 span.nom {

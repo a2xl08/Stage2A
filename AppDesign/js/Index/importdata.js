@@ -32,6 +32,13 @@ var tabnbloby;
 // Tableau référençant les thèmes : utile pour la transmission au réseau par URL
 var idToTheme;
 
+function writeTextInSection (i){
+  var element = d3.select("#sec"+i);
+  element.select("h1").html(CONST.SCENARIO[i-1]["Titre"]);
+  element.select("p.texte").html(CONST.SCENARIO[i-1]["Texte"])
+  element.select("p.appel").html(CONST.SCENARIO[i-1]["Appel d’action"])
+}
+
 function getFullName(x){
   if (x["Nom2"]){
     return x["Nom2"]
@@ -39,6 +46,24 @@ function getFullName(x){
     return x["Nom1"]
   }
 }
+
+
+d3.csv("data/Scenario.csv", function (data){
+
+  CONST.SCENARIO = data;
+
+  // On écrit les textes des sections 1 2 3 et 4
+  for (var i=1; i<5; i++){
+    writeTextInSection(i);
+  }
+
+});
+
+d3.csv("data/nomsDeploye.csv", function (data){
+
+  CONST.NOMSDEPLOYES = data;
+
+});
 
 d3.csv("data/Noeud4juillet.csv", function (data){
   CONST.DATASET=data;

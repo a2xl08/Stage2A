@@ -12,7 +12,6 @@ function majsectionspos(){
   sectionlist = d3.select("#sections").selectAll("section");
 }
 
-
 // Détermine notre position sur la page et adapte la vue. 
 function position() {
   // On obtient les positions des différentes sections
@@ -40,6 +39,7 @@ function position() {
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex);
   }
+  displayInitFigure();
   scrollAnim(currentIndex, pos);
   visiblelink();
 }

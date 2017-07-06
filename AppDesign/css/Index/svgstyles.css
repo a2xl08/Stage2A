@@ -1,5 +1,22 @@
-svg g text {
+svg text {
   fill: white;
+}
+
+svg text.Titre {
+  font-family: 'Antique Olive Standard Compact';
+  font-size: 20px;
+}
+
+svg text.Initfig.texte {
+  font-family: 'Open Sans';
+  font-size: 15px;
+}
+
+svg line.Initfig {
+  stroke: white;
+}
+
+svg g text {
   font-weight: bold;
   font-size: 15px;
 }

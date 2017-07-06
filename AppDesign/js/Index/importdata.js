@@ -6,7 +6,7 @@ CONST.VUE = {};
 var vue = document.getElementById("vue");
 CONST.VUE.POSITION = vue.getBoundingClientRect();
 CONST.VUE.PADDING = 5;
-// height
+
 CONST.VUE.HEIGHT = vue.offsetHeight - 2 * CONST.VUE.PADDING;
 CONST.VUE.WIDTH = vue.offsetWidth - 2 * CONST.VUE.PADDING;
 

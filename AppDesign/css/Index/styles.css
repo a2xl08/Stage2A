@@ -1,9 +1,29 @@
+@font-face {
+font-family: 'Open Sans';
+src: url('../font/OpenSans/OpenSans-Regular.eot?') format('eot'),
+     url('../font/OpenSans/OpenSans-Regular.otf') format('truetype'),
+     url('../font/OpenSans/OpenSans-Regular.woff') format('woff'),
+     url('../font/OpenSans/OpenSans-Regular.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Antique Olive Standard Compact';
+src: url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.eot?') format('eot'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.otf') format('truetype'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.woff') format('woff'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.svg#AntiqueOliveStandardCompactBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Open Sans', Arial, sans-serif;
   background-color: rgb(22, 27, 48);
   color: white;
 }
@@ -21,6 +41,7 @@ body {
 
 #sections {
   z-index: 1;
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
 }
 
 /* La valeur qu'il faut pour scroller convenablement */

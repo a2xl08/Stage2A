@@ -10,10 +10,7 @@ console.log(sectionPositions)
 
 function majsectionspos(){
   sectionlist = d3.select("#sections").selectAll("section");
-}
 
-// Détermine notre position sur la page et adapte la vue. 
-function position() {
   // On obtient les positions des différentes sections
   sectionPositions = [];
   var startPos;
@@ -23,9 +20,14 @@ function position() {
       startPos = top;
     }
     // Le décalage de 350 permet d'ajuster les sections lors du scroll
+    console.log(top)
     sectionPositions.push(350 + top - startPos);
   });
   maxindex = sectionPositions.length-1;
+}
+
+// Détermine notre position sur la page et adapte la vue. 
+function position() {
 
   // Repérage de la position sur la page
   var pos = window.pageYOffset;
@@ -36,6 +38,7 @@ function position() {
   if (currentIndex !== sectionIndex) {
     // Mise à jour de la section active
     currentIndex = sectionIndex;
+    console.log(currentIndex)
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex);
   }
@@ -51,7 +54,9 @@ function majvue(index) {
 }
 
 function scrollAnim(index, pos) {
-  
+  if (index===1){
+    manageFiche(pos)
+  }
 }
 
 // On déclenche la fonction position à chaque scroll de la page

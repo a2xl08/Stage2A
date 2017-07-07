@@ -1,3 +1,15 @@
+// Largeur de la plage de scroll en pixels
+var scrollheight = 870;
+// Durée des transitions
+CONST.TIMETRANSITION = 500;
+// le scrollborder de alpha
+CONST.ALPHALIM = 0.025;
+
+// Une fonction utile pour les interpolations
+function abTo01(a,b,x){
+  return (x-a)/(b-a);
+}
+
 // Création des données de la figure initiale
 CONST.FIGINIT = {};
 CONST.FIGINIT.TITRE = {
@@ -129,7 +141,7 @@ CONST.FICHE.height = 1.3*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fi
 CONST.FICHE.COMMISSION = {};
 CONST.FICHE.COMMISSION.dx = 0.5*CONST.FICHE.width;
 CONST.FICHE.COMMISSION.dy = 0.2*CONST.FICHE.height;
-CONST.FICHE.COMMISSION.width = 200*CONST.FICHE.height/763;
+CONST.FICHE.COMMISSION.width = 200*CONST.FICHE.height/763; // oui c'est bien height !
 CONST.FICHE.COMMISSION.height = 200*CONST.FICHE.height/763;
 CONST.FICHE.CONSULTATION = {};
 CONST.FICHE.CONSULTATION.dx = 0.5*CONST.FICHE.width;
@@ -155,7 +167,7 @@ function setupSec1(){
   CONST.FICHE.D3.append("image")
       .attr("class", "fiche")
       .attr("x", 0)
-      .attr("y", 0)
+      .attr("y", CONST.VUE.HEIGHT)
       .attr("href", "img/fiche.svg")
       .attr("width", CONST.FICHE.width)
       .attr("height", CONST.FICHE.height)
@@ -166,6 +178,7 @@ function setupSec1(){
       .attr("href", "img/Commission.svg")
       .attr("width", CONST.FICHE.COMMISSION.width)
       .attr("height", CONST.FICHE.COMMISSION.height)
+      .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "consultation")
       .attr("x", CONST.FICHE.CONSULTATION.dx - 0.5*CONST.FICHE.CONSULTATION.width)
@@ -173,6 +186,7 @@ function setupSec1(){
       .attr("href", "img/Consultation.svg")
       .attr("width", CONST.FICHE.CONSULTATION.width)
       .attr("height", CONST.FICHE.CONSULTATION.height)
+      .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "fleche")
       .attr("x", CONST.FICHE.FLECHE.dx - 0.5*CONST.FICHE.FLECHE.width)
@@ -180,6 +194,7 @@ function setupSec1(){
       .attr("href", "img/fleche.svg")
       .attr("width", CONST.FICHE.FLECHE.width)
       .attr("height", CONST.FICHE.FLECHE.height)
+      .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "organisation")
       .attr("x", CONST.FICHE.ORGS.dx - 0.5*CONST.FICHE.ORGS.width)
@@ -187,4 +202,71 @@ function setupSec1(){
       .attr("href", "img/Organisations.svg")
       .attr("width", CONST.FICHE.ORGS.width)
       .attr("height", CONST.FICHE.ORGS.height)
+      .attr("opacity", 0);
+}
+setupSec1();
+
+function manageFiche (pos){
+  var startsection = sectionPositions[0];
+  var alpha = (pos - startsection)/scrollheight;
+  console.log(alpha)
+  // Définir ici les alphasteps de la section 1
+  var alphasteps = [0,0.33,0.66,1]
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  if (alpha<=0){
+    // On s'assure qu'il ne reste plus rien
+    CONST.FICHE.D3.selectAll("image").attr("opacity", 0);
+  } else if (alpha<=alphasteps[1]){
+    var beta = abTo01(0,alphasteps[1],alpha)
+    // On déplace la fiche
+    CONST.FICHE.D3.select("image.fiche")
+                    .transition()
+                    .duration(30)
+                    .attr("y", (1-beta)*CONST.VUE.HEIGHT )
+                    .attr("opacity", 1);
+    // On s'assure que l'élément suivant est invisible
+    CONST.FICHE.D3.select("image.commission")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", 0);
+  } else if (alpha<=alphasteps[2]){
+    // On s'assure que le précédent est visible
+    CONST.FICHE.D3.select("image.fiche")
+                    .transition()
+                    .duration(30)
+                    .attr("y", 0 );
+    // On affiche commission Européenne
+    var beta = abTo01(alphasteps[1], alphasteps[2], alpha);
+    CONST.FICHE.D3.select("image.commission")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", beta);
+    // On s'assure que le suivant est invisible
+    CONST.FICHE.D3.select("image.consultation")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", 0);
+  } else if (alpha<=1){
+    // On s'assure que le précédent est visible
+    CONST.FICHE.D3.select("image.commission")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", 1);
+    // On affiche consultation
+    var beta = abTo01(alphasteps[2],1,alpha);
+    CONST.FICHE.D3.select("image.consultation")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", beta);
+  } else {
+    // On s'assure que le précédent est visible
+    CONST.FICHE.D3.select("image.consultation")
+                    .transition()
+                    .duration(30)
+                    .attr("opacity", 1);
+  }
 }

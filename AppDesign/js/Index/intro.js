@@ -84,6 +84,8 @@ function displayInitFigure (){
     if (CONST.FIGINIT.TITRE.D3.attr("opacity") === "1"){
       setTimeout( function (){d3.selectAll(".Initfig").remove();}, 1200 )
     }
+    // On n'affiche pas le texte SCROLL
+    d3.select(window).on("click", function (){})
 
     d3.selectAll(".Initfig")
       .transition()
@@ -91,3 +93,35 @@ function displayInitFigure (){
       .attr("opacity", 0);
   }
 }
+
+
+
+
+
+
+// Création du texte SCROLL
+CONST.SCROLL = {
+  text: "SCROLL !",
+  x: 0*CONST.VUE.WIDTH,
+  y: 0.6*CONST.VUE.HEIGHT
+};
+CONST.SCROLL.D3 = svg.append("text")
+                    .attr("class", "scroll")
+                    .text(CONST.SCROLL.text)
+                    .attr("x", CONST.SCROLL.x)
+                    .attr("y", CONST.SCROLL.y)
+                    // 1138 est la taille de VUE sur mon navigateur en plein écran, dans ce cas -> taille 200
+                    .attr("font-size", Math.round(200*CONST.VUE.WIDTH/1138)+"px")
+                    .attr("opacity", 0)
+
+d3.select(window).on("click", function (){
+  if (document.body.scrollTop===0){
+    CONST.SCROLL.D3.attr("opacity", 1);
+  }
+  d3.select(window).on("click", function (){})
+  d3.select(window).on("scroll.scroller", function (){
+    CONST.SCROLL.D3.attr("opacity", 0);
+    position();
+  })
+})
+

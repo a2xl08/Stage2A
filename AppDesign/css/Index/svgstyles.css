@@ -3,17 +3,23 @@ svg text {
 }
 
 svg text.Titre {
-  font-family: 'Antique Olive Standard Compact';
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
   font-size: 20px;
 }
 
 svg text.Initfig.texte {
-  font-family: 'Open Sans';
+  font-family: 'Open Sans', Arial, sans-serif;
   font-size: 15px;
 }
 
 svg line.Initfig {
   stroke: white;
+}
+
+svg text.scroll {
+  fill: rgba(76, 144, 255, 0.2);
+  font-weight: bolder;
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
 }
 
 svg g text {

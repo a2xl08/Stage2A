@@ -61,7 +61,10 @@ d3.csv("data/Scenario.csv", function (data){
 
 d3.csv("data/nomsDeploye.csv", function (data){
 
-  CONST.NOMSDEPLOYES = data;
+  CONST.NOMSDEPLOYES = {};
+  for (var i=0; i<data.length; i++){
+    CONST.NOMSDEPLOYES[data[i]["Par défaut"]] = data[i]["Déployé (i)"]
+  }
 
 });
 

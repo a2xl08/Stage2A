@@ -94,11 +94,6 @@ function displayInitFigure (){
   }
 }
 
-
-
-
-
-
 // Création du texte SCROLL
 CONST.SCROLL = {
   text: "SCROLL !",
@@ -120,8 +115,76 @@ d3.select(window).on("click", function (){
   }
   d3.select(window).on("click", function (){})
   d3.select(window).on("scroll.scroller", function (){
-    CONST.SCROLL.D3.attr("opacity", 0);
+    CONST.SCROLL.D3.remove();
     position();
   })
 })
 
+
+// Section 1 : Données sur les éléments de positionnement
+// de la Fiche
+CONST.FICHE = {};
+CONST.FICHE.width = CONST.VUE.WIDTH; 
+CONST.FICHE.height = 1.3*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+CONST.FICHE.COMMISSION = {};
+CONST.FICHE.COMMISSION.dx = 0.5*CONST.FICHE.width;
+CONST.FICHE.COMMISSION.dy = 0.2*CONST.FICHE.height;
+CONST.FICHE.COMMISSION.width = 200*CONST.FICHE.height/763;
+CONST.FICHE.COMMISSION.height = 200*CONST.FICHE.height/763;
+CONST.FICHE.CONSULTATION = {};
+CONST.FICHE.CONSULTATION.dx = 0.5*CONST.FICHE.width;
+CONST.FICHE.CONSULTATION.dy = 0.37*CONST.FICHE.height;
+CONST.FICHE.CONSULTATION.width = CONST.FICHE.COMMISSION.width;
+CONST.FICHE.CONSULTATION.height = CONST.FICHE.COMMISSION.height;
+CONST.FICHE.FLECHE = {};
+CONST.FICHE.FLECHE.dx = 0.5*CONST.FICHE.width;
+CONST.FICHE.FLECHE.dy = 0.57*CONST.FICHE.height;
+CONST.FICHE.FLECHE.width = CONST.FICHE.COMMISSION.width;
+CONST.FICHE.FLECHE.height = CONST.FICHE.COMMISSION.height;
+CONST.FICHE.ORGS = {};
+CONST.FICHE.ORGS.dx = 0.5*CONST.FICHE.width;
+CONST.FICHE.ORGS.dy = 0.76*CONST.FICHE.height;
+CONST.FICHE.ORGS.width = 2*CONST.FICHE.COMMISSION.width;
+CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
+
+
+function setupSec1(){
+  CONST.FICHE.D3 = svg.append("g")
+      .attr("class", "sec1")
+      //.attr("opacity", 0)
+  CONST.FICHE.D3.append("image")
+      .attr("class", "fiche")
+      .attr("x", 0)
+      .attr("y", 0)
+      .attr("href", "img/fiche.svg")
+      .attr("width", CONST.FICHE.width)
+      .attr("height", CONST.FICHE.height)
+  CONST.FICHE.D3.append("image")
+      .attr("class", "commission")
+      .attr("x", CONST.FICHE.COMMISSION.dx - 0.5*CONST.FICHE.COMMISSION.width)
+      .attr("y", CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height)
+      .attr("href", "img/Commission.svg")
+      .attr("width", CONST.FICHE.COMMISSION.width)
+      .attr("height", CONST.FICHE.COMMISSION.height)
+  CONST.FICHE.D3.append("image")
+      .attr("class", "consultation")
+      .attr("x", CONST.FICHE.CONSULTATION.dx - 0.5*CONST.FICHE.CONSULTATION.width)
+      .attr("y", CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height)
+      .attr("href", "img/Consultation.svg")
+      .attr("width", CONST.FICHE.CONSULTATION.width)
+      .attr("height", CONST.FICHE.CONSULTATION.height)
+  CONST.FICHE.D3.append("image")
+      .attr("class", "fleche")
+      .attr("x", CONST.FICHE.FLECHE.dx - 0.5*CONST.FICHE.FLECHE.width)
+      .attr("y", CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
+      .attr("href", "img/fleche.svg")
+      .attr("width", CONST.FICHE.FLECHE.width)
+      .attr("height", CONST.FICHE.FLECHE.height)
+  CONST.FICHE.D3.append("image")
+      .attr("class", "organisation")
+      .attr("x", CONST.FICHE.ORGS.dx - 0.5*CONST.FICHE.ORGS.width)
+      .attr("y", CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
+      .attr("href", "img/Organisations.svg")
+      .attr("width", CONST.FICHE.ORGS.width)
+      .attr("height", CONST.FICHE.ORGS.height)
+}

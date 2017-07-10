@@ -164,7 +164,7 @@ CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
 
 function setupFiche(){
   CONST.FICHE.D3 = svg.append("g")
-      .attr("class", "sec1")
+      .attr("class", "FICHE")
       //.attr("opacity", 0)
   CONST.FICHE.D3.append("image")
       .attr("class", "fiche")
@@ -208,6 +208,55 @@ function setupFiche(){
 }
 setupFiche();
 
+// Création du badge
+CONST.BADGE = {};
+CONST.BADGE.RAPPORT = 225/291;
+CONST.BADGE.width = 0.2*CONST.VUE.WIDTH;
+CONST.BADGE.height = 1/CONST.BADGE.RAPPORT * CONST.BADGE.width;
+CONST.BADGE.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
+CONST.BADGE.y = 0.55*CONST.VUE.HEIGHT;  // 
+CONST.BADGE.TEXT = {};
+CONST.BADGE.TEXT.texts = ["Vous", "êtes", "lobbyiste"];
+CONST.BADGE.TEXT.textmargin = 40;
+CONST.BADGE.TEXT.dx = 0.5*CONST.BADGE.width;
+CONST.BADGE.TEXT.dy = 0.3*CONST.BADGE.height;
+CONST.BADGE.POINT = {};
+CONST.BADGE.POINT.radius = 5;
+CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width;
+CONST.BADGE.POINT.dy = 0.85*CONST.BADGE.height;
+
+function setupBadge(){
+  CONST.BADGE.D3 = svg.append("g")
+                      .attr("class", "BADGE");
+  CONST.BADGE.D3.append("image")
+                .attr("class", "badge")
+                .attr("x", CONST.BADGE.x)
+                .attr("y", CONST.BADGE.y)
+                .attr("href", "img/badge.svg")
+                .attr("width", CONST.BADGE.width)
+                .attr("height", CONST.BADGE.height)
+  CONST.BADGE.D3.append("text")
+                .attr("x", CONST.BADGE.TEXT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x")))
+                .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+  for (var i=0; i<CONST.BADGE.TEXT.texts.length; i++){
+    CONST.BADGE.D3.select("text").append("tspan")
+                    .text(CONST.BADGE.TEXT.texts[i])
+                    .attr("x", function (){
+                      var textpos = this.getBoundingClientRect();
+                      return -0.5*(textpos.right-textpos.left) + CONST.BADGE.TEXT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x"));
+                    })
+                    .attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+  }
+  CONST.BADGE.D3.append("circle")
+                .attr("class", "point")
+                .attr("cx", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x")))
+                .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+                .attr("r", CONST.BADGE.POINT.radius);
+}
+
+
+
+// On gère la fiche aux sections 1 et 2
 function manageFicheSec1 (pos){
   var startsection = sectionPositions[0];
   var alpha = (pos - startsection)/scrollheight;

@@ -20,7 +20,6 @@ function majsectionspos(){
       startPos = top;
     }
     // Le décalage de 350 permet d'ajuster les sections lors du scroll
-    console.log(top)
     sectionPositions.push(350 + top - startPos);
   });
   maxindex = sectionPositions.length-1;
@@ -38,7 +37,7 @@ function position() {
   if (currentIndex !== sectionIndex) {
     // Mise à jour de la section active
     currentIndex = sectionIndex;
-    console.log(currentIndex)
+    console.log("Section : "+currentIndex)
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex);
   }
@@ -54,11 +53,19 @@ function majvue(index) {
 }
 
 function scrollAnim(index, pos) {
-  if (index===1){
-    manageFiche(pos)
+  switch (index){
+  case 1:
+    manageFicheSec1(pos);
+    break;
+  case 2:
+    manageFicheSec2(pos);
+    break;
   }
 }
 
 // On déclenche la fonction position à chaque scroll de la page
 d3.select(window)
-  .on("scroll.scroller", position);
+  .on("scroll.scroller", function(){
+    majsectionspos();
+    position();
+  });

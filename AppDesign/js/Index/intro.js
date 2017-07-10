@@ -137,7 +137,9 @@ d3.select(window).on("click", function (){
 // de la Fiche
 CONST.FICHE = {};
 CONST.FICHE.width = CONST.VUE.WIDTH; 
-CONST.FICHE.height = 1.3*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+CONST.FICHE.height = 1.2*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+// L'écart de taille : utile pour le scroll
+var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
 CONST.FICHE.COMMISSION = {};
 CONST.FICHE.COMMISSION.dx = 0.5*CONST.FICHE.width;
 CONST.FICHE.COMMISSION.dy = 0.2*CONST.FICHE.height;
@@ -160,7 +162,7 @@ CONST.FICHE.ORGS.width = 2*CONST.FICHE.COMMISSION.width;
 CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
 
 
-function setupSec1(){
+function setupFiche(){
   CONST.FICHE.D3 = svg.append("g")
       .attr("class", "sec1")
       //.attr("opacity", 0)
@@ -204,9 +206,9 @@ function setupSec1(){
       .attr("height", CONST.FICHE.ORGS.height)
       .attr("opacity", 0);
 }
-setupSec1();
+setupFiche();
 
-function manageFiche (pos){
+function manageFicheSec1 (pos){
   var startsection = sectionPositions[0];
   var alpha = (pos - startsection)/scrollheight;
   console.log(alpha)
@@ -268,5 +270,67 @@ function manageFiche (pos){
                     .transition()
                     .duration(30)
                     .attr("opacity", 1);
+  }
+}
+
+function manageFicheSec2 (pos){
+  var startsection = sectionPositions[1];
+  var alpha = (pos - startsection)/scrollheight;
+  console.log(alpha)
+  // Définir ici les alphasteps de la section 2
+  var alphasteps = [0,0.4,1];
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  if (alpha<=0){
+    // On s'assure que la page est au bon endroit
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", 0);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);              
+  } else if (alpha<=alphasteps[1]){
+    // Utilisation de l'écart de taille deltay pour la position de la fiche
+    var beta = abTo01(0,alphasteps[1],alpha);
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", -beta*deltay);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", -beta*deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", -beta*deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    // On s'assure que les suivants sont invisibles
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
+                  .attr("opacity", 0);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
+                  .attr("opacity", 0);
+  } else if (alpha<=1){
+    // On s'assure que la fiche est bien positionnée
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", -deltay);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", -deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", -deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    // On affiche les flèches et les cercles
+    var beta = abTo01(alphasteps[1],1,alpha);
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
+                  .attr("opacity", beta);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
+                  .attr("opacity", beta);
+  } else {
+    // On s'assure que les éléments de fin sont visibles
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
+                  .attr("opacity", 1);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
+                  .attr("opacity", 1);
   }
 }

@@ -257,6 +257,34 @@ function setupBadge(){
 }
 setupBadge();
 
+function moveFiche(y){
+  CONST.FICHE.D3.select(".fiche")
+                  .attr("y", y);
+  CONST.FICHE.D3.select(".commission")
+                  .attr("y", y + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+  CONST.FICHE.D3.select(".consultation")
+                  .attr("y", y + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+  CONST.FICHE.D3.select(".fleche")
+                  .attr("y", y + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
+  CONST.FICHE.D3.select(".organisation")
+                  .attr("y", y + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+}
+
+function setFicheOpacity(classe, e){
+  CONST.FICHE.D3.select(classe).attr("opacity", e);
+}
+
+function moveBadge(y){
+  CONST.BADGE.D3.select(".badge")
+                  .attr("y", CONST.BADGE.y + y);
+  CONST.BADGE.D3.select("text")
+                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+  CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
+      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+  })
+  CONST.BADGE.D3.select(".point")
+                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+}
 
 // On gère la fiche aux sections 1 et 2
 function manageFicheSec1 (pos){
@@ -272,55 +300,31 @@ function manageFicheSec1 (pos){
   }
   if (alpha<=0){
     // On s'assure qu'il ne reste plus rien
-    CONST.FICHE.D3.selectAll("image").attr("opacity", 0);
+    setFicheOpacity("image", 0);
   } else if (alpha<=alphasteps[1]){
     var beta = abTo01(0,alphasteps[1],alpha)
     // On déplace la fiche
-    CONST.FICHE.D3.select("image.fiche")
-                    .transition()
-                    .duration(30)
-                    .attr("y", (1-beta)*CONST.VUE.HEIGHT )
-                    .attr("opacity", 1);
+    moveFiche((1-beta)*CONST.VUE.HEIGHT);
+    setFicheOpacity("image", 1);
     // On s'assure que l'élément suivant est invisible
-    CONST.FICHE.D3.select("image.commission")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", 0);
+    setFicheOpacity("image.commission", 0);
   } else if (alpha<=alphasteps[2]){
     // On s'assure que le précédent est visible
-    CONST.FICHE.D3.select("image.fiche")
-                    .transition()
-                    .duration(30)
-                    .attr("y", 0 );
+    moveFiche(0);
     // On affiche commission Européenne
     var beta = abTo01(alphasteps[1], alphasteps[2], alpha);
-    CONST.FICHE.D3.select("image.commission")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", beta);
+    setFicheOpacity("image.commission", beta);
     // On s'assure que le suivant est invisible
-    CONST.FICHE.D3.select("image.consultation")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", 0);
+    setFicheOpacity("image.consultation", 0);
   } else if (alpha<=1){
     // On s'assure que le précédent est visible
-    CONST.FICHE.D3.select("image.commission")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", 1);
+    setFicheOpacity("image.commission", 1);
     // On affiche consultation
     var beta = abTo01(alphasteps[2],1,alpha);
-    CONST.FICHE.D3.select("image.consultation")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", beta);
+    setFicheOpacity("image.consultation", beta);
   } else {
     // On s'assure que le précédent est visible
-    CONST.FICHE.D3.select("image.consultation")
-                    .transition()
-                    .duration(30)
-                    .attr("opacity", 1);
+    setFicheOpacity("image.consultation", 1);
   }
 }
 
@@ -337,52 +341,25 @@ function manageFicheSec2 (pos){
   }
   if (alpha<=0){
     // On s'assure que la page est au bon endroit
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", 0);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);              
+    moveFiche(0);             
   } else if (alpha<=alphasteps[1]){
     // Utilisation de l'écart de taille deltay pour la position de la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", -beta*deltay);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", -beta*deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", -beta*deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    moveFiche(-beta*deltay);
     // On s'assure que les suivants sont invisibles
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
-                  .attr("opacity", 0);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
-                  .attr("opacity", 0);
+    setFicheOpacity(".fleche", 0);
+    setFicheOpacity(".organisation", 0);
   } else if (alpha<=1){
     // On s'assure que la fiche est bien positionnée
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", -deltay);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", -deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", -deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    moveFiche(-deltay)
     // On affiche les flèches et les cercles
     var beta = abTo01(alphasteps[1],1,alpha);
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
-                  .attr("opacity", beta);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
-                  .attr("opacity", beta);
+    setFicheOpacity(".fleche", beta);
+    setFicheOpacity(".organisation", beta);
   } else {
     // On s'assure que les éléments de fin sont visibles
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
-                  .attr("opacity", 1);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
-                  .attr("opacity", 1);
+    setFicheOpacity(".fleche", 1);
+    setFicheOpacity(".organisation", 1)
   }
 }
 
@@ -400,51 +377,15 @@ function manageFicheBadgeSec3 (pos){
   }
   if (alpha<=0){
     // On restaure l'état initial, position de la fiche et du badge
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", -deltay);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", -deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", -deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+    moveFiche(-deltay);
   } else if (alpha<=1){
     // On scroll la fiche et le badge
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", -deltay-deltay2*alpha);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
-        // Attention, c'est l'attribut y de .badge qui sert de référence ici, pas de deltay2 partout !
-    CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.y + deltay2*(1-alpha));
-    CONST.BADGE.D3.select("text")
-                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
-    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
-      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
-    })
-    CONST.BADGE.D3.select(".point")
-                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+    moveFiche(-deltay-deltay2*alpha)
+    moveBadge(deltay2*(1-alpha));
   } else {
     // On s'assure que la fiche et le badge sont au bon endroit
     // On scroll la fiche et le badge
-    CONST.FICHE.D3.select(".fiche")
-                  .attr("y", -deltay-deltay2);
-    CONST.FICHE.D3.select(".commission")
-                  .attr("y", -deltay-deltay2 + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
-    CONST.FICHE.D3.select(".consultation")
-                  .attr("y", -deltay-deltay2 + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
-    CONST.FICHE.D3.select(".fleche")
-                  .attr("y", -deltay-deltay2 + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
-    CONST.FICHE.D3.select(".organisation")
-                  .attr("y", -deltay-deltay2 + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+    moveFiche(-deltay-deltay2)
         // Attention, c'est l'attribut y de .badge qui sert de référence ici, pas de deltay2 partout !
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y);
@@ -452,8 +393,41 @@ function manageFicheBadgeSec3 (pos){
                   .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
     CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
       d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
-    })
-    CONST.BADGE.D3.select(".point")
-                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+    }) // On ne réinitialise pas le point car ça fait foirer la section qui suit
+  }
+}
+
+function moveBlackPoint (move){
+    if (move===0){ // Le point est la fiche, on le ramène sur le badge
+      CONST.BADGE.D3.select(".point")
+                  .transition()
+                  .duration(CONST.TIMETRANSITION)
+                  .attr("cx", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x")))
+                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+                  .attr("r", 5);
+    } else if (move===1){ // Le point est sur le badge, on l'emmene sur la fiche
+      CONST.BADGE.D3.select(".point")
+                  .transition()
+                  .duration(7*CONST.TIMETRANSITION)
+                  .attr("cx", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.5*CONST.FICHE.width)
+                  .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height)
+                  .attr("r", 5);
+    } else {
+      console.log("erreur sur l'argument r, relisez le code !")
+    }
+}
+
+// Transition section 3 - 4
+function manageBadgeSec4 (){
+  if (prevIndex===3 && currentIndex===4){
+    // On déplace le point sur la fiche
+    moveBlackPoint(1);
+    // On écrit la fonction
+    d3.select("p.fonction").style("display", "block").style("color", colorlastanswer);
+  } else if (prevIndex===4 && currentIndex===3){
+    // On déplace le point sur le badge
+    moveBlackPoint(0);
+    // On retire le answers
+    d3.select("p.fonction").style("display", "none");
   }
 }

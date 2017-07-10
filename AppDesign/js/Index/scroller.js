@@ -3,6 +3,7 @@ var sectionlist;
 var currentIndex = -1;
 var sectionPositions;
 var maxindex;
+var prevIndex = -1;
 
 majsectionspos();
 position();
@@ -36,6 +37,7 @@ function position() {
   // Si on change la section active
   if (currentIndex !== sectionIndex) {
     // Mise à jour de la section active
+    prevIndex = currentIndex;
     currentIndex = sectionIndex;
     console.log("Section : "+currentIndex)
     // Mise en place des modifications de la vue : changement de couleur
@@ -49,7 +51,7 @@ function position() {
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
 function majvue(index) {
-  //displayPie();
+  manageBadgeSec4();
 }
 
 function scrollAnim(index, pos) {
@@ -63,6 +65,8 @@ function scrollAnim(index, pos) {
   case 3:
     manageFicheBadgeSec3(pos);
     break;
+  case 4:
+    break; // On gère dans majvue
   }
 }
 

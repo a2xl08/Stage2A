@@ -60,6 +60,9 @@ function scrollAnim(index, pos) {
   case 2:
     manageFicheSec2(pos);
     break;
+  case 3:
+    manageFicheBadgeSec3(pos);
+    break;
   }
 }
 

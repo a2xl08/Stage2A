@@ -214,7 +214,8 @@ CONST.BADGE.RAPPORT = 225/291;
 CONST.BADGE.width = 0.2*CONST.VUE.WIDTH;
 CONST.BADGE.height = 1/CONST.BADGE.RAPPORT * CONST.BADGE.width;
 CONST.BADGE.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
-CONST.BADGE.y = 0.55*CONST.VUE.HEIGHT;  // 
+CONST.BADGE.y = 0.55*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
+var deltay2 = 1.1*CONST.VUE.HEIGHT - CONST.BADGE.y;
 CONST.BADGE.TEXT = {};
 CONST.BADGE.TEXT.texts = ["Vous", "êtes", "lobbyiste"];
 CONST.BADGE.TEXT.textmargin = 40;
@@ -225,13 +226,14 @@ CONST.BADGE.POINT.radius = 5;
 CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width;
 CONST.BADGE.POINT.dy = 0.85*CONST.BADGE.height;
 
+// Initialise le badge
 function setupBadge(){
   CONST.BADGE.D3 = svg.append("g")
                       .attr("class", "BADGE");
   CONST.BADGE.D3.append("image")
                 .attr("class", "badge")
                 .attr("x", CONST.BADGE.x)
-                .attr("y", CONST.BADGE.y)
+                .attr("y", deltay2+CONST.BADGE.y)
                 .attr("href", "img/badge.svg")
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.height)
@@ -253,7 +255,7 @@ function setupBadge(){
                 .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
                 .attr("r", CONST.BADGE.POINT.radius);
 }
-
+setupBadge();
 
 
 // On gère la fiche aux sections 1 et 2
@@ -381,5 +383,77 @@ function manageFicheSec2 (pos){
     CONST.FICHE.D3.select(".organisation")
                   .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
                   .attr("opacity", 1);
+  }
+}
+
+// On gère la fiche et le badge aux sections 3 et 4
+function manageFicheBadgeSec3 (pos){
+  var startsection = sectionPositions[2];
+  var alpha = (pos - startsection)/scrollheight;
+  console.log(alpha)
+  // Définir ici les alphasteps de la section 2
+  var alphasteps = [0,1];
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  if (alpha<=0){
+    // On restaure l'état initial, position de la fiche et du badge
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", -deltay);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", -deltay + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", -deltay + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+  } else if (alpha<=1){
+    // On scroll la fiche et le badge
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", -deltay-deltay2*alpha);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay-deltay2*alpha + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+        // Attention, c'est l'attribut y de .badge qui sert de référence ici, pas de deltay2 partout !
+    CONST.BADGE.D3.select(".badge")
+                  .attr("y", CONST.BADGE.y + deltay2*(1-alpha));
+    CONST.BADGE.D3.select("text")
+                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
+      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+    })
+    CONST.BADGE.D3.select(".point")
+                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+  } else {
+    // On s'assure que la fiche et le badge sont au bon endroit
+    // On scroll la fiche et le badge
+    CONST.FICHE.D3.select(".fiche")
+                  .attr("y", -deltay-deltay2);
+    CONST.FICHE.D3.select(".commission")
+                  .attr("y", -deltay-deltay2 + CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height);
+    CONST.FICHE.D3.select(".consultation")
+                  .attr("y", -deltay-deltay2 + CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height);
+    CONST.FICHE.D3.select(".fleche")
+                  .attr("y", -deltay-deltay2 + CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height);
+    CONST.FICHE.D3.select(".organisation")
+                  .attr("y", -deltay-deltay2 + CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height);
+        // Attention, c'est l'attribut y de .badge qui sert de référence ici, pas de deltay2 partout !
+    CONST.BADGE.D3.select(".badge")
+                  .attr("y", CONST.BADGE.y);
+    CONST.BADGE.D3.select("text")
+                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
+      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+    })
+    CONST.BADGE.D3.select(".point")
+                  .attr("cy", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
   }
 }

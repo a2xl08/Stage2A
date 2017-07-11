@@ -118,7 +118,7 @@ a#network:hover {
   bottom: 0px;
   z-index: 2;
   background-color: rgb(22, 27, 48);
-  height: 30%;
+  height: 35%;
   width: 24%;
   padding: 5px;
   display: flex;
@@ -149,8 +149,8 @@ a#network:hover {
 #answers > p > span {
   box-sizing: content-box;
   border: solid rgb(45, 82, 252) 1px;
-  padding-top: 1px;
-  padding-bottom: 2px;
+  padding-top: 0px;
+  padding-bottom: 4px;
   padding-left: 4px;
   padding-right: 4px;
   height: 14px;
@@ -192,27 +192,27 @@ span.nom {
 }
 
 span.country {
-  width: 240px;
+  width: 247px;
 }
 
 span.secteur {
-  width: 212px;
+  width: 214px;
 }
 
 span.type {
-  width: 196px;
-}
-
-span.theme {
-  width: 199px;
+  width: 197px;
 }
 
 span.position {
-  width: 270px;
+  width: 275px;
+}
+
+span.theme {
+  width: 196px;
 }
 
 span.fonction {
-  width: 265px;
+  width: 271px;
 }
 
 #reloadbox {

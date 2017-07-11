@@ -67,6 +67,9 @@ function scrollAnim(index, pos) {
     break;
   case 4:
     break; // On gère dans majvue
+  case 5:
+    manageSec5(pos);
+    break;
   }
 }
 

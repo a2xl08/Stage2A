@@ -1,5 +1,5 @@
 svg text {
-  fill: white;
+  fill: red;
   font-family: 'Open Sans'
 }
 
@@ -10,11 +10,13 @@ svg g.BADGE > text {
 
 svg text.Titre {
   font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+  fill: white;
   font-size: 20px;
 }
 
 svg text.Initfig.texte {
   font-family: 'Open Sans', Arial, sans-serif;
+  fill: white;
   font-size: 15px;
 }
 

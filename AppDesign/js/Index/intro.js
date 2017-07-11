@@ -257,6 +257,27 @@ function setupBadge(){
 }
 setupBadge();
 
+CONST.QUEST = {};
+CONST.QUEST.FICHE = {};
+CONST.QUEST.FICHE.width = CONST.VUE.WIDTH;
+CONST.QUEST.FICHE.height = 1.7*CONST.VUE.HEIGHT;
+// Destinée à accueillir les sélections vers les parts
+CONST.QUEST.ARCS = [];
+
+// On crée la fiche pour le quesionnaire
+function setupFicheQuestion (){
+  CONST.QUEST.D3 = svg.append("g")
+                    .attr("class", "quest");
+  CONST.QUEST.D3.append("image")
+                .attr("class", "fiche")
+                .attr("x", 0)
+                .attr("y", CONST.VUE.HEIGHT)
+                .attr("href", "img/fiche.svg")
+                .attr("width", CONST.QUEST.FICHE.width)
+                .attr("height", CONST.QUEST.FICHE.height);
+}
+// L'appel à cette fonction se fait au cours su chargement des données dans importdata.js
+
 function moveFiche(y){
   CONST.FICHE.D3.select(".fiche")
                   .attr("y", y);
@@ -368,7 +389,7 @@ function manageFicheBadgeSec3 (pos){
   var startsection = sectionPositions[2];
   var alpha = (pos - startsection)/scrollheight;
   console.log(alpha)
-  // Définir ici les alphasteps de la section 2
+  // Définir ici les alphasteps de la section 3
   var alphasteps = [0,1];
   for (var i=0; i<alphasteps.length; i++){
     if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){

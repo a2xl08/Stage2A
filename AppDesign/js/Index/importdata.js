@@ -17,7 +17,7 @@ var svg = d3.select("#vue")
 var pie = d3.pie();;
 var nbthemes;
 var themelist;
-var alldatafiltre = [];
+CONST.ALLDATAFILTRE = [];
 var datafiltre;
 var piedata;
 var piezeddata;
@@ -71,8 +71,8 @@ d3.csv("data/nomsDeploye.csv", function (data){
 d3.csv("data/Noeud4juillet.csv", function (data){
   CONST.DATASET=data;
   datafiltre=CONST.DATASET.slice();
-  alldatafiltre.push(datafiltre.slice());
-  nbloby = CONST.DATASET.length
+  CONST.ALLDATAFILTRE.push(datafiltre.slice());
+  nbloby = CONST.DATASET.length;
   tabnbloby=[nbloby];
   console.log(CONST.DATASET);
 

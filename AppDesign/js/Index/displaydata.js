@@ -30,6 +30,51 @@ function coefeloign (d){
   }
 }
 
+// Gestion du survol
+// intselect correspond au numéro des cercles auxquels appliquer l'effet hoverize
+function hoverize (intselect, alpha){
+  var cercles = d3.selectAll("g.loby"+intselect+" path");
+  if (alpha>=1){
+
+    cercles.on("mouseover", function (d,i){
+      var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+intselect);
+      avirer.transition()
+        .duration(0.5*CONST.TIMETRANSITION)
+        .attr("opacity", 0.3)
+
+      avirer.select("path")
+        .transition()
+        .duration(0.5*CONST.TIMETRANSITION)
+        .attr("fill", "gray");
+    })
+
+    cercles.on("mouseout", function (d,i){
+      var avirer = d3.selectAll("g:not(.cercle"+i+").loby"+intselect);
+      avirer.transition()
+        .duration(0.5*CONST.TIMETRANSITION)
+        .attr("opacity", 1)
+
+      avirer.select("path")
+        .transition()
+        .duration(0.5*CONST.TIMETRANSITION)
+        .attr("fill", function (d,j){
+          if (j<i){
+            return color(j);
+          } else {
+            return color(j+1);
+          }
+        });
+
+    })
+
+  } else {
+    cercles.on("mouseover", function(){});
+    cercles.on("mouseout", function(){});
+  }
+}
+
+
+
 function manageSec5 (pos){
   var startsection = sectionPositions[4];
   var alpha = (pos - startsection)/scrollheight;
@@ -69,6 +114,8 @@ function manageSec5 (pos){
     }) 
     CONST.BADGE.D3.select(".point")
           .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height)
+    // On rend invisible l'#answer p.position
+    d3.select("p.position").style("display", "none");
     // On s'assure que les cercles sont invisibles
     CONST.QUEST.ARCS[0].attr("opacity", 0);
   } else if (alpha<=1){
@@ -87,8 +134,12 @@ function manageSec5 (pos){
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
     CONST.QUEST.ARCS[0].attr("opacity", beta);
+    // On rend visible l'#answers p.position
+    d3.select("p.position").style("display", "block");
   } else {
     // On s'assure que les cercles sont bien visibles
     CONST.QUEST.ARCS[0].attr("opacity", 1);
   }
+  hoverize(0,alpha);
 }
+

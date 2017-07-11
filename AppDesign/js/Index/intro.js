@@ -260,7 +260,7 @@ setupBadge();
 CONST.QUEST = {};
 CONST.QUEST.FICHE = {};
 CONST.QUEST.FICHE.width = CONST.VUE.WIDTH;
-CONST.QUEST.FICHE.height = 1.9*CONST.VUE.HEIGHT;
+CONST.QUEST.FICHE.height = 1.85*CONST.VUE.HEIGHT;
 // Destinée à accueillir les sélections vers les parts
 CONST.QUEST.ARCS = [];
 

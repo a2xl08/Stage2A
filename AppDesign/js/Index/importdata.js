@@ -125,9 +125,8 @@ d3.csv("data/Noeud4juillet.csv", function (data){
           .data(piezeddata)
           .enter()
           .append("g")
-          .attr("class", "arc")
           .attr("class", function (d,i){
-            return "cercle"+i+" "+"loby"+0+" cercle"+i+"loby"+0;
+            return "arc cercle"+i+" "+"loby"+0+" cercle"+i+"loby"+0;
           })
           .attr("transform", function (d,i){
             var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);

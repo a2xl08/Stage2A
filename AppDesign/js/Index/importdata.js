@@ -16,11 +16,11 @@ var svg = d3.select("#vue")
         .attr("height", CONST.VUE.HEIGHT);
 var pie = d3.pie();;
 var nbthemes;
-var themelist;
+CONST.ALLTHEMELIST = [];
 CONST.ALLDATAFILTRE = [];
+CONST.ALLPIEZEDDATA = [];
 var datafiltre;
 var piedata;
-var piezeddata;
 var arc;
 var arcs;
 var outerRadius = CONST.VUE.WIDTH/10;
@@ -82,37 +82,37 @@ d3.csv("data/Noeud4juillet.csv", function (data){
   // Par élimination, chaque ligne correspond à 
   // l'élimination d'un attribut qui n'est pas un thème
   // climatique. 
-  themelist = Object.keys(data[0]);
-  themelist.splice(themelist.indexOf("ID"), 1);
-  themelist.splice(themelist.indexOf("Lobby ID"), 1);
-  themelist.splice(themelist.indexOf("Nom2"), 1);
-  themelist.splice(themelist.indexOf("Nom1"), 1);
-  themelist.splice(themelist.indexOf("Pays/Région"), 1);
-  themelist.splice(themelist.indexOf("Type"), 1);
-  themelist.splice(themelist.indexOf("Secteurs d’activité"), 1);
-  themelist.splice(themelist.indexOf("Dépenses Lobby (€)"), 1);
-  themelist.splice(themelist.indexOf("Personnes impliquées"), 1);
-  themelist.splice(themelist.indexOf("Equivalent Temps plein"), 1);
-  console.log(themelist);
-  idToTheme = themelist.slice();
+  CONST.ALLTHEMELIST[0] = Object.keys(data[0]);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("ID"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Lobby ID"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Nom2"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Nom1"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Pays/Région"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Type"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Secteurs d’activité"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Dépenses Lobby (€)"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Personnes impliquées"), 1);
+  CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Equivalent Temps plein"), 1);
+  console.log(CONST.ALLTHEMELIST[0]);
+  idToTheme = CONST.ALLTHEMELIST[0].slice();
 
   
   // On cherche le nombre d'acteurs qui se sont prononcés sur chaque thème
-  nbthemes = themelist.length;
+  nbthemes = CONST.ALLTHEMELIST[0].length;
   piedata = [];
   for (var i=0; i<nbthemes; i++){
     var somme = 0;
     for (var j=0; j<data.length; j++){
       // Utilisation du truthy falsy
-      if (data[j][themelist[i]]){
+      if (data[j][CONST.ALLTHEMELIST[0][i]]){
         somme++;
       }
     }
     piedata[i] = somme;
   }
   console.log(piedata);
-  piezeddata = pie(piedata);
-  console.log(piezeddata);
+  CONST.ALLPIEZEDDATA.push(pie(piedata));
+  console.log(CONST.ALLPIEZEDDATA[0]);
 
   // On charge les éléments graphiques du choix 1
   setupFicheQuestion();
@@ -122,14 +122,14 @@ d3.csv("data/Noeud4juillet.csv", function (data){
                 .outerRadius(outerRadius);
 
   CONST.QUEST.ARCS.push(svg.selectAll("g.arc")
-          .data(piezeddata)
+          .data(CONST.ALLPIEZEDDATA[0])
           .enter()
           .append("g")
           .attr("class", function (d,i){
             return "arc cercle"+i+" "+"loby"+0+" cercle"+i+"loby"+0;
           })
           .attr("transform", function (d,i){
-            var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+            var angle = 0.5 * (CONST.ALLPIEZEDDATA[0][i].startAngle + CONST.ALLPIEZEDDATA[0][i].endAngle);
             if (angle>Math.PI){
               return "translate("+(0.5*CONST.VUE.WIDTH+0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
             } else {
@@ -154,22 +154,22 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     ;
 
   CONST.QUEST.ARCS[0].append("text")
-    .text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
+    .text(function (d,i){ return CONST.ALLTHEMELIST[0][i]+" ("+CONST.ALLPIEZEDDATA[0][i].data+")" })
     .style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
     .attr("transform", function (d,i) {
           var string = "translate(";
-          var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+          var angle = 0.5 * (CONST.ALLPIEZEDDATA[0][i].startAngle + CONST.ALLPIEZEDDATA[0][i].endAngle);
           var textpos = this.getBoundingClientRect();
                     // attention position                 // position initiale du dernier quart
-          if ((angle>Math.PI) && (d.index>4) && (d.index===piezeddata.length-1) && (choices.length!==0)){
-            string += ((coefeloign(d)-0.4) * outerRadius * Math.sin(angle));
+          if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[0].length-1) && (choices.length!==0)){
+            string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle));
           } else if (angle>Math.PI){
-            string += ((coefeloign(d)-0.4) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+            string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
           } else {
-            string += ((coefeloign(d)-0.4) * outerRadius * Math.sin(angle));
+            string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle));
           }
           string += ', ';
-          string += (-(coefeloign(d)-0.4) * outerRadius * Math.cos(angle));
+          string += (-(coefeloign(0,d)-0.4) * outerRadius * Math.cos(angle));
           string += ")";
           return string;
   });

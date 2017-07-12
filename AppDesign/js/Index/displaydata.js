@@ -27,8 +27,8 @@ function scalablesize (d){
 // Cette fonction est appelée pour positionner le texte
 // Elle permet d'éviter les recoupements entre les dernières
 // tranches de la pie. 
-function coefeloign (d){
-  if ((d.index>3) && (d.index!==piezeddata.length-1)){
+function coefeloign (intselect, d){
+  if ((d.index>3) && (d.index!==CONST.ALLPIEZEDDATA[intselect].length-1)){
     return 1.5 - 0.3*(d.index%2);
   } else {
     return 1.2;
@@ -97,6 +97,10 @@ function circleonclick (intselect,i){
     avirer.transition()
         .duration(CONST.TIMETRANSITION)
         .attr("transform", "translate("+(-2500)+", "+2500+")");
+    avirer.transition()
+          .duration(0)
+          .delay(CONST.TIMETRANSITION)
+          .attr("opacity", 0)
 
     // Traitement de l'élément cliqué
     var selected = d3.select("g.cercle"+i+"loby"+intselect);
@@ -124,28 +128,11 @@ function circleonclick (intselect,i){
 
     // Mémorisation du choix utilisateur
       var indice = Number(selected.attr("class")[10]);
-      choices.push(themelist[indice]);
-      nbloby = piedata[indice];
+      choices.push(CONST.ALLTHEMELIST[intselect][indice]);
+      nbloby = CONST.ALLPIEZEDDATA[CONST.ALLPIEZEDDATA.length-1][indice].data;
       console.log("nbloby = "+nbloby);
       tabnbloby.push(nbloby);
       console.log(tabnbloby);
-}
-
-// Fonction qui supprime les sections en trop
-function removesections(intselect){
-  d3.select("#section").selectAll("section").each(function (){
-    var section = d3.select("this");
-    var id = section.attr("id");
-    var num = Number(id[3]);
-    if (num>=6+intselect){
-      section.remove();
-      // On supprime l'entrée de l'ensemble des datafiltre
-      CONST.ALLDATAFILTRE.splice(CONST.ALLDATAFILTRE.length-1,1);
-      // On supprime les éléments graphiques associés à cette section
-      CONST.QUEST.ARCS[CONST.QUEST.ARCS.length-1].remove();
-      CONST.QUEST.ARCS.splice(CONST.QUEST.ARCS.length-1,1);
-    }
-  })
 }
 
 // Fonction qui crée les nouvelles sections
@@ -173,19 +160,19 @@ function filterAndLoad (filter, value, nextissue, inttosee){
 
   // On génère le jeu de variables graphiques
   datafiltre=CONST.ALLDATAFILTRE[inttosee].slice();
-  themelist=[];
+  CONST.ALLTHEMELIST[inttosee]=[];
   piedata=[];
   for (var i=0; i<datafiltre.length; i++){
     var donnee = datafiltre[i][nextissue]
-    var indice = themelist.indexOf(donnee);
+    var indice = CONST.ALLTHEMELIST[inttosee].indexOf(donnee);
     if (indice===-1){
-      themelist.push(donnee);
+      CONST.ALLTHEMELIST[inttosee].push(donnee);
       piedata.push(1);
     } else {
       piedata[indice]++;
     }
   }
-  piezeddata = pie(piedata);
+  CONST.ALLPIEZEDDATA[inttosee] = pie(piedata);
 }
 
 
@@ -238,7 +225,6 @@ function loadNewData (inttosee){
     // On filtre les données selon le thème choisi
     CONST.ALLDATAFILTRE[inttosee]=[];
     for (var i=0; i<CONST.ALLDATAFILTRE[inttosee-1].length; i++){
-      console.log(CONST.ALLDATAFILTRE[inttosee-1][i][choices[0]])
       if (CONST.ALLDATAFILTRE[inttosee-1][i][choices[0]]){
         CONST.ALLDATAFILTRE[inttosee].push(CONST.ALLDATAFILTRE[inttosee-1][i])
       } else {
@@ -256,8 +242,8 @@ function loadNewData (inttosee){
         piedata[1]++;
       }
     }
-    piezeddata = pie(piedata);
-    themelist = ["SUPPORT", "OPPOSE"];
+    CONST.ALLPIEZEDDATA[inttosee] = pie(piedata);
+    CONST.ALLTHEMELIST[inttosee] = ["SUPPORT", "OPPOSE"];
     break;
 
   case 2:
@@ -301,13 +287,13 @@ function loadNewData (inttosee){
 }
 
 function generatePie (inttosee){
-  console.log(piezeddata);
+  console.log(CONST.ALLPIEZEDDATA[inttosee]);
   arc = d3.arc()
                 .innerRadius(0)
                 .outerRadius(outerRadius);
 
   CONST.QUEST.ARCS[inttosee] = svg.selectAll("g.xxx")
-          .data(piezeddata)
+          .data(CONST.ALLPIEZEDDATA[inttosee])
           .enter()
           .append("g")
           .attr("class", function (d,i){
@@ -323,24 +309,24 @@ function generatePie (inttosee){
     })
 
   CONST.QUEST.ARCS[inttosee].append("text")
-    .text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
+    .text(function (d,i){ return CONST.ALLTHEMELIST[inttosee][i]+" ("+CONST.ALLPIEZEDDATA[inttosee][i].data+")" })
     .style("font-size", function (d){
       return 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"
     })
     .attr("transform", function (d,i) {
       var string = "translate(";
-      var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+      var angle = 0.5 * (CONST.ALLPIEZEDDATA[inttosee][i].startAngle + CONST.ALLPIEZEDDATA[inttosee][i].endAngle);
       var textpos = this.getBoundingClientRect();
                 // attention position
-      if ((angle>Math.PI) && (d.index>4) && (d.index===piezeddata.length-1)){
-        string += (coefeloign(d) * outerRadius * Math.sin(angle));
+      if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[inttosee].length-1)){
+        string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle));
       } else if (angle>Math.PI){
-        string += (coefeloign(d) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+        string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
       } else {
-        string += (coefeloign(d) * outerRadius * Math.sin(angle));
+        string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle));
       }
       string += ', ';
-      string += (-coefeloign(d) * outerRadius * Math.cos(angle));
+      string += (-coefeloign(inttosee,d) * outerRadius * Math.cos(angle));
       string += ")";
       return string;
     })
@@ -401,9 +387,6 @@ function clickable (intselect,alpha){
           break;  
       } 
 
-      // Suppression des sections inutiles
-      removesections(intselect);
-
       // Création des nouvelles sections  
       createsection();
 
@@ -429,7 +412,6 @@ function clickable (intselect,alpha){
 function manageSec5 (pos){
   var startsection = sectionPositions[4];
   var alpha = (pos - startsection)/scrollheight;
-  console.log(alpha)
   // Définir ici les alphasteps de la section 5
   var alphasteps = [0,0.6,1];
   for (var i=0; i<alphasteps.length; i++){
@@ -507,17 +489,19 @@ function transitOpacity (old, newer, beta){
 function pieSplash (intselect, beta){
   CONST.QUEST.ARCS[intselect]
         .attr("transform", function (d,i){
-          var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+          var angle = 0.5 * (CONST.ALLPIEZEDDATA[intselect][i].startAngle + CONST.ALLPIEZEDDATA[intselect][i].endAngle);
           if (angle>Math.PI){
-            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.25*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.3*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
+            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
           } else {
-            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
+            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.15*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
           }   
         });
 }
 
 // Fermeture d'une part de pie en une nouvelle pie
-function pieToCircles (cercles, textes, beta){
+function pieToCircles (intselect, beta){
+  var cercles = d3.selectAll("g.loby"+intselect+" path");
+  var textes = d3.selectAll("g.loby"+intselect+" text");
   cercles
         .attr("d", arc.endAngle(function (d){
           return d.endAngle + 2*Math.PI*beta;
@@ -528,18 +512,18 @@ function pieToCircles (cercles, textes, beta){
   textes
         .attr("transform", function (d,i) {
           var string = "translate(";
-          var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+          var angle = 0.5 * (CONST.ALLPIEZEDDATA[intselect][i].startAngle + CONST.ALLPIEZEDDATA[intselect][i].endAngle);
           var textpos = this.getBoundingClientRect();
                     // attention position                 // position initiale du dernier quart
-          if ((angle>Math.PI) && (d.index>4) && (d.index===piezeddata.length-1) && (choices.length!==0)){
-            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle));
+          if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[intselect].length-1) && (choices.length!==0)){
+            string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle));
           } else if (angle>Math.PI){
-            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+            string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
           } else {
-            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle));
+            string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle));
           }
           string += ', ';
-          string += (-(coefeloign(d)-0.4*beta) * outerRadius * Math.cos(angle));
+          string += (-(coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.cos(angle));
           string += ")";
           return string;
         })
@@ -549,7 +533,6 @@ function pieToCircles (cercles, textes, beta){
 function manageSecX (intselect,pos){
   var startsection = sectionPositions[4+intselect];
   var alpha = (pos - startsection)/scrollheight;
-  console.log(alpha)
   // Définir ici les alphasteps de la section 5
   var alphasteps = [0,0.2,0.6,1];
   for (var i=0; i<alphasteps.length; i++){
@@ -578,18 +561,14 @@ function manageSecX (intselect,pos){
     // Position des parts
     var beta = abTo01(alphasteps[1],alphasteps[2],alpha);
     pieSplash(intselect, beta);
-    // On s'assure que les parts ne sont pas éclatées
-    var cercles = d3.selectAll("g.loby"+intselect+" path");
-    var textes = d3.selectAll("g.loby"+intselect+" text");   
-    pieToCircles(cercles, textes, 0);
+    // On s'assure que les parts ne sont pas éclatées  
+    pieToCircles(intselect, 0);
   } else if (alpha<=1){
     // On s'assure les parts sont bien éclatées
     pieSplash(intselect,1);
-    // On referme les parts
-    var cercles = d3.selectAll("g.loby"+intselect+" path");
-    var textes = d3.selectAll("g.loby"+intselect+" text");   
+    // On referme les parts 
     var beta = abTo01(alphasteps[2],1,alpha);
-    pieToCircles(cercles, textes, beta);
+    pieToCircles(intselect, beta);
   } else {
     // On s'assure que les parts sont bien refermées mais on ne s'assure pas que le rayon est correct
     // car celui ci sera par clickable au moment du clic
@@ -603,4 +582,97 @@ function manageSecX (intselect,pos){
   // On annule le cliquable sinon
   hoverize(intselect,alpha);
   clickable(intselect,alpha);
+}
+
+
+
+// Pour le retour en arrière
+
+// Fonction qui supprime les sections en trop
+function removelastsection (){
+  var sections = d3.select("#sections").selectAll("section");
+  var nbsections = sections["_groups"][0].length
+  // Sécurité : on ne supprime pas les sections 0, 1, 2, 3, 4 et 5
+  if (nbsections>6){
+      // La dernière section a l'id #sec${nbsections-1}
+    var avirer = d3.select("#sec"+(nbsections-1));
+    avirer.remove();
+    // On supprime le dernier élément de CONST.ALLDATAFILTRE
+    CONST.ALLDATAFILTRE.splice(CONST.ALLDATAFILTRE.length-1,1);
+    // On supprime les cercles associés à cette section
+    CONST.QUEST.ARCS[CONST.QUEST.ARCS.length-1].remove();
+    CONST.QUEST.ARCS.splice(CONST.QUEST.ARCS.length-1,1);
+    // On supprime la dernière entrée de tabnbloby et on remet nbloby à jour
+    tabnbloby.splice(tabnbloby.length-1,1);
+    nbloby = tabnbloby[tabnbloby.length-1];
+    // On supprime la liste des thèmes associée
+    CONST.ALLTHEMELIST.splice(CONST.ALLTHEMELIST.length-1,1);
+    // On supprime la piezeddata associée
+    CONST.ALLPIEZEDDATA.splice(CONST.ALLPIEZEDDATA.length-1,1);
+    // On supprime le dernier choix
+    choices.splice(choices.length-1,1);
+  }
+}
+
+// Après le clic, des cercles sont virés, et le cercle choisi est aggrandi au centre
+// Cette fonction remet tout le monde à sa place
+function resetcircles (intselect){
+  var cercles = d3.selectAll("g.loby"+intselect+" path");
+  var textes = d3.selectAll("g.loby"+intselect+" text");
+  // On remet les cercles à leur place
+  pieSplash(intselect, 1);
+  pieToCircles(intselect, 1);
+  // Couleur des cercles
+  cercles.attr("fill", function (d,i){
+    return color(i);
+  })
+  // On affiche les cercles et leurs textes avec une animation
+  CONST.QUEST.ARCS[intselect].transition()
+                  .duration(CONST.TIMETRANSITION)
+                  .attr("opacity", 1);
+}
+
+function cancelChoiceAnswer(intselect){
+  resetcolors();
+  var cancelclass;
+  var removeclass;
+  switch (intselect){
+    case 0:
+      cancelclass = ["span.theme","span.position","span.type","span.secteur","span.country","span.nom"];
+      removeclass = ["p.position","p.type","p.secteur","p.country","p.nom"];
+      break;
+    case 1:
+      cancelclass = ["span.position","span.type","span.secteur","span.country","span.nom"];
+      removeclass = ["p.type","p.secteur","p.country","p.nom"];
+      break;
+    case 2:
+      cancelclass = ["span.type","span.secteur","span.country","span.nom"];
+      removeclass = ["p.secteur","p.country","p.nom"];
+      break;
+    case 3:
+      cancelclass = ["span.secteur","span.country","span.nom"];
+      removeclass = ["p.country","p.nom"];
+      break;
+    case 4:
+      cancelclass = ["span.country","span.nom"];
+      removeclass = ["p.nom"];
+      break;
+    case 5:
+      cancelclass = ["span.nom"];
+      removeclass = [];
+      break;
+  }
+  cancelclass.forEach(function (selector){
+    // On supprime le texte écrit
+    d3.select("#answers").select(selector).text("");
+  })
+  removeclass.forEach(function (selector){
+    // On rend l'élément invisible
+    d3.select("#answers").select(selector).style("display", "none");
+  })
+}
+
+function backSection(intselect){
+  resetcircles(intselect);
+  cancelChoiceAnswer(intselect);
 }

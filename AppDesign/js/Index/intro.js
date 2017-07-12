@@ -311,7 +311,6 @@ function moveBadge(y){
 function manageFicheSec1 (pos){
   var startsection = sectionPositions[0];
   var alpha = (pos - startsection)/scrollheight;
-  console.log(alpha)
   // Définir ici les alphasteps de la section 1
   var alphasteps = [0,0.33,0.66,1]
   for (var i=0; i<alphasteps.length; i++){
@@ -352,7 +351,6 @@ function manageFicheSec1 (pos){
 function manageFicheSec2 (pos){
   var startsection = sectionPositions[1];
   var alpha = (pos - startsection)/scrollheight;
-  console.log(alpha)
   // Définir ici les alphasteps de la section 2
   var alphasteps = [0,0.4,1];
   for (var i=0; i<alphasteps.length; i++){
@@ -388,7 +386,6 @@ function manageFicheSec2 (pos){
 function manageFicheBadgeSec3 (pos){
   var startsection = sectionPositions[2];
   var alpha = (pos - startsection)/scrollheight;
-  console.log(alpha)
   // Définir ici les alphasteps de la section 3
   var alphasteps = [0,1];
   for (var i=0; i<alphasteps.length; i++){

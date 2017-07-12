@@ -4,6 +4,7 @@ var currentIndex = -1;
 var sectionPositions;
 var maxindex;
 var prevIndex = -1;
+CONST.SECTIONMARGIN = 880; // Recopier ce qu'il y a dans le css pour margin-bottom
 
 majsectionspos();
 position();
@@ -41,7 +42,7 @@ function position() {
     currentIndex = sectionIndex;
     console.log("Section : "+currentIndex)
     // Mise en place des modifications de la vue : changement de couleur
-    majvue.call(this, sectionIndex);
+    majvue.call(this, sectionIndex, prevIndex);
   }
   displayInitFigure();
   scrollAnim(currentIndex, pos);
@@ -50,8 +51,17 @@ function position() {
 
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
-function majvue(index) {
+function majvue(index,preced) {
+  // Déplacement du point entre les sections 3 et 4
   manageBadgeSec4();
+  // Traitement du scroll arrière
+  if (index>=5){
+    if (preced===index+1){
+      removelastsection();
+      window.scrollBy(0,CONST.SECTIONMARGIN);
+      backSection(index-5);
+    }
+  }
 }
 
 function scrollAnim(index, pos) {

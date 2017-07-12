@@ -137,7 +137,7 @@ d3.select(window).on("click", function (){
 // de la Fiche
 CONST.FICHE = {};
 CONST.FICHE.width = CONST.VUE.WIDTH; 
-CONST.FICHE.height = 1.2*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+CONST.FICHE.height = 1.07*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
 // L'écart de taille : utile pour le scroll
 var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
 CONST.FICHE.COMMISSION = {};
@@ -260,7 +260,7 @@ setupBadge();
 CONST.QUEST = {};
 CONST.QUEST.FICHE = {};
 CONST.QUEST.FICHE.width = CONST.VUE.WIDTH;
-CONST.QUEST.FICHE.height = 1.85*CONST.VUE.HEIGHT;
+CONST.QUEST.FICHE.height = 1.6*CONST.VUE.HEIGHT;
 // Destinée à accueillir les sélections vers les parts
 CONST.QUEST.ARCS = [];
 
@@ -429,7 +429,7 @@ function moveBlackPoint (move){
     } else if (move===1){ // Le point est sur le badge, on l'emmene sur la fiche
       CONST.BADGE.D3.select(".point")
                   .transition()
-                  .duration(7*CONST.TIMETRANSITION)
+                  .duration(4*CONST.TIMETRANSITION)
                   .attr("cx", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.5*CONST.FICHE.width)
                   .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height)
                   .attr("r", 5);

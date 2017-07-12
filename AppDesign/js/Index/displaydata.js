@@ -234,7 +234,7 @@ function loadNewData (inttosee){
     charger la position SUPPORTS/OPPOSES 
     du thème choisi */
 
-// On ne peux pas appeler filterAndLoad ici, on le fait manuellement 
+          // On ne peux pas appeler filterAndLoad ici, on le fait manuellement 
     // On filtre les données selon le thème choisi
     CONST.ALLDATAFILTRE[inttosee]=[];
     for (var i=0; i<CONST.ALLDATAFILTRE[inttosee-1].length; i++){
@@ -265,7 +265,7 @@ function loadNewData (inttosee){
     ainsi que sa position par rapport à ce thème. 
     Charger maintenant la catégorie de lobbyist */
 
-    filterAndLoad(choices[0], choices[1], "Type");
+    filterAndLoad(choices[0], choices[1], "Type", inttosee);
     break;
 
   case 3:
@@ -274,7 +274,7 @@ function loadNewData (inttosee){
     Il vient de choisir le type de structure qui lui convient. 
     Charger maintenant le secteur de lobby */
 
-    filterAndLoad("Type", choices[2], "Secteurs d’activité");
+    filterAndLoad("Type", choices[2], "Secteurs d’activité", inttosee);
     break;
 
   case 4:
@@ -284,7 +284,7 @@ function loadNewData (inttosee){
     Il vient de choisir le secteur qui lui convient. 
     Charger maintenant le pays de lobby */
 
-    filterAndLoad("Secteurs d’activité", choices[3], "Pays/Région");
+    filterAndLoad("Secteurs d’activité", choices[3], "Pays/Région", inttosee);
     break;
 
   case 5:
@@ -294,7 +294,7 @@ function loadNewData (inttosee){
     Il vient de choisir son pays de prédilection. 
     On prop */
 
-    filterAndLoad("Pays/Région", choices[4], "Nom1")
+    filterAndLoad("Pays/Région", choices[4], "Nom1", inttosee);
     break;
 
   } 
@@ -325,7 +325,7 @@ function generatePie (inttosee){
   CONST.QUEST.ARCS[inttosee].append("text")
     .text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
     .style("font-size", function (d){
-      return 0.6*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"
+      return 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"
     })
     .attr("transform", function (d,i) {
       var string = "translate(";
@@ -491,7 +491,116 @@ function manageSec5 (pos){
     // On s'assure que les cercles sont bien visibles
     CONST.QUEST.ARCS[0].attr("opacity", 1);
   }
+  // On rend les cercles cliquables si alpha>=1
+  // On annule le clickable sinon
   hoverize(0,alpha);
   clickable(0,alpha);
 }
 
+// Transition d'opacité
+function transitOpacity (old, newer, beta){
+  old.attr("opacity", 1-beta);
+  newer.attr("opacity", beta);
+}
+
+// Eclatement des pie
+function pieSplash (intselect, beta){
+  CONST.QUEST.ARCS[intselect]
+        .attr("transform", function (d,i){
+          var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+          if (angle>Math.PI){
+            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.25*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.3*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
+          } else {
+            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
+          }   
+        });
+}
+
+// Fermeture d'une part de pie en une nouvelle pie
+function pieToCircles (cercles, textes, beta){
+  cercles
+        .attr("d", arc.endAngle(function (d){
+          return d.endAngle + 2*Math.PI*beta;
+        }))
+        .attr("d", arc.outerRadius(function (d){
+          return (1-0.2*beta*(1/scalablesize(d.data)))*outerRadius;
+        }))
+  textes
+        .attr("transform", function (d,i) {
+          var string = "translate(";
+          var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
+          var textpos = this.getBoundingClientRect();
+                    // attention position                 // position initiale du dernier quart
+          if ((angle>Math.PI) && (d.index>4) && (d.index===piezeddata.length-1) && (choices.length!==0)){
+            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle));
+          } else if (angle>Math.PI){
+            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+          } else {
+            string += ((coefeloign(d)-0.4*beta) * outerRadius * Math.sin(angle));
+          }
+          string += ', ';
+          string += (-(coefeloign(d)-0.4*beta) * outerRadius * Math.cos(angle));
+          string += ")";
+          return string;
+        })
+}
+
+// Gestion de la section .loby${intselect}
+function manageSecX (intselect,pos){
+  var startsection = sectionPositions[4+intselect];
+  var alpha = (pos - startsection)/scrollheight;
+  console.log(alpha)
+  // Définir ici les alphasteps de la section 5
+  var alphasteps = [0,0.2,0.6,1];
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  if (alpha<=0){
+    // On s'assure que beta=0
+    var old = d3.selectAll("g.loby"+(intselect-1));
+    var newer = d3.selectAll("g.loby"+intselect);
+    transitOpacity(old, newer, 0);
+  } else if (alpha<=alphasteps[1]){
+    // On gère la transparence en fonction du scroll
+    var old = d3.selectAll("g.loby"+(intselect-1));
+    var newer = d3.selectAll("g.loby"+intselect);
+    var beta = abTo01(0,alphasteps[1],alpha);
+    transitOpacity(old, newer, beta);
+    // On s'assure que les parts sont positionnées en pie
+    pieSplash(intselect,0);
+  } else if (alpha<=alphasteps[2]){
+    // On s'assure que les bons cercles sont visibles et les anciens invisibles
+    var old = d3.selectAll("g.loby"+(intselect-1));
+    var newer = d3.selectAll("g.loby"+intselect);
+    transitOpacity(old,newer,1);
+    // Position des parts
+    var beta = abTo01(alphasteps[1],alphasteps[2],alpha);
+    pieSplash(intselect, beta);
+    // On s'assure que les parts ne sont pas éclatées
+    var cercles = d3.selectAll("g.loby"+intselect+" path");
+    var textes = d3.selectAll("g.loby"+intselect+" text");   
+    pieToCircles(cercles, textes, 0);
+  } else if (alpha<=1){
+    // On s'assure les parts sont bien éclatées
+    pieSplash(intselect,1);
+    // On referme les parts
+    var cercles = d3.selectAll("g.loby"+intselect+" path");
+    var textes = d3.selectAll("g.loby"+intselect+" text");   
+    var beta = abTo01(alphasteps[2],1,alpha);
+    pieToCircles(cercles, textes, beta);
+  } else {
+    // On s'assure que les parts sont bien refermées mais on ne s'assure pas que le rayon est correct
+    // car celui ci sera par clickable au moment du clic
+    var cercles = d3.selectAll("g.loby"+intselect+" path");
+    cercles
+        .attr("d", arc.endAngle(function (d){
+          return d.endAngle + 2*Math.PI;
+        }))
+  }
+  // On rend ces cercles cliquables si alpha>=1
+  // On annule le cliquable sinon
+  hoverize(intselect,alpha);
+  clickable(intselect,alpha);
+}

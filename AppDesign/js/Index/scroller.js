@@ -70,6 +70,21 @@ function scrollAnim(index, pos) {
   case 5:
     manageSec5(pos);
     break;
+  case 6:
+    manageSecX(1,pos);
+    break;
+  case 7:
+    manageSecX(2,pos);
+    break;
+  case 8:
+    manageSecX(3,pos);
+    break;
+  case 9:
+    manageSecX(4,pos);
+    break;
+  case 10:
+    manageSecX(5,pos);
+    break;
   }
 }
 

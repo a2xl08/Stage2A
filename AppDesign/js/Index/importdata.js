@@ -131,9 +131,9 @@ d3.csv("data/Noeud4juillet.csv", function (data){
           .attr("transform", function (d,i){
             var angle = 0.5 * (piezeddata[i].startAngle + piezeddata[i].endAngle);
             if (angle>Math.PI){
-              return "translate("+(0.5*CONST.VUE.WIDTH+0.25*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.3*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
+              return "translate("+(0.5*CONST.VUE.WIDTH+0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
             } else {
-              return "translate("+(0.5*CONST.VUE.WIDTH+0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
+              return "translate("+(0.5*CONST.VUE.WIDTH+0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.15*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
             }
             
           })
@@ -154,7 +154,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     ;
 
   CONST.QUEST.ARCS[0].append("text")
-    .text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+" réponses)" })
+    .text(function (d,i){ return themelist[i]+" ("+piezeddata[i].data+")" })
     .style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
     .attr("transform", function (d,i) {
           var string = "translate(";

@@ -137,7 +137,12 @@ function circleonclick (intselect,i){
 
 // Fonction qui crée les nouvelles sections
 function createsection (){
-  var section = d3.select("#sections")
+  var sections = d3.select("#sections");
+  var nbsections = sections["_groups"][0].length;
+  for (var i=currentIndex+1; i<currentIndex+6; i++){
+    sections.select("#sec"+i).remove()
+  }
+  var section = sections
                   .append("section")
                   .attr("id", "sec"+(currentIndex+1))
   section.append("h1");
@@ -589,28 +594,30 @@ function manageSecX (intselect,pos){
 // Pour le retour en arrière
 
 // Fonction qui supprime les sections en trop
-function removelastsection (){
+function removelastsection (intselect){
   var sections = d3.select("#sections").selectAll("section");
   var nbsections = sections["_groups"][0].length
   // Sécurité : on ne supprime pas les sections 0, 1, 2, 3, 4 et 5
   if (nbsections>6){
       // La dernière section a l'id #sec${nbsections-1}
-    var avirer = d3.select("#sec"+(nbsections-1));
-    avirer.remove();
+    var avirer = d3.select("#sec"+(intselect+6));
+    avirer.select("h1").html(" ");
+    avirer.select("p.texte").html(" ");
+    avirer.select("p.appel").html("Rentournez plus haut !");
     // On supprime le dernier élément de CONST.ALLDATAFILTRE
-    CONST.ALLDATAFILTRE.splice(CONST.ALLDATAFILTRE.length-1,1);
+    CONST.ALLDATAFILTRE.splice(intselect+1,1);
     // On supprime les cercles associés à cette section
-    CONST.QUEST.ARCS[CONST.QUEST.ARCS.length-1].remove();
-    CONST.QUEST.ARCS.splice(CONST.QUEST.ARCS.length-1,1);
+    CONST.QUEST.ARCS[intselect+1].remove();
+    CONST.QUEST.ARCS.splice(intselect+1,1);
     // On supprime la dernière entrée de tabnbloby et on remet nbloby à jour
-    tabnbloby.splice(tabnbloby.length-1,1);
+    tabnbloby.splice(intselect+1,1);
     nbloby = tabnbloby[tabnbloby.length-1];
     // On supprime la liste des thèmes associée
-    CONST.ALLTHEMELIST.splice(CONST.ALLTHEMELIST.length-1,1);
+    CONST.ALLTHEMELIST.splice(intselect+1,1);
     // On supprime la piezeddata associée
-    CONST.ALLPIEZEDDATA.splice(CONST.ALLPIEZEDDATA.length-1,1);
+    CONST.ALLPIEZEDDATA.splice(intselect+1,1);
     // On supprime le dernier choix
-    choices.splice(choices.length-1,1);
+    choices.splice(intselect,1);
   }
 }
 
@@ -670,9 +677,4 @@ function cancelChoiceAnswer(intselect){
     // On rend l'élément invisible
     d3.select("#answers").select(selector).style("display", "none");
   })
-}
-
-function backSection(intselect){
-  resetcircles(intselect);
-  cancelChoiceAnswer(intselect);
 }

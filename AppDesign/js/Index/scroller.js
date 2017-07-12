@@ -57,9 +57,9 @@ function majvue(index,preced) {
   // Traitement du scroll arrière
   if (index>=5){
     if (preced===index+1){
-      removelastsection();
-      window.scrollBy(0,CONST.SECTIONMARGIN);
-      backSection(index-5);
+      removelastsection(index-5);
+      resetcircles(index-5);
+      cancelChoiceAnswer(index-5);
     }
   }
 }

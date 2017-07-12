@@ -426,7 +426,7 @@ function manageSec5 (pos){
   }
   if (alpha<=0){
     // On s'assure que la fiche est invisible
-    CONST.QUEST.D3.select("image").attr("y", CONST.VUE.HEIGHT);
+    CONST.QUEST.D3.select("image").attr("y", CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
     moveFiche(-deltay-deltay2);
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y);
@@ -441,7 +441,7 @@ function manageSec5 (pos){
   } else if (alpha<=alphasteps[1]){
     // On déplace la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
-    CONST.QUEST.D3.select("image").attr("y", (1-beta)*CONST.VUE.HEIGHT);
+    CONST.QUEST.D3.select("image").attr("y", (1-beta)*CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
     moveFiche(-deltay-deltay2-beta*CONST.VUE.HEIGHT);
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y-beta*CONST.VUE.HEIGHT);
@@ -458,7 +458,7 @@ function manageSec5 (pos){
     CONST.QUEST.ARCS[0].attr("opacity", 0);
   } else if (alpha<=1){
     // On s'assure que la fiche est à sa place
-    CONST.QUEST.D3.select("image").attr("y", 0);
+    CONST.QUEST.D3.select("image").attr("y", CONST.QUEST.FICHE.y);
     moveFiche(-deltay-deltay2-CONST.VUE.HEIGHT);
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y-CONST.VUE.HEIGHT);

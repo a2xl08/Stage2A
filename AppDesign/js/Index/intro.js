@@ -261,6 +261,7 @@ CONST.QUEST = {};
 CONST.QUEST.FICHE = {};
 CONST.QUEST.FICHE.width = CONST.VUE.WIDTH;
 CONST.QUEST.FICHE.height = 1.6*CONST.VUE.HEIGHT;
+CONST.QUEST.FICHE.y = 50;
 // Destinée à accueillir les sélections vers les parts
 CONST.QUEST.ARCS = [];
 

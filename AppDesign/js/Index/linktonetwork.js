@@ -3,7 +3,7 @@ var link = document.getElementById("network");
 
 function setlinkURL (){
   if (nbloby===1){
-    var ID = datafiltre[0]["ID"];
+    var ID = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1][0]["ID"];
     var themeid = idToTheme.indexOf(choices[0]);
     link.setAttribute("href", "reseau.html?theme="+themeid+"&id="+ID);
   }

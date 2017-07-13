@@ -41,7 +41,7 @@ svg g text {
 
 svg g.result > text> tspan.mainname {
   font-family: 'Antique Olive Standard Compact';
-  font-size: 30px;
+  font-size: 25px;
 }
 
 svg g.result > text > tspan.fullname {

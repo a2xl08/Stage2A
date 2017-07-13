@@ -378,7 +378,7 @@ function generateResult (){
         .attr("class", "fullname")
         .attr("x", Number(d3.select("text.title").attr("x")))
         .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle)
-        .text(getFullName(user))
+        .text(user["Nom2"])
 
   var parag1 = CONST.RESULT.D3.append("text")
                   .attr("class", "parag1")
@@ -469,6 +469,10 @@ function generateResult (){
   d3.select("p.nom").style("display", "block");
 }
 
+function eraseResult(){
+  svg.select("g.result").remove();
+}
+
 // Gestion du choix utilisateur : click
 function clickable (intselect,alpha){
   if (alpha>=1){
@@ -530,9 +534,9 @@ function clickable (intselect,alpha){
         // Création des nouvelles sections  
         createsection(6);
         majsectionspos();
-        setlinkURL();
         generateResult();
         resultindex=intselect+6;
+        setlinkURL();
       } else {
         // Création des nouvelles sections  
         createsection(intselect+1);
@@ -734,12 +738,16 @@ function displayResult(intselect,pos){
   }
   var old = d3.selectAll("g.loby"+(intselect-1));
   var newer = d3.select("g.result")
+  var fich = d3.select("g.quest").select(".fiche")
   if (alpha<=0){
     transitOpacity(old,newer,0);
+    fich.attr("opacity", 1);
   } else if (alpha<=1){
     transitOpacity(old,newer,alpha);
+    fich.attr("opacity", 1-alpha);
   } else {
     transitOpacity(old,newer,1);
+    fich.attr("opacity", 0);
   }
 }
 

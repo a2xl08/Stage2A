@@ -17,10 +17,11 @@ var datafiltre;
 var choices = [];
 // Pas vertical d'affichage du résultat
 var pas = 45;
+var resultindex;
 
 // Cette fonction ajuste la taille des disques en fonction de la donnée
-function scalablesize (d){
-  var max = tabnbloby[tabnbloby.length-1];
+function scalablesize (intselect,d){
+  var max = tabnbloby[intselect];
   return d/max+0.2
 }
 
@@ -355,7 +356,7 @@ function generateResult (){
 
   // Création des éléments graphiques
   var user = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1][0]
-  CONST.RESULT.D3 = svg.append("g").attr("class", "result")
+  CONST.RESULT.D3 = svg.append("g").attr("class", "result").attr("opacity", 0);
 
   CONST.RESULT.D3.append("image")
                   .attr("x", CONST.RESULT.x)
@@ -531,6 +532,7 @@ function clickable (intselect,alpha){
         majsectionspos();
         setlinkURL();
         generateResult();
+        resultindex=intselect+6;
       } else {
         // Création des nouvelles sections  
         createsection(intselect+1);
@@ -643,7 +645,7 @@ function pieToCircles (intselect, beta){
           return d.endAngle + 2*Math.PI*beta;
         }))
         .attr("d", arc.outerRadius(function (d){
-          return (1-0.2*beta*(1/scalablesize(d.data)))*outerRadius;
+          return (1-0.2*beta*(1/scalablesize(intselect,d.data)))*outerRadius;
         }))
   textes
         .attr("transform", function (d,i) {
@@ -720,7 +722,26 @@ function manageSecX (intselect,pos){
   clickable(intselect,alpha);
 }
 
-
+function displayResult(intselect,pos){
+  var startsection = sectionPositions[4+intselect];
+  var alpha = (pos - startsection)/scrollheight;
+  // Définir ici les alphasteps de la section
+  var alphasteps = [0,1];
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  var old = d3.selectAll("g.loby"+(intselect-1));
+  var newer = d3.select("g.result")
+  if (alpha<=0){
+    transitOpacity(old,newer,0);
+  } else if (alpha<=1){
+    transitOpacity(old,newer,alpha);
+  } else {
+    transitOpacity(old,newer,1);
+  }
+}
 
 // Pour le retour en arrière
 

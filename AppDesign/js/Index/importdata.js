@@ -48,7 +48,7 @@ function getFullName(x){
 }
 
 function valueNAN(x){
-  if (x==="NaN" || x===""){
+  if (x==="NaN" || x==="" || x===NaN){
     return "Non renseigné";
   } else {
     return x;
@@ -154,7 +154,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
       return d.endAngle + 2*Math.PI;
     }))
     .attr("d", arc.outerRadius(function (d){
-      return (1-0.2*(1/scalablesize(d.data)))*outerRadius;
+      return (1-0.2*(1/scalablesize(0,d.data)))*outerRadius;
     }))
     .attr("fill", function (d,i){
       return color(i);

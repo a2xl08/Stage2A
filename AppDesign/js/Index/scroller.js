@@ -55,9 +55,16 @@ function majvue(index,preced) {
   // Déplacement du point entre les sections 3 et 4
   manageBadgeSec4();
   // Traitement du scroll arrière
-  if (index>=5){
-    if (preced===index+1){
+  if (index>=5 && preced===index+1){
+    if (nbloby!==1){
       removelastsection(index-5);
+      resetcircles(index-5);
+      cancelChoiceAnswer(index-5);
+    } else {
+         /* var avirer = d3.select("#sec"+(11));
+          avirer.select("h1").html("");
+          avirer.select("p.texte").html("");
+          avirer.select("p.appel").html("Retournez plus haut !");*/
       resetcircles(index-5);
       cancelChoiceAnswer(index-5);
     }
@@ -65,6 +72,9 @@ function majvue(index,preced) {
 }
 
 function scrollAnim(index, pos) {
+  if (nbloby===1 && index===resultindex){
+    displayResult(index-5,pos)
+  } else {
   switch (index){
   case 1:
     manageFicheSec1(pos);
@@ -95,6 +105,7 @@ function scrollAnim(index, pos) {
   case 10:
     manageSecX(5,pos);
     break;
+  }
   }
 }
 

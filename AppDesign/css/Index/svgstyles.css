@@ -39,15 +39,22 @@ svg g text {
   overflow: visible;
 }
 
-text.result {
+svg g.result > text> tspan.mainname {
+  font-family: 'Antique Olive Standard Compact';
   font-size: 30px;
-  fill: white;
 }
 
-text.result.nom {
-  font-size: 20px;
+svg g.result > text > tspan.fullname {
+  font-family: 'Antique Olive Standard Compact';
+  font-size: 10px;
 }
 
-text.result.abr {
-  font-size: 50px;
+svg g.result > text > tspan.paragtitle {
+  font-family: 'Antique Olive Standard Compact';
+  font-size: 16px;
+}
+
+svg g.result > text > tspan.item {
+  font-family: 'Antique Olive Roman';
+  font-size: 13px;
 }

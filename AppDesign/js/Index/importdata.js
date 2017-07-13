@@ -47,6 +47,14 @@ function getFullName(x){
   }
 }
 
+function valueNAN(x){
+  if (x==="NaN" || x===""){
+    return "Non renseigné";
+  } else {
+    return x;
+  }
+}
+
 
 d3.csv("data/Scenario.csv", function (data){
 

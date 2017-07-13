@@ -184,37 +184,38 @@ function filterAndLoad (filter, value, nextissue, inttosee){
 // On charge les nouvelles données
 function loadNewData (inttosee){
   if (nbloby===1){
+    CONST.ALLDATAFILTRE[inttosee]=CONST.ALLDATAFILTRE[inttosee-1].slice();
     // On filtre les données pour ne garder que le résultat
     var nbchoix = choices.length;
-    for (var i=0; i<datafiltre.length; i++){
+    for (var i=0; i<CONST.ALLDATAFILTRE[inttosee-1].length; i++){
       if (nbchoix>=2){
-        if (datafiltre[i][choices[0]]!==choices[1]){
-          datafiltre[i]=0
+        if (CONST.ALLDATAFILTRE[inttosee-1][i][choices[0]]!==choices[1]){
+          CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
       if (nbchoix>=3){
-        if (datafiltre[i]["Type"]!==choices[2]){
-          datafiltre[i]=0
+        if (CONST.ALLDATAFILTRE[inttosee-1][i]["Type"]!==choices[2]){
+          CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
       if (nbchoix>=4){
-        if (datafiltre[i]["Secteurs d’activité"]!==choices[3]){
-          datafiltre[i]=0
+        if (CONST.ALLDATAFILTRE[inttosee-1][i]["Secteurs d’activité"]!==choices[3]){
+          CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
       if (nbchoix>=5){
-        if (datafiltre[i]["Pays/Région"]!==choices[4]){
-          datafiltre[i]=0
+        if (CONST.ALLDATAFILTRE[inttosee-1][i]["Pays/Région"]!==choices[4]){
+          CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
       if (nbchoix>=6){
-        if (datafiltre[i]["Nom1"]!==choices[5]){
-          datafiltre[i]=0
+        if (CONST.ALLDATAFILTRE[inttosee-1][i]["Nom1"]!==choices[5]){
+          CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
     } 
-    while (datafiltre.indexOf(0)!==-1){
-      datafiltre.splice(datafiltre.indexOf(0), 1);
+    while (CONST.ALLDATAFILTRE[inttosee].indexOf(0)!==-1){
+      CONST.ALLDATAFILTRE[inttosee].splice(CONST.ALLDATAFILTRE[inttosee].indexOf(0), 1);
     }
 
     // nbloby=1, On génère le résultat dans generateResult
@@ -337,6 +338,137 @@ function generatePie (inttosee){
     })
 }
 
+CONST.RESULT = {};
+CONST.RESULT.width = 0.45*CONST.VUE.WIDTH;
+CONST.RESULT.height = 1.3744*CONST.RESULT.width;
+CONST.RESULT.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.RESULT.width;
+CONST.RESULT.y = 0.07*CONST.VUE.HEIGHT;
+CONST.RESULT.titlepos = {x: 0.32*CONST.VUE.WIDTH,y: 0.2*CONST.VUE.HEIGHT};
+CONST.RESULT.parag1pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.35*CONST.VUE.HEIGHT};
+CONST.RESULT.parag2pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.52*CONST.VUE.HEIGHT};
+CONST.RESULT.parag3pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.69*CONST.VUE.HEIGHT};
+CONST.RESULT.pastitle = 15;
+CONST.RESULT.pas = 22;
+CONST.RESULT.tabulation = 20;
+// Génération du résultat final s'il est connu
+function generateResult (){
+  // nbloby === 1
+
+  // Création des éléments graphiques
+  var user = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1][0]
+  CONST.RESULT.D3 = svg.append("g").attr("class", "result")
+
+  CONST.RESULT.D3.append("image")
+                  .attr("x", CONST.RESULT.x)
+                  .attr("y", CONST.RESULT.y)
+                  .attr("href", "img/fichebleue.png")
+                  .attr("width", CONST.RESULT.width)
+                  .attr("height", CONST.RESULT.height)
+
+  var title = CONST.RESULT.D3.append("text")
+                  .attr("class", "title")
+                  .attr("x", CONST.RESULT.titlepos.x)
+                  .attr("y", CONST.RESULT.titlepos.y)
+  title.append("tspan")
+        .attr("class", "mainname")
+        .attr("x", Number(d3.select("text.title").attr("x")))
+        .attr("y", Number(d3.select("text.title").attr("y")))
+        .text(user["Nom1"])
+  title.append("tspan")
+        .attr("class", "fullname")
+        .attr("x", Number(d3.select("text.title").attr("x")))
+        .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle)
+        .text(getFullName(user))
+
+  var parag1 = CONST.RESULT.D3.append("text")
+                  .attr("class", "parag1")
+                  .attr("x", CONST.RESULT.parag1pos.x)
+                  .attr("y", CONST.RESULT.parag1pos.y)
+  parag1.append("tspan")
+        .attr("class", "paragtitle")
+        .attr("x", Number(d3.select("text.parag1").attr("x"))+CONST.RESULT.tabulation)
+        .attr("y", Number(d3.select("text.parag1").attr("y")))
+        .text("STRUCTURE")
+  parag1.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag1").attr("x")))
+        .attr("y", Number(d3.select("text.parag1").attr("y"))+CONST.RESULT.pas)
+        .text("Type : "+user["Type"])
+  parag1.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag1").attr("x")))
+        .attr("y", Number(d3.select("text.parag1").attr("y"))+2*CONST.RESULT.pas)
+        .text("Secteur : "+user["Secteurs d’activité"])
+  parag1.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag1").attr("x")))
+        .attr("y", Number(d3.select("text.parag1").attr("y"))+3*CONST.RESULT.pas)
+        .text("Pays/Région : "+user["Pays/Région"])
+
+  var parag2 = CONST.RESULT.D3.append("text")
+                  .attr("class", "parag2")
+                  .attr("x", CONST.RESULT.parag2pos.x)
+                  .attr("y", CONST.RESULT.parag2pos.y)
+  parag2.append("tspan")
+        .attr("class", "paragtitle")
+        .attr("x", Number(d3.select("text.parag2").attr("x"))+CONST.RESULT.tabulation)
+        .attr("y", Number(d3.select("text.parag2").attr("y")))
+        .text("LOBBYING")
+  parag2.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag2").attr("x")))
+        .attr("y", Number(d3.select("text.parag2").attr("y"))+CONST.RESULT.pas)
+        .text("Dépenses de lobbying estimées (€) : "+user["Dépenses Lobby (€)"])
+  parag2.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag2").attr("x")))
+        .attr("y", Number(d3.select("text.parag2").attr("y"))+2*CONST.RESULT.pas)
+        .text("Personnes impliquées : "+valueNAN(user["Personnes impliquées"]))
+  parag2.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag2").attr("x")))
+        .attr("y", Number(d3.select("text.parag2").attr("y"))+3*CONST.RESULT.pas)
+        .text("Equivalent temps plein : "+valueNAN(user["Equivalent Temps plein"]))
+
+  var parag3 = CONST.RESULT.D3.append("text")
+                  .attr("class", "parag3")
+                  .attr("x", CONST.RESULT.parag3pos.x)
+                  .attr("y", CONST.RESULT.parag3pos.y)
+  parag3.append("tspan")
+        .attr("class", "paragtitle")
+        .attr("x", Number(d3.select("text.parag3").attr("x"))+CONST.RESULT.tabulation)
+        .attr("y", Number(d3.select("text.parag3").attr("y")))
+        .text("POSITION")
+  for (var i=0; i<CONST.ALLTHEMELIST[0].length; i++){
+    parag3.append("tspan")
+        .attr("class", "item")
+        .attr("x", Number(d3.select("text.parag3").attr("x")))
+        .attr("y", Number(d3.select("text.parag3").attr("y"))+(i+1)*CONST.RESULT.pas)
+        .text(CONST.ALLTHEMELIST[0][i]+" : "+valueNAN(user[CONST.ALLTHEMELIST[0][i]]))
+  }
+
+
+  // MAJ des données de answers
+  d3.select("span.type").text(user["Type"]);
+  d3.select("span.secteur").text(user["Secteurs d’activité"]);
+  d3.select("span.country").text(user["Pays/Région"]);
+  d3.select("span.nom").text(user["Nom1"]);
+  resetcolors();
+  d3.select("p.nom").style("color", colorlastanswer);
+  if (choices.length<=5){
+    d3.select("p.country").style("color", colorlastanswer);
+  }
+  if (choices.length<=4){
+    d3.select("p.secteur").style("color", colorlastanswer);
+  }
+  if (choices.length<=3){
+    d3.select("p.type").style("color", colorlastanswer);
+  }
+  d3.select("p.secteur").style("display", "block");
+  d3.select("p.country").style("display", "block");
+  d3.select("p.nom").style("display", "block");
+}
+
 // Gestion du choix utilisateur : click
 function clickable (intselect,alpha){
   if (alpha>=1){
@@ -402,7 +534,7 @@ function clickable (intselect,alpha){
       loadNewData(intselect+1);
       if (nbloby===1){
         setlinkURL();
-        //generateResult();
+        generateResult();
       } else {
         generatePie(intselect+1);
       }
@@ -601,9 +733,9 @@ function removelastsection (intselect){
   if (nbsections>6){
       // La dernière section a l'id #sec${nbsections-1}
     var avirer = d3.select("#sec"+(intselect+6));
-    avirer.select("h1").html(" ");
-    avirer.select("p.texte").html(" ");
-    avirer.select("p.appel").html("Rentournez plus haut !");
+    avirer.select("h1").html("");
+    avirer.select("p.texte").html("");
+    avirer.select("p.appel").html("Retournez plus haut !");
     // On supprime le dernier élément de CONST.ALLDATAFILTRE
     CONST.ALLDATAFILTRE.splice(intselect+1,1);
     // On supprime les cercles associés à cette section

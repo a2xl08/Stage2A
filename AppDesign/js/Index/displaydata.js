@@ -136,19 +136,18 @@ function circleonclick (intselect,i){
 }
 
 // Fonction qui crée les nouvelles sections
-function createsection (){
+function createsection (inttosee){
   var sections = d3.select("#sections");
-  var nbsections = sections["_groups"][0].length;
   for (var i=currentIndex+1; i<currentIndex+6; i++){
     sections.select("#sec"+i).remove()
   }
   var section = sections
                   .append("section")
-                  .attr("id", "sec"+(currentIndex+1))
+                  .attr("id", "sec"+(inttosee+5))
   section.append("h1");
   section.append("p").attr("class", "texte");
   section.append("p").attr("class", "appel");
-  writeTextInSection(currentIndex+1);
+  writeTextInSection(inttosee+5);
 }
 
 // On charge des données : remplissage des variables graphiques utiles
@@ -524,18 +523,18 @@ function clickable (intselect,alpha){
           break;  
       } 
 
-      // Création des nouvelles sections  
-      createsection();
-
-      // MAJ des coordonnées des sections
-      majsectionspos();
-
       // On charge les données pour le choix suivant s'il y en a un
       loadNewData(intselect+1);
       if (nbloby===1){
+        // Création des nouvelles sections  
+        createsection(6);
+        majsectionspos();
         setlinkURL();
         generateResult();
       } else {
+        // Création des nouvelles sections  
+        createsection(intselect+1);
+        majsectionspos();
         generatePie(intselect+1);
       }
     })

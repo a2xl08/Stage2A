@@ -35,6 +35,25 @@ svg g text {
   font-size: 15px;
 }
 
+svg foreignObject > body {
+  background-color: rgba(50,50,50,0.6);
+  padding: 2px;
+}
+
+svg foreignObject > body > h1 {
+  font-size: 15px;
+  margin: auto;
+}
+
+svg foreignObject > body > p {
+  font-size: 8px;
+  margin: auto;
+}
+
+svg foreignObject {
+  pointer-events: none;
+}
+
 #vue svg {
   overflow: visible;
 }

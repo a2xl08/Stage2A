@@ -36,13 +36,61 @@ function coefeloign (intselect, d){
   }
 }
 
+CONST.HOVERTEXT = {};
+CONST.HOVERTEXT.singulier = [];
+CONST.HOVERTEXT.singulier[0] = "organisation a pris position sur ce sujet";
+CONST.HOVERTEXT.singulier[1] = "organisation a pris cette position sur le sujet sélectionné";
+CONST.HOVERTEXT.singulier[2] = "organisation qui a la même position que vous sur le sujet sélectionné est de ce type";
+CONST.HOVERTEXT.singulier[3] = "organisation qui est de même type et a la même position que vous provient de ce secteur d'activité";
+CONST.HOVERTEXT.singulier[4] = "organisation qui est du même secteur, même type et même position que vous provient de cette région";
+CONST.HOVERTEXT.pluriel = [];
+CONST.HOVERTEXT.pluriel[0] = "organisations ont pris position sur ce sujet";
+CONST.HOVERTEXT.pluriel[1] = "organisations ont pris cette position sur le sujet sélectionné";
+CONST.HOVERTEXT.pluriel[2] = "organisations qui ont la même position que vous sur le sujet sélectionné sont de ce type";
+CONST.HOVERTEXT.pluriel[3] = "organisations qui sont de même type et ont la même position que vous proviennent de ce secteur d'activité";
+CONST.HOVERTEXT.pluriel[4] = "organisations qui sont du même secteur, même type et même position que vous proviennent de cette région";
+CONST.HOVERTEXT.width = 120;
+CONST.HOVERTEXT.height = 80;
+function createHoverText(intselect,d,i,x,y){
+  // Condition 1 pour ne pas avoir de cartouche à la section des noms
+  // Condition 2 pour éviter des affichages de cartouches parasites
+  if (intselect<5 && intselect===currentIndex-5){
+  var foreign = svg.append("foreignObject")
+      .attr("width", CONST.HOVERTEXT.width)
+      .attr("height", CONST.HOVERTEXT.height)
+      .attr("x", x)
+      .attr("y", y)
+      .attr("opacity",0)
+  if (CONST.ALLPIEZEDDATA[intselect][i].data===1){
+    foreign.append("xhtml:body")
+                        .html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.singulier[intselect] +"</p>");
+  } else {
+    foreign.append("xhtml:body")
+                        .html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.pluriel[intselect] +"</p>");
+  }
+  foreign.transition().duration(0.5*CONST.TIMETRANSITION).attr("opacity", 1);
+  }
+}
+
+function removeHoverText(){
+  d3.selectAll("foreignObject").transition().duration(CONST.TIMETRANSITION).attr("opacity", 0);
+  d3.selectAll("foreignObject").remove()
+  //setTimeout(function(){d3.selectAll("foreignObject").remove()}, 0.51*CONST.TIMETRANSITION);
+}
+
 // Gestion du survol
 // intselect correspond au numéro des cercles auxquels appliquer l'effet hoverize
 function hoverize (intselect, alpha){
   var cercles = d3.selectAll("g.loby"+intselect+" path");
+  // On s'assure que les autres éléments n'ont pas d'hoverize
+  d3.selectAll("g.arc").on("mouseover", function(){});
+  d3.selectAll("g.arc").on("mouseout", function(){});
   if (alpha>=1){
 
     cercles.on("mouseover", function (d,i){
+      var selected = d3.select("g.cercle"+i+"loby"+intselect);
+      var x=Number(selected.attr("transform").split("(")[1].split(")")[0].split(",")[0])-15;
+      var y=Number(selected.attr("transform").split("(")[1].split(")")[0].split(",")[1])-15;
       var avirer = d3.selectAll("g.arc:not(.cercle"+i+").loby"+intselect);
       avirer.transition()
         .duration(0.5*CONST.TIMETRANSITION)
@@ -52,26 +100,36 @@ function hoverize (intselect, alpha){
         .transition()
         .duration(0.5*CONST.TIMETRANSITION)
         .attr("fill", "gray");
+
+      createHoverText(intselect,d,i,x,y);
+
+      console.log("on définit le mouseout")
+      cercles.on("mouseout", function (d,i){
+        var avirer = d3.selectAll("g.arc:not(.cercle"+i+").loby"+intselect);
+        avirer.transition()
+          .duration(0.5*CONST.TIMETRANSITION)
+          .attr("opacity", 1)
+  
+        avirer.select("path")
+          .transition()
+          .duration(0.5*CONST.TIMETRANSITION)
+          .attr("fill", function (d,j){
+            if (j<i){
+              return color(j);
+            } else {
+              return color(j+1);
+            }
+          });
+        console.log("out")
+        removeHoverText();
+        // Suppression de l'événement
+        cercles.on("mouseout", null)
+
+      })
+
     })
 
-    cercles.on("mouseout", function (d,i){
-      var avirer = d3.selectAll("g.arc:not(.cercle"+i+").loby"+intselect);
-      avirer.transition()
-        .duration(0.5*CONST.TIMETRANSITION)
-        .attr("opacity", 1)
 
-      avirer.select("path")
-        .transition()
-        .duration(0.5*CONST.TIMETRANSITION)
-        .attr("fill", function (d,j){
-          if (j<i){
-            return color(j);
-          } else {
-            return color(j+1);
-          }
-        });
-
-    })
 
   } else {
     cercles.on("mouseover", function(){});
@@ -479,10 +537,11 @@ function clickable (intselect,alpha){
     var cercles = d3.selectAll("g.loby"+intselect+" path")
             .style("cursor", "pointer");
     cercles.on("click", function (d,i){
-      // On supprime l'écoute de l'événement
+      // On supprime l'écoute de l'événement et les cartouches foreignObject
       cercles.on("mouseover", function (){});
       cercles.on("mouseout", function (){});
       cercles.on("click", function (){});
+      removeHoverText();
 
       // On bouge les cercles
       circleonclick(intselect,i);

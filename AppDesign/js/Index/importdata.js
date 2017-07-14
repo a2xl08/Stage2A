@@ -162,7 +162,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     ;
 
   CONST.QUEST.ARCS[0].append("text")
-    .text(function (d,i){ return CONST.ALLTHEMELIST[0][i]+" ("+CONST.ALLPIEZEDDATA[0][i].data+")" })
+    .text(function (d,i){ return CONST.ALLTHEMELIST[0][i] })
     .style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
     .attr("transform", function (d,i) {
           var string = "translate(";

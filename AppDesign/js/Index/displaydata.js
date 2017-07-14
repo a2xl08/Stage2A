@@ -56,17 +56,16 @@ function createHoverText(intselect,d,i,x,y){
   // Condition 2 pour éviter des affichages de cartouches parasites
   if (intselect<5 && intselect===currentIndex-5){
   var foreign = svg.append("foreignObject")
+      .attr("class", "cartouche")
       .attr("width", CONST.HOVERTEXT.width)
       .attr("height", CONST.HOVERTEXT.height)
       .attr("x", x)
       .attr("y", y)
       .attr("opacity",0)
   if (CONST.ALLPIEZEDDATA[intselect][i].data===1){
-    foreign.append("xhtml:body")
-                        .html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.singulier[intselect] +"</p>");
+    foreign.html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.singulier[intselect] +"</p>");
   } else {
-    foreign.append("xhtml:body")
-                        .html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.pluriel[intselect] +"</p>");
+    foreign.html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.pluriel[intselect] +"</p>");
   }
   foreign.transition().duration(0.5*CONST.TIMETRANSITION).attr("opacity", 1);
   }
@@ -103,7 +102,6 @@ function hoverize (intselect, alpha){
 
       createHoverText(intselect,d,i,x,y);
 
-      console.log("on définit le mouseout")
       cercles.on("mouseout", function (d,i){
         var avirer = d3.selectAll("g.arc:not(.cercle"+i+").loby"+intselect);
         avirer.transition()
@@ -120,7 +118,6 @@ function hoverize (intselect, alpha){
               return color(j+1);
             }
           });
-        console.log("out")
         removeHoverText();
         // Suppression de l'événement
         cercles.on("mouseout", null)
@@ -373,7 +370,7 @@ function generatePie (inttosee){
     })
 
   CONST.QUEST.ARCS[inttosee].append("text")
-    .text(function (d,i){ return CONST.ALLTHEMELIST[inttosee][i]+" ("+CONST.ALLPIEZEDDATA[inttosee][i].data+")" })
+    .text(function (d,i){ return CONST.ALLTHEMELIST[inttosee][i] })
     .style("font-size", function (d){
       return 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"
     })

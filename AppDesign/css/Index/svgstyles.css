@@ -7,9 +7,12 @@ svg foreignObject {
   pointer-events: none;
 }
 
-svg foreignObject > p {
+svg foreignObject.arctext > p {
   color: rgb(22, 27, 48);
   font-family: 'Open Sans';
+  font-size: 13px;
+  font-weight: bold;
+  border: solid rgba(0,20,80,0.2) 1px;
 }
 
 svg g.BADGE > text {
@@ -48,20 +51,18 @@ svg g > foreignObject.arctext {
   overflow: visible;
 }
 
-svg g > foreignObject.arctext > p {
-  background-color: orange;
-}
-
 svg foreignObject.cartouche > h1 {
   background-color: rgba(50,50,50,0.6);
   font-size: 15px;
   margin: auto;
+  color: white;
   padding: 2px;
 }
 
 svg foreignObject.cartouche > p {
   background-color: rgba(50,50,50,0.6);
   font-size: 8px;
+  color: white;
   margin: auto;
   padding: 5px;
 }

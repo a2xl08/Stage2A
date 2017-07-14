@@ -391,7 +391,7 @@ function generatePie (inttosee){
       return string;
     })
     .html(function (d,i){
-      return "<p style='font-size="+0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"+"'>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
+      return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
     })
 }
 

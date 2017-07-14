@@ -72,8 +72,8 @@ function createHoverText(intselect,d,i,x,y){
 }
 
 function removeHoverText(){
-  d3.selectAll("foreignObject").transition().duration(CONST.TIMETRANSITION).attr("opacity", 0);
-  d3.selectAll("foreignObject").remove()
+  d3.selectAll("foreignObject.cartouche").transition().duration(CONST.TIMETRANSITION).attr("opacity", 0);
+  d3.selectAll("foreignObject.cartouche").remove()
   //setTimeout(function(){d3.selectAll("foreignObject").remove()}, 0.51*CONST.TIMETRANSITION);
 }
 
@@ -169,7 +169,7 @@ function circleonclick (intselect,i){
         .attr("d", arc.outerRadius(function (){
           return outerRadius;
         }))
-    selected.select("text")
+    selected.select("foreignObject.arctext")
         .transition()
         .duration(CONST.TIMETRANSITION)
         .attr("transform", function (){
@@ -369,11 +369,10 @@ function generatePie (inttosee){
       return color(i);
     })
 
-  CONST.QUEST.ARCS[inttosee].append("text")
-    .text(function (d,i){ return CONST.ALLTHEMELIST[inttosee][i] })
-    .style("font-size", function (d){
-      return 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"
-    })
+  CONST.QUEST.ARCS[inttosee].append("foreignObject")
+    .attr("class", "arctext")
+    .attr("width", CONST.QUEST.TEXT.width)
+    .attr("height", CONST.QUEST.TEXT.height)
     .attr("transform", function (d,i) {
       var string = "translate(";
       var angle = 0.5 * (CONST.ALLPIEZEDDATA[inttosee][i].startAngle + CONST.ALLPIEZEDDATA[inttosee][i].endAngle);
@@ -390,6 +389,9 @@ function generatePie (inttosee){
       string += (-coefeloign(inttosee,d) * outerRadius * Math.cos(angle));
       string += ")";
       return string;
+    })
+    .html(function (d,i){
+      return "<p style='font-size="+0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"+"'>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
     })
 }
 
@@ -699,7 +701,7 @@ function pieSplash (intselect, beta){
 // Fermeture d'une part de pie en une nouvelle pie
 function pieToCircles (intselect, beta){
   var cercles = d3.selectAll("g.loby"+intselect+" path");
-  var textes = d3.selectAll("g.loby"+intselect+" text");
+  var textes = d3.selectAll("g.loby"+intselect+" foreignObject.arctext");
   cercles
         .attr("d", arc.endAngle(function (d){
           return d.endAngle + 2*Math.PI*beta;
@@ -841,7 +843,7 @@ function removelastsection (intselect){
 // Cette fonction remet tout le monde à sa place
 function resetcircles (intselect){
   var cercles = d3.selectAll("g.loby"+intselect+" path");
-  var textes = d3.selectAll("g.loby"+intselect+" text");
+  var textes = d3.selectAll("g.loby"+intselect+" foreignObject.arctext");
   // On remet les cercles à leur place
   pieSplash(intselect, 1);
   pieToCircles(intselect, 1);

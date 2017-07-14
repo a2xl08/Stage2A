@@ -264,6 +264,9 @@ CONST.QUEST.FICHE.height = 1.6*CONST.VUE.HEIGHT;
 CONST.QUEST.FICHE.y = 50;
 // Destinée à accueillir les sélections vers les parts
 CONST.QUEST.ARCS = [];
+CONST.QUEST.TEXT = {};
+CONST.QUEST.TEXT.width = 100;
+CONST.QUEST.TEXT.height = 150;
 
 // On crée la fiche pour le quesionnaire
 function setupFicheQuestion (){

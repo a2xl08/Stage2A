@@ -161,9 +161,10 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     })
     ;
 
-  CONST.QUEST.ARCS[0].append("text")
-    .text(function (d,i){ return CONST.ALLTHEMELIST[0][i] })
-    .style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
+  CONST.QUEST.ARCS[0].append("foreignObject")
+    .attr("class", "arctext")
+    .attr("width", CONST.HOVERTEXT.width)
+    .attr("height", CONST.HOVERTEXT.height)
     .attr("transform", function (d,i) {
           var string = "translate(";
           var angle = 0.5 * (CONST.ALLPIEZEDDATA[0][i].startAngle + CONST.ALLPIEZEDDATA[0][i].endAngle);
@@ -180,6 +181,12 @@ d3.csv("data/Noeud4juillet.csv", function (data){
           string += (-(coefeloign(0,d)-0.4) * outerRadius * Math.cos(angle));
           string += ")";
           return string;
-  });
+    })
+    .html(function (d,i){
+      return "<p style='font-size="+0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em"+"'>"+CONST.ALLTHEMELIST[0][i]+"</p>"
+    });
+    //.append("p")
+    //.text(function (d,i){ return CONST.ALLTHEMELIST[0][i] })
+    //.style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
 
 });

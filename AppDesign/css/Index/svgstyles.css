@@ -1,6 +1,15 @@
 svg text {
   fill: rgb(22, 27, 48);
-  font-family: 'Open Sans'
+  font-family: 'Open Sans';
+}
+
+svg foreignObject {
+  pointer-events: none;
+}
+
+svg foreignObject > p {
+  color: rgb(22, 27, 48);
+  font-family: 'Open Sans';
 }
 
 svg g.BADGE > text {
@@ -33,6 +42,14 @@ svg text.scroll {
 svg g text {
   font-weight: bold;
   font-size: 15px;
+}
+
+svg g > foreignObject.arctext {
+  overflow: visible;
+}
+
+svg g > foreignObject.arctext > p {
+  background-color: orange;
 }
 
 svg foreignObject.cartouche > h1 {

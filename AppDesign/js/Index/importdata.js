@@ -173,7 +173,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
           if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[0].length-1) && (choices.length!==0)){
             string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle));
           } else if (angle>Math.PI){
-            string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+            string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle) - 0.6*textpos.right + 0.6*textpos.left);
           } else {
             string += ((coefeloign(0,d)-0.4) * outerRadius * Math.sin(angle));
           }

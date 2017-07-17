@@ -49,8 +49,8 @@ CONST.HOVERTEXT.pluriel[1] = "organisations ont pris cette position sur le sujet
 CONST.HOVERTEXT.pluriel[2] = "organisations qui ont la même position que vous sur le sujet sélectionné sont de ce type";
 CONST.HOVERTEXT.pluriel[3] = "organisations qui sont de même type et ont la même position que vous proviennent de ce secteur d'activité";
 CONST.HOVERTEXT.pluriel[4] = "organisations qui sont du même secteur, même type et même position que vous proviennent de cette région";
-CONST.HOVERTEXT.width = 120;
-CONST.HOVERTEXT.height = 80;
+CONST.HOVERTEXT.width = 140;
+CONST.HOVERTEXT.height = 90;
 function createHoverCircleText(intselect,d,i,x,y){
   // Condition 1 pour ne pas avoir de cartouche à la section des noms
   // Condition 2 pour éviter des affichages de cartouches parasites
@@ -158,8 +158,7 @@ function hoverize (intselect, alpha){
     if (intselect===0 || intselect===2 || intselect===3){
         var groups = d3.selectAll("g.loby"+intselect)
         groups.each(function (group){
-          var group = d3.select(this)
-          removeUselessIlabel(group);
+          var group = d3.select(this);
           var itag = group.select("img.information");
           itag.on("mouseover", function (){
             var x = d3.mouse(svg.node())[0];
@@ -170,7 +169,7 @@ function hoverize (intselect, alpha){
             })
           })
         })
-      }
+    }
 
 
 
@@ -427,7 +426,7 @@ function generatePie (inttosee){
       if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[inttosee].length-1)){
         string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle));
       } else if (angle>Math.PI){
-        string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+        string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle) - 0.6*textpos.right + 0.6*textpos.left);
       } else {
         string += (coefeloign(inttosee,d) * outerRadius * Math.sin(angle));
       }
@@ -443,6 +442,15 @@ function generatePie (inttosee){
         return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
       }     
     })
+
+    var groups = d3.selectAll("g.loby"+(intselect+1));
+    console.log(groups)
+    groups.each(function (){
+      group = d3.select(this);
+      console.log(group)
+      removeUselessIlabel(group);
+    })
+
 }
 
 CONST.RESULT = {};
@@ -768,7 +776,7 @@ function pieToCircles (intselect, beta){
           if ((angle>Math.PI) && (d.index>4) && (d.index===CONST.ALLPIEZEDDATA[intselect].length-1) && (choices.length!==0)){
             string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle));
           } else if (angle>Math.PI){
-            string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle) - textpos.right + textpos.left);
+            string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle) - 0.6*textpos.right + 0.6*textpos.left);
           } else {
             string += ((coefeloign(intselect,d)-0.4*beta) * outerRadius * Math.sin(angle));
           }

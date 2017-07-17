@@ -12,7 +12,7 @@ svg foreignObject.arctext > p {
   font-family: 'Open Sans';
   font-size: 13px;
   font-weight: bold;
-  border: solid rgba(0,20,80,0.2) 1px;
+  margin: 1px;
 }
 
 svg g.BADGE > text {
@@ -51,6 +51,10 @@ svg g > foreignObject.arctext {
   overflow: visible;
 }
 
+svg foreignObject.cartouche {
+  pointer-events: none;
+}
+
 svg foreignObject.cartouche > h1 {
   background-color: rgba(50,50,50,0.6);
   font-size: 15px;
@@ -67,8 +71,10 @@ svg foreignObject.cartouche > p {
   padding: 5px;
 }
 
-svg foreignObject.cartouche {
-  pointer-events: none;
+img.information {
+  height: 18px;
+  width: 18px;
+  pointer-events: auto;
 }
 
 #vue svg {

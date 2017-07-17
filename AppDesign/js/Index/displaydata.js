@@ -51,7 +51,7 @@ CONST.HOVERTEXT.pluriel[3] = "organisations qui sont de même type et ont la mê
 CONST.HOVERTEXT.pluriel[4] = "organisations qui sont du même secteur, même type et même position que vous proviennent de cette région";
 CONST.HOVERTEXT.width = 120;
 CONST.HOVERTEXT.height = 80;
-function createHoverText(intselect,d,i,x,y){
+function createHoverCircleText(intselect,d,i,x,y){
   // Condition 1 pour ne pas avoir de cartouche à la section des noms
   // Condition 2 pour éviter des affichages de cartouches parasites
   if (intselect<5 && intselect===currentIndex-5){
@@ -61,7 +61,7 @@ function createHoverText(intselect,d,i,x,y){
       .attr("height", CONST.HOVERTEXT.height)
       .attr("x", x)
       .attr("y", y)
-      .attr("opacity",0)
+      .attr("opacity", 0)
   if (CONST.ALLPIEZEDDATA[intselect][i].data===1){
     foreign.html("<h1>"+ CONST.ALLPIEZEDDATA[intselect][i].data +"</h1><p>"+ CONST.HOVERTEXT.singulier[intselect] +"</p>");
   } else {
@@ -71,8 +71,35 @@ function createHoverText(intselect,d,i,x,y){
   }
 }
 
+function createHoverIlabelText(intselect,group,x,y){
+  var foreign = svg.append("foreignObject")
+      .attr("class", "cartouche")
+      .attr("width", CONST.HOVERTEXT.width)
+      .attr("height", CONST.HOVERTEXT.height)
+      .attr("x", x)
+      .attr("y", y)
+      .attr("opacity", 0)
+      .html(function (){
+        var string = "";
+        if (CONST.NOMSDEPLOYES[group.select("p").text()]){
+          string += "<p>"+CONST.NOMSDEPLOYES[group.select("p").text()]+"</p>";
+        } else {
+          string += "";
+        }
+        return string;
+      })
+  foreign.transition().duration(0.5*CONST.TIMETRANSITION).attr("opacity", 1);
+}
+
+function removeUselessIlabel (group){
+  if (CONST.NOMSDEPLOYES[group.select("p").text()]){
+    // On ne fait rien
+  } else {
+    group.select("img.information").style("display", "none");
+  }
+}
+
 function removeHoverText(){
-  d3.selectAll("foreignObject.cartouche").transition().duration(CONST.TIMETRANSITION).attr("opacity", 0);
   d3.selectAll("foreignObject.cartouche").remove()
   //setTimeout(function(){d3.selectAll("foreignObject").remove()}, 0.51*CONST.TIMETRANSITION);
 }
@@ -84,6 +111,8 @@ function hoverize (intselect, alpha){
   // On s'assure que les autres éléments n'ont pas d'hoverize
   d3.selectAll("g.arc").on("mouseover", function(){});
   d3.selectAll("g.arc").on("mouseout", function(){});
+  d3.selectAll("img.information").on("mouseover", function(){});
+  d3.selectAll("img.information").on("mouseout", function(){});
   if (alpha>=1){
 
     cercles.on("mouseover", function (d,i){
@@ -100,7 +129,7 @@ function hoverize (intselect, alpha){
         .duration(0.5*CONST.TIMETRANSITION)
         .attr("fill", "gray");
 
-      createHoverText(intselect,d,i,x,y);
+      createHoverCircleText(intselect,d,i,x,y);
 
       cercles.on("mouseout", function (d,i){
         var avirer = d3.selectAll("g.arc:not(.cercle"+i+").loby"+intselect);
@@ -125,6 +154,23 @@ function hoverize (intselect, alpha){
       })
 
     })
+
+    if (intselect===0 || intselect===2 || intselect===3){
+        var groups = d3.selectAll("g.loby"+intselect)
+        groups.each(function (group){
+          var group = d3.select(this)
+          removeUselessIlabel(group);
+          var itag = group.select("img.information");
+          itag.on("mouseover", function (){
+            var x = d3.mouse(svg.node())[0];
+            var y = d3.mouse(svg.node())[1];
+            createHoverIlabelText(intselect,group,x,y);
+            itag.on("mouseout", function (){
+              removeHoverText();
+            })
+          })
+        })
+      }
 
 
 
@@ -391,7 +437,11 @@ function generatePie (inttosee){
       return string;
     })
     .html(function (d,i){
-      return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
+      if (inttosee===2 || inttosee===3){
+        return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p><img src='img/i.svg' class='information loby"+inttosee+"'/>"
+      } else {
+        return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
+      }     
     })
 }
 

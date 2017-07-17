@@ -49,7 +49,7 @@ function getFullName(x){
 
 function valueNAN(x){
   if (x==="NaN" || x==="" || x===NaN){
-    return "Non renseigné";
+    return "Non renseigné dans le rapport";
   } else {
     return x;
   }

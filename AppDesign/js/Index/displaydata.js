@@ -443,7 +443,7 @@ function generatePie (inttosee){
       }     
     })
 
-    var groups = d3.selectAll("g.loby"+(intselect+1));
+    var groups = d3.selectAll("g.loby"+(inttosee));
     console.log(groups)
     groups.each(function (){
       group = d3.select(this);
@@ -476,7 +476,7 @@ function generateResult (){
   CONST.RESULT.D3.append("image")
                   .attr("x", CONST.RESULT.x)
                   .attr("y", CONST.RESULT.y)
-                  .attr("href", "img/fichebleue.png")
+                  .attr("href", "img/ficheverte.png")
                   .attr("width", CONST.RESULT.width)
                   .attr("height", CONST.RESULT.height)
 
@@ -677,34 +677,26 @@ function manageSec5 (pos){
       alpha = alphasteps[i];
     }
   }
+  var deltafiche = CONST.FICHE.TOPPOS - CONST.FICHE.height + deltay + deltay2;
+  var deltabadge = CONST.BADGE.TOPPOS - CONST.BADGE.height - CONST.BADGE.y;
   if (alpha<=0){
     // On s'assure que la fiche est invisible
     CONST.QUEST.D3.select("image").attr("y", CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
     moveFiche(-deltay-deltay2);
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y);
-    CONST.BADGE.D3.select("text")
-                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
-    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
-      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
-    }) 
     CONST.BADGE.D3.select(".point")
-          .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height)
     // Le point suit la fiche
   } else if (alpha<=alphasteps[1]){
     // On déplace la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
     CONST.QUEST.D3.select("image").attr("y", (1-beta)*CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
-    moveFiche(-deltay-deltay2-beta*CONST.VUE.HEIGHT);
+    moveFiche(-deltay-deltay2+beta*deltafiche);
     CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.y-beta*CONST.VUE.HEIGHT);
-    CONST.BADGE.D3.select("text")
-                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
-    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
-      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
-    }) 
+                  .attr("y", CONST.BADGE.y+beta*deltabadge);
     CONST.BADGE.D3.select(".point")
-          .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height)
     // On rend invisible l'#answer p.theme
     d3.select("p.theme").style("display", "none");
     // On s'assure que les cercles sont invisibles
@@ -712,16 +704,11 @@ function manageSec5 (pos){
   } else if (alpha<=1){
     // On s'assure que la fiche est à sa place
     CONST.QUEST.D3.select("image").attr("y", CONST.QUEST.FICHE.y);
-    moveFiche(-deltay-deltay2-CONST.VUE.HEIGHT);
+    moveFiche(CONST.FICHE.TOPPOS - CONST.FICHE.height);
     CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.y-CONST.VUE.HEIGHT);
-    CONST.BADGE.D3.select("text")
-                  .attr("y", CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y"))-CONST.VUE.HEIGHT);
-    CONST.BADGE.D3.selectAll("tspan").each(function (d,i){
-      d3.select(this).attr("y", i*CONST.BADGE.TEXT.textmargin+CONST.BADGE.TEXT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y"))-CONST.VUE.HEIGHT)
-    }) 
+                  .attr("y", CONST.BADGE.TOPPOS - CONST.BADGE.height);
     CONST.BADGE.D3.select(".point")
-          .attr("cy", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.8*CONST.FICHE.height-CONST.VUE.HEIGHT)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height-CONST.VUE.HEIGHT)
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
     CONST.QUEST.ARCS[0].attr("opacity", beta);

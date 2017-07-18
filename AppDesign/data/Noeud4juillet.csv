@@ -1,4 +1,4 @@
-ID,Lobby ID,Nom1,Nom2,Pays/Région,Type,Secteurs d’activité,Dépenses Lobby (€),Personnes impliquées,Equivalent Temps plein,Réduction 40%,Efficacité énergétique,Gaz de schiste,Energies renouvelables
+ID,Lobby ID,Nom1,Nom2,Pays/Région,Type,Secteurs d’activité,Dépenses Lobby (€),Personnes impliquées,Equivalent Temps plein,Emission <40 %,Efficacité énergétique,"Gaz de schiste, charbon, etc.",Energies renouvelables
 1,74535104992-35,Green Budget Europe,,Europe,ONG,Intérêts public environnementaux,223889,2,1.0,SUPPORT,SUPPORT,,SUPPORT
 2,1651695283-80,INFORSE-Europe,,Europe,ONG,Intérêts public environnementaux,17499,2,1.0,,,,SUPPORT
 3,85103504511-82,ActionAid,,International,ONG,Autres industries/intérêts,226887,3,2.25,,,,SUPPORT

@@ -85,19 +85,20 @@ function createInitFigure (){
 }
 
 function displayInitFigure (){
-  if (document.body.scrollTop===0){
-    createInitFigure();
-    setupFiche();
-    setupBadge();
-
+  if (currentIndex===0){
     d3.selectAll(".Initfig")
+      .style("display", "block")
       .transition()
       .duration(1000)
       .attr("opacity", 1);
   } else {
-   /* if (CONST.FIGINIT.TITRE.D3.attr("opacity") === "1"){
-      setTimeout( function (){d3.selectAll(".Initfig").remove();}, 1200 )
-    }*/
+    if (CONST.FIGINIT.TITRE.D3.attr("opacity") === "1"){
+      d3.selectAll(".Initfig")
+        .transition()
+        .duration(1000)
+        .attr("opacity", 0);
+      setTimeout( function (){d3.selectAll(".Initfig").style("display", "none");}, 1200 )
+    }
     // On n'affiche pas le texte SCROLL
     d3.select(window).on("click", function (){})
   }
@@ -429,3 +430,8 @@ function manageBadgeSec4 (){
     d3.select("p.fonction").style("display", "none");
   }
 }
+
+// Appels à faire au début
+createInitFigure();
+setupFiche();
+setupBadge();

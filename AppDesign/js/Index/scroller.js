@@ -44,7 +44,6 @@ function position() {
     // Mise en place des modifications de la vue : changement de couleur
     majvue.call(this, sectionIndex, prevIndex);
   }
-  displayInitFigure();
   scrollAnim(currentIndex, pos);
   visiblelink();
 }
@@ -52,6 +51,9 @@ function position() {
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
 function majvue(index,preced) {
+  if (index===0 || index===1){
+    displayInitFigure();
+  }
   // Déplacement du point entre les sections 3 et 4
   manageBadgeSec4();
   // Traitement du scroll arrière

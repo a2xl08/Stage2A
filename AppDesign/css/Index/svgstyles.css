@@ -100,3 +100,18 @@ svg g.result > text > tspan.item {
   font-family: 'Antique Olive Roman';
   font-size: 13px;
 }
+
+.linktext {
+  fill: yellow;
+  font-size: 20px;
+}
+
+.linktext:hover {
+  fill: yellow;
+  text-decoration: none;
+}
+
+.linktext:visited {
+  fill: yellow;
+  text-decoration: none;
+}

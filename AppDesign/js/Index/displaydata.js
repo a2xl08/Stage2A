@@ -444,10 +444,8 @@ function generatePie (inttosee){
     })
 
     var groups = d3.selectAll("g.loby"+(inttosee));
-    console.log(groups)
     groups.each(function (){
       group = d3.select(this);
-      console.log(group)
       removeUselessIlabel(group);
     })
 
@@ -462,9 +460,17 @@ CONST.RESULT.titlepos = {x: 0.32*CONST.VUE.WIDTH,y: 0.2*CONST.VUE.HEIGHT};
 CONST.RESULT.parag1pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.35*CONST.VUE.HEIGHT};
 CONST.RESULT.parag2pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.52*CONST.VUE.HEIGHT};
 CONST.RESULT.parag3pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.69*CONST.VUE.HEIGHT};
-CONST.RESULT.pastitle = 15;
+CONST.RESULT.pastitle = 25;
 CONST.RESULT.pas = 22;
 CONST.RESULT.tabulation = 20;
+CONST.RESULT.LINK = {};
+CONST.RESULT.LINK.x = 0.4*CONST.VUE.WIDTH;
+CONST.RESULT.LINK.y = 0.4*CONST.VUE.HEIGHT;
+CONST.RESULT.LINK.width = 0.3*CONST.VUE.WIDTH;
+CONST.RESULT.LINK.height = 0.2*CONST.VUE.HEIGHT;
+CONST.RESULT.LINK.texte = "Entrez dans le réseau !";
+CONST.RESULT.LINK.textdx = 0.2*CONST.RESULT.LINK.width;
+CONST.RESULT.LINK.textdy = 0.52*CONST.RESULT.LINK.height;
 // Génération du résultat final s'il est connu
 function generateResult (){
   // nbloby === 1
@@ -484,16 +490,34 @@ function generateResult (){
                   .attr("class", "title")
                   .attr("x", CONST.RESULT.titlepos.x)
                   .attr("y", CONST.RESULT.titlepos.y)
+  var titrecoupe = [];
+  titrecoupe[0] = user["Nom1"].split(" ").slice(0,3).join(" ");
+  titrecoupe[1] = user["Nom1"].split(" ").slice(4).join(" ");
+
   title.append("tspan")
         .attr("class", "mainname")
         .attr("x", Number(d3.select("text.title").attr("x")))
         .attr("y", Number(d3.select("text.title").attr("y")))
-        .text(user["Nom1"])
+        .text(titrecoupe[0])
   title.append("tspan")
+        .attr("class", "mainname")
+        .attr("x", Number(d3.select("text.title").attr("x")))
+        .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle)
+        .text(titrecoupe[1])
+  if (titrecoupe[1]){
+    title.append("tspan")
+        .attr("class", "fullname")
+        .attr("x", Number(d3.select("text.title").attr("x")))
+        .attr("y", Number(d3.select("text.title").attr("y"))+2*CONST.RESULT.pastitle)
+        .text(user["Nom2"])
+  } else {
+    title.append("tspan")
         .attr("class", "fullname")
         .attr("x", Number(d3.select("text.title").attr("x")))
         .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle)
         .text(user["Nom2"])
+  } 
+  
 
   var parag1 = CONST.RESULT.D3.append("text")
                   .attr("class", "parag1")
@@ -582,6 +606,25 @@ function generateResult (){
   d3.select("p.secteur").style("display", "block");
   d3.select("p.country").style("display", "block");
   d3.select("p.nom").style("display", "block");
+
+  // Création du lien vers le réseau
+  CONST.RESULT.D3.append("image")
+              .attr("class", "link")
+              .attr("x", CONST.RESULT.LINK.x)
+              .attr("y", CONST.RESULT.LINK.y)
+              .attr("width", CONST.RESULT.LINK.width)
+              .attr("height", CONST.RESULT.LINK.height)
+              .attr("href", "img/etiquette.svg")
+              .attr("display", "none")
+  CONST.RESULT.D3.append("svg:a")
+              .attr("class", "link")
+              .attr("display", "none")
+              .attr("href", "")
+              .append("text")
+              .attr("class", "linktext")
+              .attr("x", CONST.RESULT.LINK.x + CONST.RESULT.LINK.textdx)
+              .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.textdy)
+              .text(CONST.RESULT.LINK.texte);
 }
 
 function eraseResult(){

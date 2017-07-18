@@ -227,6 +227,14 @@ function circleonclick (intselect,i){
           return string;
         })
 
+    // Si l'élément est le dernier cercle, on lui donne la couleur user
+    if (CONST.ALLPIEZEDDATA[CONST.ALLPIEZEDDATA.length-1][i].data===1){
+      selected.select("path").transition().duration(CONST.TIMETRANSITION).attr("fill", "rgb(0,255,165)")
+        .attr("d", arc.outerRadius(function (){
+          return outerRadius;
+        }))
+    }
+
     // Mémorisation du choix utilisateur
       var indice = Number(selected.attr("class")[10]);
       choices.push(CONST.ALLTHEMELIST[intselect][indice]);
@@ -453,7 +461,7 @@ function generatePie (inttosee){
 
 CONST.RESULT = {};
 CONST.RESULT.width = 0.45*CONST.VUE.WIDTH;
-CONST.RESULT.height = 1.3744*CONST.RESULT.width;
+CONST.RESULT.height = 1.3*CONST.RESULT.width;
 CONST.RESULT.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.RESULT.width;
 CONST.RESULT.y = 0.07*CONST.VUE.HEIGHT;
 CONST.RESULT.titlepos = {x: 0.32*CONST.VUE.WIDTH,y: 0.2*CONST.VUE.HEIGHT};
@@ -471,6 +479,8 @@ CONST.RESULT.LINK.height = 0.2*CONST.VUE.HEIGHT;
 CONST.RESULT.LINK.texte = "Entrez dans le réseau !";
 CONST.RESULT.LINK.textdx = 0.2*CONST.RESULT.LINK.width;
 CONST.RESULT.LINK.textdy = 0.52*CONST.RESULT.LINK.height;
+CONST.RESULT.morphing = {};
+CONST.RESULT.morphing.N = 100;
 // Génération du résultat final s'il est connu
 function generateResult (){
   // nbloby === 1
@@ -625,6 +635,16 @@ function generateResult (){
               .attr("x", CONST.RESULT.LINK.x + CONST.RESULT.LINK.textdx)
               .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.textdy)
               .text(CONST.RESULT.LINK.texte);
+
+  // Création des paths tabs SVG pour le morphing
+  CONST.RESULT.morphing.circletab = createCircleTab(CONST.RESULT.morphing.N, 0.5*CONST.VUE.WIDTH, 0.5*CONST.VUE.HEIGHT, outerRadius);
+  CONST.RESULT.morphing.recttab = createRectTab(CONST.RESULT.morphing.N, CONST.RESULT.x, CONST.RESULT.y, CONST.RESULT.width, CONST.RESULT.height);
+  CONST.RESULT.morphing.interpolator = d3.interpolateArray(CONST.RESULT.morphing.circletab, CONST.RESULT.morphing.recttab);
+  console.log(CONST.RESULT.morphing.circletab);
+  console.log(CONST.RESULT.morphing.recttab);
+
+  // Création du path SVG
+  CONST.RESULT.morphing.D3 = svg.append("path").attr("class", "morphing").attr("opacity", 0).attr("fill", "rgb(0,255,165)");
 }
 
 function eraseResult(){
@@ -872,6 +892,51 @@ function manageSecX (intselect,pos){
   clickable(intselect,alpha);
 }
 
+// Ici on écrit les fonctions pour gérer le morphing final
+
+// La liste des N points associés à un rectangle. 
+function createRectTab (N,x,y,width,height){
+  var path = [];
+  var pointsperline = Math.floor(N/4);
+  var pasx = width/pointsperline;
+  var pasy = height/pointsperline;
+  for (var i=0; i<pointsperline; i++){
+    path.push( [x+i*pasx, y] );
+  } for (var i=0; i<pointsperline; i++){
+    path.push( [x+width, y+i*pasy] );
+  } for (var i=0; i<pointsperline; i++){
+    path.push( [x+width-i*pasx, y+height] );
+  } for (var i=0; i<pointsperline; i++){
+    path.push( [x, y+height-i*pasy] );
+  } // On s'assure qu'il y ait exactement N points
+  for (var i=0; i<N%4; i++){
+    path.push([x,y]);
+  }
+  return path;
+}
+
+// La liste des N points associés à un cercle
+function createCircleTab (N,cx,cy,r){
+  var path=[];
+  for (var i=0; i<N; i++){
+    var angle = 2*Math.PI*i/N;
+    path.push( [cx+r*Math.cos(angle), cy+r*Math.sin(angle)] );
+  }
+  return path;
+}
+
+// La fonction qui étant donné un path et un tableau crée le svg correspondant
+function applyTabToPath (selection, tab){
+  selection.attr("d", function (){
+    string = "M"+tab[0][0]+","+tab[0][1];
+    for (var i=1; i<tab.length; i++){
+      string += "L"+tab[i][0]+","+tab[i][1];
+    }
+    string += "Z";
+    return string;
+  })
+}
+
 function displayResult(intselect,pos){
   var startsection = sectionPositions[4+intselect];
   var alpha = (pos - startsection)/scrollheight;
@@ -883,17 +948,18 @@ function displayResult(intselect,pos){
     }
   }
   var old = d3.selectAll("g.loby"+(intselect-1));
-  var newer = d3.select("g.result")
-  var fich = d3.select("g.quest").select(".fiche")
+  var newer = d3.select("g.result");
   if (alpha<=0){
-    transitOpacity(old,newer,0);
-    fich.attr("opacity", 1);
+    old.attr("opacity",1);
+    CONST.RESULT.morphing.D3.attr("opacity", 0);
   } else if (alpha<=1){
-    transitOpacity(old,newer,alpha);
-    fich.attr("opacity", 1-alpha);
+    old.attr("opacity", 0);
+    CONST.RESULT.morphing.D3.attr("opacity", 1);
+    applyTabToPath(CONST.RESULT.morphing.D3, CONST.RESULT.morphing.interpolator(alpha))
+    newer.attr("opacity", 0);
   } else {
-    transitOpacity(old,newer,1);
-    fich.attr("opacity", 0);
+    newer.attr("opacity", 1);
+    CONST.RESULT.morphing.D3.attr("opacity", 0);
   }
 }
 

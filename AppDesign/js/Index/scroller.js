@@ -85,6 +85,8 @@ function majvue(index,preced) {
           resetcircles(index-5);
           cancelChoiceAnswer(index-5);
     }
+    // On s'assure que l'élément morphing est disparu
+    d3.selectAll(".morphing").remove();
   }
 }
 

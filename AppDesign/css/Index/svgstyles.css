@@ -98,7 +98,7 @@ svg g.result > text > tspan.paragtitle {
 
 svg g.result > text > tspan.item {
   font-family: 'Antique Olive Roman';
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .linktext {
@@ -114,4 +114,8 @@ svg g.result > text > tspan.item {
 .linktext:visited {
   fill: orange;
   text-decoration: none;
+}
+
+.morphing {
+  pointer-events: none;
 }

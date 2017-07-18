@@ -102,16 +102,16 @@ svg g.result > text > tspan.item {
 }
 
 .linktext {
-  fill: yellow;
+  fill: orange;
   font-size: 20px;
 }
 
 .linktext:hover {
-  fill: yellow;
+  fill: orange;
   text-decoration: none;
 }
 
 .linktext:visited {
-  fill: yellow;
+  fill: orange;
   text-decoration: none;
 }

@@ -421,6 +421,8 @@ function generatePie (inttosee){
     .attr("fill", function (d,i){
       return color(i);
     })
+    .attr("stroke", "black")
+    .attr("stroke-width", 3)
 
   CONST.QUEST.ARCS[inttosee].append("foreignObject")
     .attr("class", "arctext")
@@ -644,7 +646,12 @@ function generateResult (){
   console.log(CONST.RESULT.morphing.recttab);
 
   // Création du path SVG
-  CONST.RESULT.morphing.D3 = svg.append("path").attr("class", "morphing").attr("opacity", 0).attr("fill", "rgb(0,255,165)");
+  CONST.RESULT.morphing.D3 = svg.append("path")
+                      .attr("class", "morphing")
+                      .attr("opacity", 0)
+                      .attr("fill", "rgb(0,255,165)")
+                      .attr("stroke-width", 3)
+                      .attr("stroke", "black");
 }
 
 function eraseResult(){
@@ -957,6 +964,7 @@ function displayResult(intselect,pos){
     CONST.RESULT.morphing.D3.attr("opacity", 1);
     applyTabToPath(CONST.RESULT.morphing.D3, CONST.RESULT.morphing.interpolator(alpha))
     newer.attr("opacity", 0);
+    CONST.RESULT.morphing.D3.attr("stroke", "rgba(0,0,0,"+(1-alpha)+")")
   } else {
     newer.attr("opacity", 1);
     CONST.RESULT.morphing.D3.attr("opacity", 0);

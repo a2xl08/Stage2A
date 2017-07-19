@@ -749,7 +749,7 @@ function manageSec5 (pos){
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y);
     CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
     // Le point suit la fiche
   } else if (alpha<=alphasteps[1]){
     // On déplace la fiche
@@ -759,7 +759,7 @@ function manageSec5 (pos){
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.y+beta*deltabadge);
     CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
     // On rend invisible l'#answer p.theme
     d3.select("p.theme").style("display", "none");
     // On s'assure que les cercles sont invisibles
@@ -771,7 +771,7 @@ function manageSec5 (pos){
     CONST.BADGE.D3.select(".badge")
                   .attr("y", CONST.BADGE.TOPPOS - CONST.BADGE.height);
     CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height-CONST.VUE.HEIGHT)
+          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height-CONST.VUE.HEIGHT)
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
     CONST.QUEST.ARCS[0].attr("opacity", beta);

@@ -141,9 +141,9 @@ CONST.FICHE.TOPPOS = 20;
 var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
 CONST.FICHE.COMMISSION = {};
 CONST.FICHE.COMMISSION.dx = 0.5*CONST.FICHE.width;
-CONST.FICHE.COMMISSION.dy = 0.2*CONST.FICHE.height;
-CONST.FICHE.COMMISSION.width = 200*CONST.FICHE.height/763; // oui c'est bien height !
-CONST.FICHE.COMMISSION.height = 200*CONST.FICHE.height/763;
+CONST.FICHE.COMMISSION.dy = 0.23*CONST.FICHE.height;
+CONST.FICHE.COMMISSION.width = 155*CONST.FICHE.height/763; // oui c'est bien height !
+CONST.FICHE.COMMISSION.height = 155*CONST.FICHE.height/763;
 CONST.FICHE.CONSULTATION = {};
 CONST.FICHE.CONSULTATION.dx = 0.5*CONST.FICHE.width;
 CONST.FICHE.CONSULTATION.dy = 0.37*CONST.FICHE.height;
@@ -151,12 +151,12 @@ CONST.FICHE.CONSULTATION.width = CONST.FICHE.COMMISSION.width;
 CONST.FICHE.CONSULTATION.height = CONST.FICHE.COMMISSION.height;
 CONST.FICHE.FLECHE = {};
 CONST.FICHE.FLECHE.dx = 0.5*CONST.FICHE.width;
-CONST.FICHE.FLECHE.dy = 0.57*CONST.FICHE.height;
+CONST.FICHE.FLECHE.dy = 0.525*CONST.FICHE.height;
 CONST.FICHE.FLECHE.width = CONST.FICHE.COMMISSION.width;
 CONST.FICHE.FLECHE.height = CONST.FICHE.COMMISSION.height;
 CONST.FICHE.ORGS = {};
 CONST.FICHE.ORGS.dx = 0.5*CONST.FICHE.width;
-CONST.FICHE.ORGS.dy = 0.76*CONST.FICHE.height;
+CONST.FICHE.ORGS.dy = 0.675*CONST.FICHE.height;
 CONST.FICHE.ORGS.width = 2*CONST.FICHE.COMMISSION.width;
 CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
 
@@ -409,7 +409,7 @@ function moveBlackPoint (move){
                   .transition()
                   .duration(4*CONST.TIMETRANSITION)
                   .attr("x", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.493*CONST.FICHE.width)
-                  .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.79*CONST.FICHE.height)
+                  .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
                   .attr("r", 5);
     } else {
       console.log("erreur sur l'argument r, relisez le code !")

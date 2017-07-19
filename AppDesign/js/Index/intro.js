@@ -165,7 +165,7 @@ d3.select(window).on("click", function (){
 // Section 1 : Données sur les éléments de positionnement
 // de la Fiche
 CONST.FICHE = {};
-CONST.FICHE.width = CONST.VUE.WIDTH; 
+CONST.FICHE.width = 0.6*CONST.VUE.WIDTH; 
 CONST.FICHE.height = 1.07*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
 // L'écart de taille : utile pour le scroll
 CONST.FICHE.TOPPOS = 20;
@@ -173,8 +173,8 @@ var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
 CONST.FICHE.COMMISSION = {};
 CONST.FICHE.COMMISSION.dx = 0.5*CONST.FICHE.width;
 CONST.FICHE.COMMISSION.dy = 0.23*CONST.FICHE.height;
-CONST.FICHE.COMMISSION.width = 155*CONST.FICHE.height/763; // oui c'est bien height !
-CONST.FICHE.COMMISSION.height = 155*CONST.FICHE.height/763;
+CONST.FICHE.COMMISSION.width = 175*CONST.FICHE.height/763; // oui c'est bien height*155/763 !
+CONST.FICHE.COMMISSION.height = 175*CONST.FICHE.height/763;
 CONST.FICHE.CONSULTATION = {};
 CONST.FICHE.CONSULTATION.dx = 0.5*CONST.FICHE.width;
 CONST.FICHE.CONSULTATION.dy = 0.37*CONST.FICHE.height;
@@ -182,12 +182,12 @@ CONST.FICHE.CONSULTATION.width = CONST.FICHE.COMMISSION.width;
 CONST.FICHE.CONSULTATION.height = CONST.FICHE.COMMISSION.height;
 CONST.FICHE.FLECHE = {};
 CONST.FICHE.FLECHE.dx = 0.5*CONST.FICHE.width;
-CONST.FICHE.FLECHE.dy = 0.525*CONST.FICHE.height;
+CONST.FICHE.FLECHE.dy = 0.535*CONST.FICHE.height;
 CONST.FICHE.FLECHE.width = CONST.FICHE.COMMISSION.width;
 CONST.FICHE.FLECHE.height = CONST.FICHE.COMMISSION.height;
 CONST.FICHE.ORGS = {};
 CONST.FICHE.ORGS.dx = 0.5*CONST.FICHE.width;
-CONST.FICHE.ORGS.dy = 0.675*CONST.FICHE.height;
+CONST.FICHE.ORGS.dy = 0.685*CONST.FICHE.height;
 CONST.FICHE.ORGS.width = 2*CONST.FICHE.COMMISSION.width;
 CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
 
@@ -196,16 +196,18 @@ function setupFiche(){
   CONST.FICHE.D3 = svg.append("g")
       .attr("class", "FICHE")
       //.attr("opacity", 0)
-  CONST.FICHE.D3.append("image")
+  CONST.FICHE.D3.append("rect")
       .attr("class", "fiche")
-      .attr("x", 0)
-      .attr("y", CONST.VUE.HEIGHT)
-      .attr("href", "img/fichebeige.png")
+      .attr("x", 0.5*CONST.VUE.WIDTH - 0.5*CONST.FICHE.width)
+      .attr("y", 0.9*CONST.VUE.HEIGHT)
       .attr("width", CONST.FICHE.width)
       .attr("height", CONST.FICHE.height)
+      .attr("stroke-width", CONST.strokewidth)
+      .attr("stroke", "black")
+      .attr("fill", "rgb(200,200,200)")
   CONST.FICHE.D3.append("image")
       .attr("class", "commission")
-      .attr("x", CONST.FICHE.COMMISSION.dx - 0.5*CONST.FICHE.COMMISSION.width)
+      .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.COMMISSION.dx - 0.5*CONST.FICHE.COMMISSION.width)
       .attr("y", CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height)
       .attr("href", "img/Commission.svg")
       .attr("width", CONST.FICHE.COMMISSION.width)
@@ -213,7 +215,7 @@ function setupFiche(){
       .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "consultation")
-      .attr("x", CONST.FICHE.CONSULTATION.dx - 0.5*CONST.FICHE.CONSULTATION.width)
+      .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.CONSULTATION.dx - 0.5*CONST.FICHE.CONSULTATION.width)
       .attr("y", CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height)
       .attr("href", "img/Consultation.svg")
       .attr("width", CONST.FICHE.CONSULTATION.width)
@@ -221,7 +223,7 @@ function setupFiche(){
       .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "fleche")
-      .attr("x", CONST.FICHE.FLECHE.dx - 0.5*CONST.FICHE.FLECHE.width)
+      .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.FLECHE.dx - 0.5*CONST.FICHE.FLECHE.width)
       .attr("y", CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
       .attr("href", "img/fleche.svg")
       .attr("width", CONST.FICHE.FLECHE.width)
@@ -229,9 +231,9 @@ function setupFiche(){
       .attr("opacity", 0);
   CONST.FICHE.D3.append("image")
       .attr("class", "organisation")
-      .attr("x", CONST.FICHE.ORGS.dx - 0.5*CONST.FICHE.ORGS.width)
+      .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.ORGS.dx - 0.5*CONST.FICHE.ORGS.width)
       .attr("y", CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
-      .attr("href", "img/Organisations2.svg")
+      .attr("href", "img/Organisation.svg")
       .attr("width", CONST.FICHE.ORGS.width)
       .attr("height", CONST.FICHE.ORGS.height)
       .attr("opacity", 0);

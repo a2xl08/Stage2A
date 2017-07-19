@@ -20,20 +20,16 @@ svg g.BADGE > text {
   font-size: 25px;
 }
 
-svg text.Titre {
+svg.Initfig text.titre {
   font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
-  fill: white;
+  fill: black;
   font-size: 20px;
 }
 
-svg text.Initfig.texte {
+svg.Initfig text.texte {
   font-family: 'Open Sans', Arial, sans-serif;
-  fill: white;
+  fill: black;
   font-size: 15px;
-}
-
-svg line.Initfig {
-  stroke: white;
 }
 
 svg text.scroll {

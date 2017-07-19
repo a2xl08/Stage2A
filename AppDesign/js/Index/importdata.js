@@ -14,7 +14,7 @@ var svg = d3.select("#vue")
         .append("svg")
         .attr("width", CONST.VUE.WIDTH)
         .attr("height", CONST.VUE.HEIGHT);
-var pie = d3.pie();;
+var pie = d3.pie();
 var nbthemes;
 CONST.ALLTHEMELIST = [];
 CONST.ALLDATAFILTRE = [];

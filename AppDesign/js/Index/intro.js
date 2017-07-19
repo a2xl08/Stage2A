@@ -11,7 +11,14 @@ function abTo01(a,b,x){
 }
 
 // Création des données de la figure initiale
+CONST.strokewidth = 8;
 CONST.FIGINIT = {};
+CONST.FIGINIT.textpadding = 5;
+CONST.FIGINIT.RECT = {};
+CONST.FIGINIT.RECT.x = 0.15*CONST.VUE.WIDTH;
+CONST.FIGINIT.RECT.y = 0.15*CONST.VUE.HEIGHT;
+CONST.FIGINIT.RECT.width = CONST.VUE.WIDTH;
+CONST.FIGINIT.RECT.height = CONST.VUE.HEIGHT;
 CONST.FIGINIT.TITRE = {
   x: function (){
          var textpos = this.getBoundingClientRect();
@@ -23,29 +30,29 @@ CONST.FIGINIT.TITRE = {
 }
 CONST.FIGINIT.POINTS = [
   {
-    x: 0.5*CONST.VUE.WIDTH,
-    y: 0.75*CONST.VUE.HEIGHT,
+    x: 0.5*CONST.FIGINIT.RECT.width,
+    y: 0.75*CONST.FIGINIT.RECT.height,
     dx: 30,
     dy: -20,
     text: "Lobby"
   }, 
   {
-    x: 0.25*CONST.VUE.WIDTH,
-    y: 0.66*CONST.VUE.HEIGHT,
+    x: 0.25*CONST.FIGINIT.RECT.width,
+    y: 0.66*CONST.FIGINIT.RECT.height,
     dx: 60,
     dy: -5,
     text: "Réseau"
   }, 
   {
-    x: 0.45*CONST.VUE.WIDTH,
-    y: 0.3*CONST.VUE.HEIGHT,
+    x: 0.45*CONST.FIGINIT.RECT.width,
+    y: 0.3*CONST.FIGINIT.RECT.height,
     dx: 0,
     dy: 10,
     text: "Climat"
   }, 
   {
-    x: 0.7*CONST.VUE.WIDTH,
-    y: 0.69*CONST.VUE.HEIGHT,
+    x: 0.7*CONST.FIGINIT.RECT.width,
+    y: 0.69*CONST.FIGINIT.RECT.height,
     dx: -5,
     dy: -5,
     text: "Europe"
@@ -54,43 +61,67 @@ CONST.FIGINIT.POINTS = [
 
 
 function createInitFigure (){
-  CONST.FIGINIT.TITRE.D3 = svg.append("text")
-    .attr("class", CONST.FIGINIT.TITRE.class)
-    .text(CONST.FIGINIT.TITRE.text)
-  CONST.FIGINIT.TITRE.D3
-    .attr("x", CONST.FIGINIT.TITRE.x)
-    .attr("y", CONST.FIGINIT.TITRE.y)
-    .attr("opacity", 0)
-  CONST.FIGINIT.POINTS.forEach(function (p){
-    p.D3 = svg.append("text")
-          .text(p.text)
-          .attr("class", "Initfig texte")
-          .attr("x", p.x)
-          .attr("y", p.y)
-          .attr("opacity", 0)
-  })
+  CONST.FIGINIT.D3 = svg.append("svg")
+                  .attr("class", "Initfig")
+                  .attr("x", 0.7*CONST.VUE.WIDTH)
+                  .attr("y", 0.7*CONST.VUE.HEIGHT)
+                  .attr("width", CONST.FIGINIT.RECT.width)
+                  .attr("height", CONST.FIGINIT.RECT.height)
+  CONST.FIGINIT.D3.append("rect")
+                  .attr("class", "fond")
+                  .attr("x", 0)
+                  .attr("y", 0)
+                  .attr("width", CONST.FIGINIT.RECT.width)
+                  .attr("height", CONST.FIGINIT.RECT.height)
+                  .attr("stroke-width", CONST.strokewidth)
+                  .attr("stroke", "black")
+                  .attr("fill", "gray")
   for (var i=0; i<4; i++){
     for (var j=i+1; j<4; j++){
-      svg.append("line")
-        .attr("class", "Initfig")
-        .attr("opacity", 0)
-        .attr("x1", CONST.FIGINIT.POINTS[i].x+CONST.FIGINIT.POINTS[i].dx)
-        .attr("x2", CONST.FIGINIT.POINTS[j].x+CONST.FIGINIT.POINTS[j].dx)
-        .attr("y1", CONST.FIGINIT.POINTS[i].y+CONST.FIGINIT.POINTS[i].dy)
-        .attr("y2", CONST.FIGINIT.POINTS[j].y+CONST.FIGINIT.POINTS[j].dy)
+      CONST.FIGINIT.D3.append("line")
+                    .attr("class", "initline")
+                    .attr("x1", CONST.FIGINIT.POINTS[i].x + CONST.FIGINIT.POINTS[i].dx)
+                    .attr("x2", CONST.FIGINIT.POINTS[j].x + CONST.FIGINIT.POINTS[j].dx)
+                    .attr("y1", CONST.FIGINIT.POINTS[i].y + CONST.FIGINIT.POINTS[i].dy)
+                    .attr("y2", CONST.FIGINIT.POINTS[j].y + CONST.FIGINIT.POINTS[j].dy)
+                    .attr("stroke", "black")
     }
   }
-  CONST.FIGINIT.LINES = {D3: svg.selectAll("line.Initfig")};
-
+  for (var i=0; i<4; i++){
+    var element = CONST.FIGINIT.D3.append("text")
+                    .attr("class", "texte")
+                    .attr("x", CONST.FIGINIT.POINTS[i].x)
+                    .attr("y", CONST.FIGINIT.POINTS[i].y)
+                    .text(CONST.FIGINIT.POINTS[i].text);
+    CONST.FIGINIT.D3.append("rect")
+                    .attr("x", element.attr("x")-CONST.FIGINIT.textpadding)
+                    .attr("y", element.attr("y")-CONST.FIGINIT.textpadding-15)
+                    .attr("width", function (){
+                      var textpos = element.node().getBoundingClientRect();
+                      return textpos.right - textpos.left + 2*CONST.FIGINIT.textpadding;
+                    })
+                    .attr("height", function (){
+                      var textpos = element.node().getBoundingClientRect();
+                      return textpos.bottom - textpos.top + 2*CONST.FIGINIT.textpadding;
+                    })
+                    .attr("stroke-width", CONST.strokewidth)
+                    .attr("stroke", "black")
+                    .attr("fill", "rgba(255,255,255,0)")
+  }
+  CONST.FIGINIT.D3.append("text")
+                  .attr("class", "titre")
+                  .attr("x", CONST.FIGINIT.TITRE.x)
+                  .attr("y", CONST.FIGINIT.TITRE.y)
+                  .text(CONST.FIGINIT.TITRE.text)
+  
 }
 
 function displayInitFigure (){
   if (currentIndex===0){
-    d3.selectAll(".Initfig")
-      .style("display", "block")
-      .transition()
-      .duration(1000)
-      .attr("opacity", 1);
+    CONST.FIGINIT.D3.transition()
+                .duration(CONST.TIMETRANSITION)
+                .attr("x", CONST.FIGINIT.RECT.x)
+                .attr("y", CONST.FIGINIT.RECT.y);
   } else {
     if (CONST.FIGINIT.TITRE.D3.attr("opacity") === "1"){
       d3.selectAll(".Initfig")

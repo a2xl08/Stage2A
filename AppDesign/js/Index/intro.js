@@ -22,37 +22,37 @@ CONST.FIGINIT.RECT.height = CONST.VUE.HEIGHT;
 CONST.FIGINIT.TITRE = {
   x: function (){
          var textpos = this.getBoundingClientRect();
-         return CONST.VUE.WIDTH/2 - (textpos.right - textpos.left)/2
+         return 0.4*CONST.FIGINIT.RECT.width - (textpos.right - textpos.left)/2
        }, 
-  y: CONST.VUE.HEIGHT/2, 
+  y: 0.4*CONST.FIGINIT.RECT.height, 
   class: "Initfig Titre",
   text: "Vi(c)e Organique"
 }
 CONST.FIGINIT.POINTS = [
   {
-    x: 0.5*CONST.FIGINIT.RECT.width,
-    y: 0.75*CONST.FIGINIT.RECT.height,
+    x: 0.4*CONST.FIGINIT.RECT.width,
+    y: 0.65*CONST.FIGINIT.RECT.height,
     dx: 30,
     dy: -20,
     text: "Lobby"
   }, 
   {
-    x: 0.25*CONST.FIGINIT.RECT.width,
-    y: 0.66*CONST.FIGINIT.RECT.height,
+    x: 0.15*CONST.FIGINIT.RECT.width,
+    y: 0.56*CONST.FIGINIT.RECT.height,
     dx: 60,
     dy: -5,
     text: "Réseau"
   }, 
   {
-    x: 0.45*CONST.FIGINIT.RECT.width,
-    y: 0.3*CONST.FIGINIT.RECT.height,
+    x: 0.35*CONST.FIGINIT.RECT.width,
+    y: 0.2*CONST.FIGINIT.RECT.height,
     dx: 0,
     dy: 10,
     text: "Climat"
   }, 
   {
-    x: 0.7*CONST.FIGINIT.RECT.width,
-    y: 0.69*CONST.FIGINIT.RECT.height,
+    x: 0.6*CONST.FIGINIT.RECT.width,
+    y: 0.59*CONST.FIGINIT.RECT.height,
     dx: -5,
     dy: -5,
     text: "Europe"
@@ -119,48 +119,42 @@ function createInitFigure (){
 function displayInitFigure (){
   if (currentIndex===0){
     CONST.FIGINIT.D3.transition()
-                .duration(CONST.TIMETRANSITION)
+                .duration(2*CONST.TIMETRANSITION)
                 .attr("x", CONST.FIGINIT.RECT.x)
                 .attr("y", CONST.FIGINIT.RECT.y);
   } else {
-    if (CONST.FIGINIT.TITRE.D3.attr("opacity") === "1"){
-      d3.selectAll(".Initfig")
-        .transition()
-        .duration(1000)
-        .attr("opacity", 0);
-      setTimeout( function (){d3.selectAll(".Initfig").style("display", "none");}, 1200 )
-    }
     // On n'affiche pas le texte SCROLL
     d3.select(window).on("click", function (){})
   }
 }
 
 // Création du texte SCROLL
-CONST.SCROLL = {
-  text: "SCROLL !",
-  x: 0*CONST.VUE.WIDTH,
-  y: 0.6*CONST.VUE.HEIGHT
-};
-CONST.SCROLL.D3 = svg.append("text")
-                    .attr("class", "scroll")
-                    .text(CONST.SCROLL.text)
-                    .attr("x", CONST.SCROLL.x)
-                    .attr("y", CONST.SCROLL.y)
-                    // 1138 est la taille de VUE sur mon navigateur en plein écran, dans ce cas -> taille 200
-                    .attr("font-size", Math.round(200*CONST.VUE.WIDTH/1138)+"px")
-                    .attr("opacity", 0)
-
-d3.select(window).on("click", function (){
-  if (document.body.scrollTop===0){
-    CONST.SCROLL.D3.attr("opacity", 1);
-  }
-  d3.select(window).on("click", function (){})
-  d3.select(window).on("scroll.scroller", function (){
-    CONST.SCROLL.D3.remove();
-    position();
+function createScrollText (){
+  CONST.SCROLL = {
+    text: "SCROLL !",
+    x: 0*CONST.VUE.WIDTH,
+    y: 0.6*CONST.VUE.HEIGHT
+  };
+  CONST.SCROLL.D3 = svg.append("text")
+                      .attr("class", "scroll")
+                      .text(CONST.SCROLL.text)
+                      .attr("x", CONST.SCROLL.x)
+                      .attr("y", CONST.SCROLL.y)
+                      // 1138 est la taille de VUE sur mon navigateur en plein écran, dans ce cas -> taille 200
+                      .attr("font-size", Math.round(200*CONST.VUE.WIDTH/1138)+"px")
+                      .attr("opacity", 0)
+  
+  d3.select(window).on("click", function (){
+    if (document.body.scrollTop===0){
+      CONST.SCROLL.D3.attr("opacity", 1);
+    }
+    d3.select(window).on("click", function (){})
+    d3.select(window).on("scroll.scroller", function (){
+      CONST.SCROLL.D3.remove();
+      position();
+    })
   })
-})
-
+}
 
 // Section 1 : Données sur les éléments de positionnement
 // de la Fiche
@@ -241,10 +235,9 @@ function setupFiche(){
 
 // Création du badge
 CONST.BADGE = {};
-CONST.BADGE.RAPPORT = 225/291;
-CONST.BADGE.width = 0.2*CONST.VUE.WIDTH;
-CONST.BADGE.height = 1/CONST.BADGE.RAPPORT * CONST.BADGE.width;
-CONST.BADGE.x = 0.2*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
+CONST.BADGE.width = 0.1*CONST.VUE.WIDTH;
+CONST.BADGE.height = 2*CONST.BADGE.width;
+CONST.BADGE.x = 0.17*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
 CONST.BADGE.y = 0.55*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
 CONST.BADGE.TOPPOS = 80;
 var deltay2 = 1.1*CONST.VUE.HEIGHT - CONST.BADGE.y;
@@ -252,28 +245,49 @@ CONST.BADGE.TEXT = {};
 CONST.BADGE.TEXT.dx = 0.5*CONST.BADGE.width;
 CONST.BADGE.TEXT.dy = 0.3*CONST.BADGE.height;
 CONST.BADGE.POINT = {};
-CONST.BADGE.POINT.radius = 15;
-CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width;
-CONST.BADGE.POINT.dy = 0.85*CONST.BADGE.height;
+CONST.BADGE.POINT.radius = 30;
+CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width - CONST.BADGE.POINT.radius/2;
+CONST.BADGE.POINT.dy = 0.67*CONST.BADGE.height - CONST.BADGE.POINT.radius/2;
 
 // Initialise le badge
 function setupBadge(){
-  CONST.BADGE.D3 = svg.append("g")
-                      .attr("class", "BADGE");
-  CONST.BADGE.D3.append("image")
+  CONST.BADGE.D3 = svg.append("svg")
+                      .attr("class", "BADGE")
+                      .attr("x", CONST.BADGE.x)
+                      .attr("y", deltay2+CONST.BADGE.y)
+                      .attr("width", CONST.BADGE.width)
+                      .attr("height", CONST.BADGE.height)
+  CONST.BADGE.D3.append("rect")
                 .attr("class", "badge")
-                .attr("x", CONST.BADGE.x)
-                .attr("y", deltay2+CONST.BADGE.y)
-                .attr("href", "img/badge2.svg")
+                .attr("x", 0)
+                .attr("y", 0)
                 .attr("width", CONST.BADGE.width)
-                .attr("height", CONST.BADGE.height)
+                .attr("height", CONST.BADGE.width)
+                .attr("stroke-width", CONST.strokewidth)
+                .attr("stroke", "black")
+                .attr("fill", "green")
+  CONST.BADGE.D3.append("rect")
+                .attr("class", "badge")
+                .attr("x", 0)
+                .attr("y", CONST.BADGE.width)
+                .attr("width", CONST.BADGE.width)
+                .attr("height", CONST.BADGE.width)
+                .attr("stroke-width", CONST.strokewidth)
+                .attr("stroke", "black")
+                .attr("fill", "green")
   CONST.BADGE.D3.append("image")
+                .attr("x", 0)
+                .attr("y", CONST.BADGE.width)
+                .attr("width", CONST.BADGE.width)
+                .attr("height", CONST.BADGE.width)
+                .attr("href", "img/silhouette.svg")
+  svg.append("image")
                 .attr("class", "point")
-                .attr("x", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x")))
-                .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
+                .attr("x", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.attr("x")))
+                .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")))
                 .attr("width", CONST.BADGE.POINT.radius)
                 .attr("height", CONST.BADGE.POINT.radius)
-                .attr("href", "img/pointIdentification.svg");
+                .attr("href", "img/svg-24.svg");
 }
 
 CONST.QUEST = {};
@@ -319,10 +333,10 @@ function setFicheOpacity(classe, e){
 }
 
 function moveBadge(y){
-  CONST.BADGE.D3.select(".badge")
+  CONST.BADGE.D3
                   .attr("y", CONST.BADGE.y + y);
-  CONST.BADGE.D3.select(".point")
-                  .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")));
+  svg.select(".point")
+                  .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")));
 }
 
 // On gère la fiche aux sections 1 et 2
@@ -413,17 +427,14 @@ function manageFicheBadgeSec3 (pos){
   }
   if (alpha<=0){
     // On restaure l'état initial, position de la fiche et du badge
-    moveFiche(-deltay);
   } else if (alpha<=1){
     // On scroll la fiche et le badge
-    moveFiche(-deltay-deltay2*alpha)
     moveBadge(deltay2*(1-alpha));
   } else {
     // On s'assure que la fiche et le badge sont au bon endroit
     // On scroll la fiche et le badge
-    moveFiche(-deltay-deltay2)
         // Attention, c'est l'attribut y de .badge qui sert de référence ici, pas de deltay2 partout !
-    CONST.BADGE.D3.select(".badge")
+    CONST.BADGE.D3
                   .attr("y", CONST.BADGE.y);
  // On ne réinitialise pas le point car ça fait foirer la section qui suit
   }
@@ -431,19 +442,21 @@ function manageFicheBadgeSec3 (pos){
 
 function moveBlackPoint (move){
     if (move===0){ // Le point est la fiche, on le ramène sur le badge
-      CONST.BADGE.D3.select(".point")
+      svg.select(".point")
                   .transition()
                   .duration(CONST.TIMETRANSITION)
-                  .attr("x", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.select(".badge").attr("x")))
-                  .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.select(".badge").attr("y")))
-                  .attr("r", 5);
+                  .attr("x", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.attr("x")))
+                  .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")))
+                  .attr("width", CONST.BADGE.POINT.radius)
+                  .attr("height", CONST.BADGE.POINT.radius);
     } else if (move===1){ // Le point est sur le badge, on l'emmene sur la fiche
-      CONST.BADGE.D3.select(".point")
+      svg.select(".point")
                   .transition()
                   .duration(4*CONST.TIMETRANSITION)
-                  .attr("x", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.493*CONST.FICHE.width)
-                  .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
-                  .attr("r", 5);
+                  .attr("x", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.49*CONST.FICHE.width)
+                  .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.713*CONST.FICHE.height)
+                  .attr("width", 0.5*CONST.BADGE.POINT.radius)
+                  .attr("height", 0.5*CONST.BADGE.POINT.radius);
     } else {
       console.log("erreur sur l'argument r, relisez le code !")
     }
@@ -468,3 +481,4 @@ function manageBadgeSec4 (){
 createInitFigure();
 setupFiche();
 setupBadge();
+createScrollText();

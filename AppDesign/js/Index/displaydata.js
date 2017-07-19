@@ -752,21 +752,12 @@ function manageSec5 (pos){
   if (alpha<=0){
     // On s'assure que la fiche est invisible
     CONST.QUEST.D3.select("image").attr("y", CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
-    moveFiche(-deltay-deltay2);
-    CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.y);
-    CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
+
     // Le point suit la fiche
   } else if (alpha<=alphasteps[1]){
     // On déplace la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
     CONST.QUEST.D3.select("image").attr("y", (1-beta)*CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
-    moveFiche(-deltay-deltay2+beta*deltafiche);
-    CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.y+beta*deltabadge);
-    CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height)
     // On rend invisible l'#answer p.theme
     d3.select("p.theme").style("display", "none");
     // On s'assure que les cercles sont invisibles
@@ -774,11 +765,6 @@ function manageSec5 (pos){
   } else if (alpha<=1){
     // On s'assure que la fiche est à sa place
     CONST.QUEST.D3.select("image").attr("y", CONST.QUEST.FICHE.y);
-    moveFiche(CONST.FICHE.TOPPOS - CONST.FICHE.height);
-    CONST.BADGE.D3.select(".badge")
-                  .attr("y", CONST.BADGE.TOPPOS - CONST.BADGE.height);
-    CONST.BADGE.D3.select(".point")
-          .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.6959*CONST.FICHE.height-CONST.VUE.HEIGHT)
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
     CONST.QUEST.ARCS[0].attr("opacity", beta);

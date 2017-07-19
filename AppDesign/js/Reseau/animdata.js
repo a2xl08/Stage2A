@@ -72,11 +72,11 @@ function onmove3 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
-    drawCanvasSec4();
+    drawCanvasSec3();
     var virgule = data.key.indexOf(",");
     drawText(data.key.slice(virgule+1), data.x-30, data.y-8)
   } else {
-    drawCanvasSec4();
+    drawCanvasSec3();
   }
 }
 
@@ -86,10 +86,10 @@ function onmove4 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
-    drawCanvasSec5();
+    drawCanvasSec4();
     drawText(data.key, data.x-30, data.y-8)
   } else {
-    drawCanvasSec5();
+    drawCanvasSec4();
   }
 }
 
@@ -100,10 +100,10 @@ function onmove5 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
-    drawCanvasSec6();
+    drawCanvasSec5();
     drawText(getFullName(data), data.x-14, data.y-8, 8);
   } else {
-    drawCanvasSec6();
+    drawCanvasSec5();
   }
 }
 
@@ -114,10 +114,10 @@ function onmove6 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
-    drawCanvasSec7();
+    drawCanvasSec6();
     drawText(getFullName(data), data.x-14, data.y-8, 8)
   } else {
-    drawCanvasSec7();
+    drawCanvasSec6();
   }
 }
 
@@ -128,7 +128,7 @@ function onmove7 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
-    drawCanvasSec8();
+    drawCanvasSec7();
     drawText(getFullName(data), data.x-14, data.y-8, 8);
     // ce code devrait plutôt être dans drawCanvasSec8 à mon avis.
     if (idActlist.indexOf(data.ID)!==-1){
@@ -164,7 +164,7 @@ function onmove7 (e){
     }
     ctx.restore();
   } else {
-    drawCanvasSec8();
+    drawCanvasSec7();
   }
 }
 

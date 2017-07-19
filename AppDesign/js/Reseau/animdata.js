@@ -10,7 +10,6 @@ function removeListeners (){
   moncanvas.removeEventListener("mousemove", onmove5);
   moncanvas.removeEventListener("mousemove", onmove6);
   moncanvas.removeEventListener("mousemove", onmove7);
-  moncanvas.removeEventListener("mousemove", onmove8);
 }
 
 function getNodeFromPosition(e){
@@ -73,30 +72,15 @@ function onmove3 (e){
   // Sinon, redissiner pour effacer les autres noms
   if (node){
     var data = nodeToData(node);
+    drawCanvasSec4();
     var virgule = data.key.indexOf(",");
-    drawCanvasSec3();
     drawText(data.key.slice(virgule+1), data.x-30, data.y-8)
   } else {
-    drawCanvasSec3();
+    drawCanvasSec4();
   }
 }
 
 function onmove4 (e){
-  var node = getNodeFromPosition(e);
-
-  // Si on est sur un noeud, afficher son nom
-  // Sinon, redissiner pour effacer les autres noms
-  if (node){
-    var data = nodeToData(node);
-    drawCanvasSec4();
-    var virgule = data.key.indexOf(",");
-    drawText(data.key.slice(virgule+1), data.x-30, data.y-8)
-  } else {
-    drawCanvasSec4();
-  }
-}
-
-function onmove5 (e){
   var node = getNodeFromPosition(e);
   // Si on est sur un noeud, afficher son nom
   // Sinon, redissiner pour effacer les autres noms
@@ -109,7 +93,7 @@ function onmove5 (e){
   }
 }
 
-function onmove6 (e){
+function onmove5 (e){
   var node = getNodeFromPosition(e);
 
   // Si on est sur un noeud, afficher son nom
@@ -123,7 +107,7 @@ function onmove6 (e){
   }
 }
 
-function onmove7 (e){
+function onmove6 (e){
   var node = getNodeFromPosition(e);
 
   // Si on est sur un noeud, afficher son nom
@@ -137,7 +121,7 @@ function onmove7 (e){
   }
 }
 
-function onmove8 (e){
+function onmove7 (e){
   var node = getNodeFromPosition(e);
 
   // Si on est sur un noeud, afficher son nom
@@ -235,14 +219,6 @@ function animSec7(){
   moncanvas.addEventListener("mousemove", onmove7);
 
 }
-
-function animSec8(){
-
-  removeListeners();
-  moncanvas.addEventListener("mousemove", onmove8);
-
-}
-
 
 // Ce code permet de faire du drag&slide sur les nodes
 canvas

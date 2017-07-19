@@ -56,7 +56,7 @@ function valueNAN(x){
 }
 
 
-d3.csv("data/Scenario.csv", function (data){
+d3.csv("data/Index/Scenario.csv", function (data){
 
   CONST.SCENARIO = data;
 
@@ -67,7 +67,7 @@ d3.csv("data/Scenario.csv", function (data){
 
 });
 
-d3.csv("data/nomsDeploye.csv", function (data){
+d3.csv("data/Index/nomsDeploye.csv", function (data){
 
   CONST.NOMSDEPLOYES = {};
   for (var i=0; i<data.length; i++){

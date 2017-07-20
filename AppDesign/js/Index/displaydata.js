@@ -466,10 +466,10 @@ CONST.RESULT.width = 0.45*CONST.VUE.WIDTH;
 CONST.RESULT.height = 1.3*CONST.RESULT.width;
 CONST.RESULT.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.RESULT.width;
 CONST.RESULT.y = 0.07*CONST.VUE.HEIGHT;
-CONST.RESULT.titlepos = {x: 0.32*CONST.VUE.WIDTH,y: 0.2*CONST.VUE.HEIGHT};
-CONST.RESULT.parag1pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.35*CONST.VUE.HEIGHT};
-CONST.RESULT.parag2pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.52*CONST.VUE.HEIGHT};
-CONST.RESULT.parag3pos = {x: 0.32*CONST.VUE.WIDTH,y: 0.69*CONST.VUE.HEIGHT};
+CONST.RESULT.titlepos = {x: 0.31*CONST.VUE.WIDTH,y: 0.38*CONST.VUE.HEIGHT};
+CONST.RESULT.parag1pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.21*CONST.VUE.HEIGHT};
+CONST.RESULT.parag2pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.55*CONST.VUE.HEIGHT};
+CONST.RESULT.parag3pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.68*CONST.VUE.HEIGHT};
 CONST.RESULT.pastitle = 25;
 CONST.RESULT.pas = 22;
 CONST.RESULT.tabulation = 20;
@@ -481,22 +481,13 @@ CONST.RESULT.LINK.height = 0.2*CONST.VUE.HEIGHT;
 CONST.RESULT.LINK.texte = "Entrez dans le réseau !";
 CONST.RESULT.LINK.textdx = 0.2*CONST.RESULT.LINK.width;
 CONST.RESULT.LINK.textdy = 0.52*CONST.RESULT.LINK.height;
-CONST.RESULT.morphing = {};
-CONST.RESULT.morphing.N = 100;
 // Génération du résultat final s'il est connu
 function generateResult (){
   // nbloby === 1
 
   // Création des éléments graphiques
   var user = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1][0]
-  CONST.RESULT.D3 = svg.append("g").attr("class", "result").attr("opacity", 0);
-
-  CONST.RESULT.D3.append("image")
-                  .attr("x", CONST.RESULT.x)
-                  .attr("y", CONST.RESULT.y)
-                  .attr("href", "img/ficheverte.png")
-                  .attr("width", CONST.RESULT.width)
-                  .attr("height", CONST.RESULT.height)
+  CONST.RESULT.D3 = svg.append("g").attr("class", "result").attr("opacity", 0).style("display", "none");
 
   var title = CONST.RESULT.D3.append("text")
                   .attr("class", "title")
@@ -637,25 +628,17 @@ function generateResult (){
               .attr("x", CONST.RESULT.LINK.x + CONST.RESULT.LINK.textdx)
               .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.textdy)
               .text(CONST.RESULT.LINK.texte);
-
-  // Création des paths tabs SVG pour le morphing
-  CONST.RESULT.morphing.circletab = createCircleTab(CONST.RESULT.morphing.N, 0.5*CONST.VUE.WIDTH, 0.5*CONST.VUE.HEIGHT, outerRadius);
-  CONST.RESULT.morphing.recttab = createRectTab(CONST.RESULT.morphing.N, CONST.RESULT.x, CONST.RESULT.y, CONST.RESULT.width, CONST.RESULT.height);
-  CONST.RESULT.morphing.interpolator = d3.interpolateArray(CONST.RESULT.morphing.circletab, CONST.RESULT.morphing.recttab);
-  console.log(CONST.RESULT.morphing.circletab);
-  console.log(CONST.RESULT.morphing.recttab);
-
-  // Création du path SVG
-  CONST.RESULT.morphing.D3 = svg.append("path")
-                      .attr("class", "morphing")
-                      .attr("opacity", 0)
-                      .attr("fill", "rgb(0,255,165)")
-                      .attr("stroke-width", 3)
-                      .attr("stroke", "black");
 }
 
 function eraseResult(){
   svg.select("g.result").remove();
+}
+
+function resetEvents(){
+  d3.selectAll("g.arc path").on("click", null);
+  d3.selectAll("g.arc path").on("mouseover", null);
+  d3.selectAll("g.arc path").on("mouseout", null);
+  d3.selectAll("g.arc path").style("cursor", "default");
 }
 
 // Gestion du choix utilisateur : click
@@ -669,6 +652,8 @@ function clickable (intselect,alpha){
       cercles.on("mouseout", function (){});
       cercles.on("click", function (){});
       removeHoverText();
+      // On mémorise l'élément cliqué
+      CONST.LASTCIRCLE = d3.select("g.cercle"+i+"loby"+intselect);
 
       // On bouge les cercles
       circleonclick(intselect,i);
@@ -723,6 +708,7 @@ function clickable (intselect,alpha){
         generateResult();
         resultindex=intselect+6;
         setlinkURL();
+        resetEvents();
       } else {
         // Création des nouvelles sections  
         createsection(intselect+1);
@@ -883,58 +869,16 @@ function manageSecX (intselect,pos){
   // On annule le cliquable sinon
   hoverize(intselect,alpha);
   clickable(intselect,alpha);
-}
-
-// Ici on écrit les fonctions pour gérer le morphing final
-
-// La liste des N points associés à un rectangle. 
-function createRectTab (N,x,y,width,height){
-  var path = [];
-  var pointsperline = Math.floor(N/4);
-  var pasx = width/pointsperline;
-  var pasy = height/pointsperline;
-  for (var i=0; i<pointsperline; i++){
-    path.push( [x+i*pasx, y] );
-  } for (var i=0; i<pointsperline; i++){
-    path.push( [x+width, y+i*pasy] );
-  } for (var i=0; i<pointsperline; i++){
-    path.push( [x+width-i*pasx, y+height] );
-  } for (var i=0; i<pointsperline; i++){
-    path.push( [x, y+height-i*pasy] );
-  } // On s'assure qu'il y ait exactement N points
-  for (var i=0; i<N%4; i++){
-    path.push([x,y]);
+  if (nbloby===1){
+    resetEvents();
   }
-  return path;
-}
-
-// La liste des N points associés à un cercle
-function createCircleTab (N,cx,cy,r){
-  var path=[];
-  for (var i=0; i<N; i++){
-    var angle = 2*Math.PI*i/N;
-    path.push( [cx+r*Math.cos(angle), cy+r*Math.sin(angle)] );
-  }
-  return path;
-}
-
-// La fonction qui étant donné un path et un tableau crée le svg correspondant
-function applyTabToPath (selection, tab){
-  selection.attr("d", function (){
-    string = "M"+tab[0][0]+","+tab[0][1];
-    for (var i=1; i<tab.length; i++){
-      string += "L"+tab[i][0]+","+tab[i][1];
-    }
-    string += "Z";
-    return string;
-  })
 }
 
 function displayResult(intselect,pos){
   var startsection = sectionPositions[4+intselect];
   var alpha = (pos - startsection)/scrollheight;
   // Définir ici les alphasteps de la section
-  var alphasteps = [0,1];
+  var alphasteps = [0,0.5,1];
   for (var i=0; i<alphasteps.length; i++){
     if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
       alpha = alphasteps[i];
@@ -943,17 +887,32 @@ function displayResult(intselect,pos){
   var old = d3.selectAll("g.loby"+(intselect-1));
   var newer = d3.select("g.result");
   if (alpha<=0){
-    old.attr("opacity",1);
-    CONST.RESULT.morphing.D3.attr("opacity", 0);
-  } else if (alpha<=1){
-    old.attr("opacity", 0);
-    CONST.RESULT.morphing.D3.attr("opacity", 1);
-    applyTabToPath(CONST.RESULT.morphing.D3, CONST.RESULT.morphing.interpolator(alpha))
-    newer.attr("opacity", 0);
-    CONST.RESULT.morphing.D3.attr("stroke", "rgba(0,0,0,"+(1-alpha)+")")
+    // On s'assure que le cercle est normal et le label visible
+    CONST.LASTCIRCLE.select("path").attr("d", arc.outerRadius(function (){
+      return outerRadius
+    }))
+    CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 1);
+  } else if (alpha<=alphasteps[1]){
+    // On déploie le cercle et efface le label
+    var beta = abTo01(0,alphasteps[1],alpha);
+    CONST.LASTCIRCLE.select("path").attr("d", arc.outerRadius(function (){
+      return (1+1.5*beta)*outerRadius
+    }))
+    CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 1-beta);
+    // On s'assure que le texte est invisible
+    d3.select("g.result").attr("opacity", 0).style("display", "none");
+  } else if (alpha<=1) {
+    // On s'assure que le cercle est à la bonne taille et le label effacé
+    CONST.LASTCIRCLE.select("path").attr("d", arc.outerRadius(function (){
+      return 2.5*outerRadius
+    }))
+    CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 0);
+    // On rend le texte visible
+    var beta = abTo01(alphasteps[1],1,alpha);
+    d3.select("g.result").attr("opacity", beta).style("display", "block");
   } else {
-    newer.attr("opacity", 1);
-    CONST.RESULT.morphing.D3.attr("opacity", 0);
+    // On s'assure que le texte est visible
+    d3.select("g.result").attr("opacity", 1);
   }
 }
 

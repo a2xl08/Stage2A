@@ -190,5 +190,6 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     //.append("p")
     //.text(function (d,i){ return CONST.ALLTHEMELIST[0][i] })
     //.style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
+    svg.selectAll("g.arc").style("display", "none")
 
 });

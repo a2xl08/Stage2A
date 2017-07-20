@@ -157,7 +157,7 @@ function createScrollText (){
 // de la Fiche
 CONST.FICHE = {};
 CONST.FICHE.width = 0.6*CONST.VUE.WIDTH; 
-CONST.FICHE.height = 0.95*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+CONST.FICHE.height = 0.9*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
 // L'écart de taille : utile pour le scroll
 CONST.FICHE.TOPPOS = 20;
 var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
@@ -234,8 +234,8 @@ function setupFiche(){
 CONST.BADGE = {};
 CONST.BADGE.width = 0.1*CONST.VUE.WIDTH;
 CONST.BADGE.height = 2*CONST.BADGE.width;
-CONST.BADGE.x = 0.17*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
-CONST.BADGE.y = 0.35*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
+CONST.BADGE.x = 0.13*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
+CONST.BADGE.y = 0*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
 CONST.BADGE.TOPPOS = 80;
 var deltay2 = 1.1*CONST.VUE.HEIGHT - CONST.BADGE.y;
 CONST.BADGE.TEXT = {};
@@ -298,8 +298,8 @@ function setupBadge(){
 
 CONST.QUEST = {};
 CONST.QUEST.FICHE = {};
-CONST.QUEST.FICHE.width = CONST.VUE.WIDTH;
-CONST.QUEST.FICHE.height = 1.6*CONST.VUE.HEIGHT;
+CONST.QUEST.FICHE.width = 0.9*CONST.VUE.WIDTH;
+CONST.QUEST.FICHE.height = 0.9*CONST.VUE.HEIGHT;
 CONST.QUEST.FICHE.y = 50;
 // Destinée à accueillir les sélections vers les parts
 CONST.QUEST.ARCS = [];
@@ -311,13 +311,15 @@ CONST.QUEST.TEXT.height = 150;
 function setupFicheQuestion (){
   CONST.QUEST.D3 = svg.append("g")
                     .attr("class", "quest");
-  CONST.QUEST.D3.append("image")
+  CONST.QUEST.D3.append("rect")
                 .attr("class", "fiche")
-                .attr("x", 0)
-                .attr("y", CONST.VUE.HEIGHT)
-                .attr("href", "img/ficheclaire.png")
+                .attr("x", 0.5*CONST.VUE.WIDTH - 0.5*CONST.QUEST.FICHE.width)
+                .attr("y", 0.95*CONST.VUE.HEIGHT)
                 .attr("width", CONST.QUEST.FICHE.width)
-                .attr("height", CONST.QUEST.FICHE.height);
+                .attr("height", CONST.QUEST.FICHE.height)
+                .attr("stroke-width", CONST.strokewidth)
+                .attr("stroke", "black")
+                .attr("fill", "rgb(220,220,220)");
 }
 // L'appel à cette fonction se fait au cours su chargement des données dans importdata.js
 

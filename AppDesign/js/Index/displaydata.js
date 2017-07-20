@@ -747,26 +747,26 @@ function manageSec5 (pos){
       alpha = alphasteps[i];
     }
   }
-  var deltafiche = CONST.FICHE.TOPPOS - CONST.FICHE.height + deltay + deltay2;
-  var deltabadge = CONST.BADGE.TOPPOS - CONST.BADGE.height - CONST.BADGE.y;
   if (alpha<=0){
     // On s'assure que la fiche est invisible
-    CONST.QUEST.D3.select("image").attr("y", CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
+    CONST.QUEST.D3.select("rect").attr("y", 0.95*CONST.VUE.HEIGHT);
 
     // Le point suit la fiche
   } else if (alpha<=alphasteps[1]){
     // On déplace la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
-    CONST.QUEST.D3.select("image").attr("y", (1-beta)*CONST.VUE.HEIGHT+CONST.QUEST.FICHE.y);
+    CONST.QUEST.D3.select("rect").attr("y", 0.95*CONST.VUE.HEIGHT+beta*(CONST.QUEST.FICHE.y-0.95*CONST.VUE.HEIGHT));
     // On rend invisible l'#answer p.theme
     d3.select("p.theme").style("display", "none");
     // On s'assure que les cercles sont invisibles
+    CONST.QUEST.ARCS[0].style("display", "none");
     CONST.QUEST.ARCS[0].attr("opacity", 0);
   } else if (alpha<=1){
     // On s'assure que la fiche est à sa place
-    CONST.QUEST.D3.select("image").attr("y", CONST.QUEST.FICHE.y);
+    CONST.QUEST.D3.select("rect").attr("y", CONST.QUEST.FICHE.y);
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
+    CONST.QUEST.ARCS[0].style("display", "block");
     CONST.QUEST.ARCS[0].attr("opacity", beta);
     // On rend visible l'#answers p.theme
     d3.select("p.theme").style("display", "block");

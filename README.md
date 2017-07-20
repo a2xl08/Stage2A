@@ -10,3 +10,4 @@ Branches utilisées :
 * whalobynewdata : Importation des dernières données dans le questionnaire lobbyists, dossier Questionnaire_lobbyist
 * appdev : Premier développement de la plateforme, copie dans le dossier AppDev1
 * appdesign : Développement tenant compte des spécifications graphiques, travail dans AppDev1 puis réalisation de l'introduction complète dans le dossier AppDesign
+* appdesign2 : Design alternatif pour la partie questionnaire, dossier AppDesign

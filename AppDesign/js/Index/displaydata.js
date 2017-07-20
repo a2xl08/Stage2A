@@ -961,6 +961,7 @@ function removelastsection (intselect){
     CONST.ALLPIEZEDDATA.splice(intselect+1,1);
     // On supprime le dernier choix
     choices.splice(intselect,1);
+    d3.select("#sec11").remove();
   }
 }
 

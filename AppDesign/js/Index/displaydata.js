@@ -910,6 +910,7 @@ function displayResult(intselect,pos){
       return outerRadius
     }))
     CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 1);
+    CONST.LASTCIRCLE.attr("transform", "translate("+(0.5*CONST.VUE.WIDTH)+","+(0.5*CONST.VUE.HEIGHT)+")");
   } else if (alpha<=alphasteps[1]){
     // On déploie le cercle et efface le label
     var beta = abTo01(0,alphasteps[1],alpha);
@@ -917,6 +918,7 @@ function displayResult(intselect,pos){
       return (1+1.5*beta)*outerRadius
     }))
     CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 1-beta);
+    CONST.LASTCIRCLE.attr("transform", "translate("+(0.5*CONST.VUE.WIDTH)+","+(0.5*CONST.VUE.HEIGHT)+")");
     // On s'assure que le texte est invisible
     d3.select("g.result").attr("opacity", 0).style("display", "none");
   } else if (alpha<=1) {

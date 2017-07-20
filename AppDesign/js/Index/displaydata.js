@@ -32,7 +32,7 @@ function coefeloign (intselect, d){
   if ((d.index>3) && (d.index!==CONST.ALLPIEZEDDATA[intselect].length-1)){
     return 1.5 - 0.3*(d.index%2);
   } else {
-    return 1.2;
+    return 1.3;
   }
 }
 
@@ -474,13 +474,14 @@ CONST.RESULT.pastitle = 25;
 CONST.RESULT.pas = 22;
 CONST.RESULT.tabulation = 20;
 CONST.RESULT.LINK = {};
-CONST.RESULT.LINK.x = 0.4*CONST.VUE.WIDTH;
-CONST.RESULT.LINK.y = 0.4*CONST.VUE.HEIGHT;
-CONST.RESULT.LINK.width = 0.3*CONST.VUE.WIDTH;
-CONST.RESULT.LINK.height = 0.2*CONST.VUE.HEIGHT;
-CONST.RESULT.LINK.texte = "Entrez dans le réseau !";
-CONST.RESULT.LINK.textdx = 0.2*CONST.RESULT.LINK.width;
-CONST.RESULT.LINK.textdy = 0.52*CONST.RESULT.LINK.height;
+CONST.RESULT.LINK.x = 0.8*CONST.VUE.WIDTH;
+CONST.RESULT.LINK.y = 0.6*CONST.VUE.HEIGHT;
+CONST.RESULT.LINK.width = 0.1*CONST.VUE.WIDTH;
+CONST.RESULT.LINK.height = 2*CONST.RESULT.LINK.width;
+CONST.RESULT.LINK.texte = ["Entrez", "dans le", "réseau"];
+CONST.RESULT.LINK.textdx = 0.5*CONST.RESULT.LINK.width;
+CONST.RESULT.LINK.textdy = 0.3*CONST.RESULT.LINK.height;
+CONST.RESULT.LINK.textpadding = 25;
 // Génération du résultat final s'il est connu
 function generateResult (){
   // nbloby === 1
@@ -611,23 +612,40 @@ function generateResult (){
   d3.select("p.nom").style("display", "block");
 
   // Création du lien vers le réseau
-  CONST.RESULT.D3.append("image")
-              .attr("class", "link")
-              .attr("x", CONST.RESULT.LINK.x)
-              .attr("y", CONST.RESULT.LINK.y)
-              .attr("width", CONST.RESULT.LINK.width)
-              .attr("height", CONST.RESULT.LINK.height)
-              .attr("href", "img/etiquette.svg")
-              .attr("display", "none")
-  CONST.RESULT.D3.append("svg:a")
+  var link = CONST.RESULT.D3.append("svg:a")
               .attr("class", "link")
               .attr("display", "none")
               .attr("href", "")
-              .append("text")
-              .attr("class", "linktext")
-              .attr("x", CONST.RESULT.LINK.x + CONST.RESULT.LINK.textdx)
-              .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.textdy)
-              .text(CONST.RESULT.LINK.texte);
+  link.append("rect")
+        .attr("x", CONST.RESULT.LINK.x)
+        .attr("y", CONST.RESULT.LINK.y)
+        .attr("width", CONST.RESULT.LINK.width)
+        .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
+        .attr("stroke-width", CONST.strokewidth)
+        .attr("stroke", "black");
+  var textelem = link.append("text")
+                  .attr("x", 0)
+                  .attr("y", CONST.RESULT.LINK.textdy)
+  for (var i=0; i<CONST.RESULT.LINK.texte.length; i++){
+    textelem.append("tspan")
+            .attr("class", "linktext")
+            .attr("x", CONST.RESULT.LINK.x + 0.5*CONST.RESULT.LINK.width)
+            .attr("y", CONST.RESULT.LINK.y + (i+1.5)*CONST.RESULT.LINK.textpadding)
+            .text(CONST.RESULT.LINK.texte[i])
+  }
+  link.append("rect")
+        .attr("x", CONST.RESULT.LINK.x)
+        .attr("y", CONST.RESULT.LINK.y+CONST.RESULT.LINK.width)
+        .attr("width", CONST.RESULT.LINK.width)
+        .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
+        .attr("stroke-width", CONST.strokewidth)
+        .attr("stroke", "black");
+  link.append("image")
+        .attr("x", CONST.RESULT.LINK.x)
+        .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.width)
+        .attr("width", CONST.RESULT.LINK.width)
+        .attr("height", CONST.RESULT.LINK.width) // oui c'est bien width !
+        .attr("href", "img/pointIdentification.svg");
 }
 
 function eraseResult(){

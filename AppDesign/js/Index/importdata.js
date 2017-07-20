@@ -160,8 +160,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
       return color(i);
     })
     .attr("stroke", "black")
-    .attr("stroke-width", 3)
-    ;
+    .attr("stroke-width", 3);
 
   CONST.QUEST.ARCS[0].append("foreignObject")
     .attr("class", "arctext")
@@ -187,9 +186,6 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     .html(function (d,i){
       return "<p>"+CONST.ALLTHEMELIST[0][i]+"</p><img src='img/i.svg' class='information'/>"
     });
-    //.append("p")
-    //.text(function (d,i){ return CONST.ALLTHEMELIST[0][i] })
-    //.style("font-size", 0.45*CONST.VUE.WIDTH/CONST.VUE.HEIGHT+"em")
     svg.selectAll("g.arc").style("display", "none")
 
 });

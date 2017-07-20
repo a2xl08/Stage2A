@@ -109,20 +109,24 @@ svg g.result > text > tspan.item {
 }
 
 .linktext {
-  fill: orange;
+  fill: black;
   font-size: 20px;
 }
 
 .linktext:hover {
-  fill: orange;
+  fill: black;
   text-decoration: none;
 }
 
 .linktext:visited {
-  fill: orange;
+  fill: black;
   text-decoration: none;
 }
 
-.morphing {
-  pointer-events: none;
+svg g.result rect {
+  fill: rgb(0,255,165);
+}
+
+svg g.result tspan.linktext {
+  text-anchor: middle;
 }

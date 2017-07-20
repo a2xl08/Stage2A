@@ -186,7 +186,6 @@ CONST.FICHE.ORGS.height = 2*CONST.FICHE.COMMISSION.height;
 function setupFiche(){
   CONST.FICHE.D3 = svg.append("g")
       .attr("class", "FICHE")
-      //.attr("opacity", 0)
   CONST.FICHE.D3.append("rect")
       .attr("class", "fiche")
       .attr("x", 0.5*CONST.VUE.WIDTH - 0.5*CONST.FICHE.width)

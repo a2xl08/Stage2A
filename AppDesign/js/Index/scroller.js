@@ -69,16 +69,9 @@ function majvue(index,preced) {
           avirer.select("p.appel").html("Retournez plus haut !");
           // On supprime le dernier élément de CONST.ALLDATAFILTRE
           CONST.ALLDATAFILTRE.splice(CONST.ALLDATAFILTRE.length-1,1);
-          // On supprime les cercles associés à cette section
-          //CONST.QUEST.ARCS[intselect+1].remove();
-          //CONST.QUEST.ARCS.splice(CONST.QUEST.ARCS.length-1,1);
           // On supprime la dernière entrée de tabnbloby et on remet nbloby à jour
           tabnbloby.splice(tabnbloby.length-1,1);
           nbloby = tabnbloby[tabnbloby.length-1];
-          // On supprime la liste des thèmes associée
-          //CONST.ALLTHEMELIST.splice(CONST.ALLTHEMELIST.length-1,1);
-          // On supprime la piezeddata associée
-          //CONST.ALLPIEZEDDATA.splice(CONST.ALLPIEZEDDATA.length-1,1);
           // On supprime le dernier choix
           eraseResult();
           choices.splice(choices.length-1,1);

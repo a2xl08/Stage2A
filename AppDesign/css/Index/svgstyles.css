@@ -32,6 +32,17 @@ svg.Initfig text.texte {
   font-size: 15px;
 }
 
+svg.BADGE rect {
+  fill: rgb(0,255,165);
+}
+
+svg.BADGE tspan {
+  fill: black;
+  font-size: 18px;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
 svg text.scroll {
   fill: rgba(76, 144, 255, 0.6);
   font-weight: bolder;

@@ -157,7 +157,7 @@ function createScrollText (){
 // de la Fiche
 CONST.FICHE = {};
 CONST.FICHE.width = 0.6*CONST.VUE.WIDTH; 
-CONST.FICHE.height = 1.07*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
+CONST.FICHE.height = 0.95*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
 // L'écart de taille : utile pour le scroll
 CONST.FICHE.TOPPOS = 20;
 var deltay = CONST.FICHE.height - CONST.VUE.HEIGHT;
@@ -235,16 +235,18 @@ CONST.BADGE = {};
 CONST.BADGE.width = 0.1*CONST.VUE.WIDTH;
 CONST.BADGE.height = 2*CONST.BADGE.width;
 CONST.BADGE.x = 0.17*CONST.VUE.WIDTH - 0.5*CONST.BADGE.width;
-CONST.BADGE.y = 0.55*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
+CONST.BADGE.y = 0.35*CONST.VUE.HEIGHT;  // Initialement en 1.1*CONST.VUE.HEIGHT
 CONST.BADGE.TOPPOS = 80;
 var deltay2 = 1.1*CONST.VUE.HEIGHT - CONST.BADGE.y;
 CONST.BADGE.TEXT = {};
 CONST.BADGE.TEXT.dx = 0.5*CONST.BADGE.width;
-CONST.BADGE.TEXT.dy = 0.3*CONST.BADGE.height;
+CONST.BADGE.TEXT.dy = 0.15*CONST.BADGE.height;
+CONST.BADGE.TEXT.texte = ["Vous", "êtes", "lobbyiste"]
+CONST.BADGE.TEXT.textpadding = 25;
 CONST.BADGE.POINT = {};
-CONST.BADGE.POINT.radius = 30;
+CONST.BADGE.POINT.radius = 50;
 CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width - CONST.BADGE.POINT.radius/2;
-CONST.BADGE.POINT.dy = 0.67*CONST.BADGE.height - CONST.BADGE.POINT.radius/2;
+CONST.BADGE.POINT.dy = 0.70*CONST.BADGE.height - CONST.BADGE.POINT.radius/2;
 
 // Initialise le badge
 function setupBadge(){
@@ -262,7 +264,15 @@ function setupBadge(){
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
                 .attr("stroke", "black")
-                .attr("fill", "green")
+  var textelem = CONST.BADGE.D3.append("text")
+                .attr("x", 0)
+                .attr("y", CONST.BADGE.TEXT.dy)
+  for (var i=0; i<CONST.BADGE.TEXT.texte.length; i++){
+    textelem.append("tspan")
+            .text(CONST.BADGE.TEXT.texte[i])
+            .attr("x", CONST.BADGE.TEXT.dx)
+            .attr("y", CONST.BADGE.TEXT.dy + i*CONST.BADGE.TEXT.textpadding)
+  }
   CONST.BADGE.D3.append("rect")
                 .attr("class", "badge")
                 .attr("x", 0)
@@ -271,7 +281,6 @@ function setupBadge(){
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
                 .attr("stroke", "black")
-                .attr("fill", "green")
   CONST.BADGE.D3.append("image")
                 .attr("x", 0)
                 .attr("y", CONST.BADGE.width)
@@ -330,10 +339,8 @@ function setFicheOpacity(classe, e){
 }
 
 function moveBadge(y){
-  CONST.BADGE.D3
-                  .attr("y", CONST.BADGE.y + y);
-  svg.select(".point")
-                  .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")));
+  CONST.BADGE.D3.attr("y", CONST.BADGE.y + y);
+  svg.select(".point").attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")));
 }
 
 // On gère la montée de la figure
@@ -348,7 +355,7 @@ function manageFigSec0 (pos){
     }
   }
   if (alpha<=0){
-    d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT)
+    d3.select("svg.Initfig").attr("y", 0.8*CONST.VUE.HEIGHT)
   } else if (alpha<=1){
     d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT - alpha*(0.7*CONST.VUE.HEIGHT-CONST.FIGINIT.RECT.y))
   } else {
@@ -402,25 +409,21 @@ function manageFicheSec2 (pos){
   var startsection = sectionPositions[1];
   var alpha = (pos - startsection)/scrollheight;
   // Définir ici les alphasteps de la section 2
-  var alphasteps = [0,0.4,1];
+  var alphasteps = [0,0.1,1];
   for (var i=0; i<alphasteps.length; i++){
     if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
       alpha = alphasteps[i];
     }
   }
   if (alpha<=0){
-    // On s'assure que la page est au bon endroit
-    moveFiche(0);             
+            
   } else if (alpha<=alphasteps[1]){
     // Utilisation de l'écart de taille deltay pour la position de la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
-    moveFiche(-beta*deltay);
     // On s'assure que les suivants sont invisibles
     setFicheOpacity(".fleche", 0);
     setFicheOpacity(".organisation", 0);
   } else if (alpha<=1){
-    // On s'assure que la fiche est bien positionnée
-    moveFiche(-deltay)
     // On affiche les flèches et les cercles
     var beta = abTo01(alphasteps[1],1,alpha);
     setFicheOpacity(".fleche", beta);
@@ -437,7 +440,7 @@ function manageFicheBadgeSec3 (pos){
   var startsection = sectionPositions[2];
   var alpha = (pos - startsection)/scrollheight;
   // Définir ici les alphasteps de la section 3
-  var alphasteps = [0,1];
+  var alphasteps = [0,0.8,1];
   for (var i=0; i<alphasteps.length; i++){
     if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
       alpha = alphasteps[i];
@@ -445,9 +448,10 @@ function manageFicheBadgeSec3 (pos){
   }
   if (alpha<=0){
     // On restaure l'état initial, position de la fiche et du badge
-  } else if (alpha<=1){
+  } else if (alpha<=alphasteps[1]){
     // On scroll la fiche et le badge
-    moveBadge(deltay2*(1-alpha));
+    var beta = abTo01(0,alphasteps[1],alpha);
+    moveBadge(deltay2*(1-beta));
   } else {
     // On s'assure que la fiche et le badge sont au bon endroit
     // On scroll la fiche et le badge
@@ -473,8 +477,8 @@ function moveBlackPoint (move){
                   .duration(4*CONST.TIMETRANSITION)
                   .attr("x", Number(CONST.FICHE.D3.select(".fiche").attr("x"))+0.49*CONST.FICHE.width)
                   .attr("y", Number(CONST.FICHE.D3.select(".fiche").attr("y"))+0.713*CONST.FICHE.height)
-                  .attr("width", 0.5*CONST.BADGE.POINT.radius)
-                  .attr("height", 0.5*CONST.BADGE.POINT.radius);
+                  .attr("width", 15)
+                  .attr("height", 15);
     } else {
       console.log("erreur sur l'argument r, relisez le code !")
     }

@@ -15,7 +15,7 @@ CONST.strokewidth = 8;
 CONST.FIGINIT = {};
 CONST.FIGINIT.textpadding = 5;
 CONST.FIGINIT.RECT = {};
-CONST.FIGINIT.RECT.x = 0.15*CONST.VUE.WIDTH;
+CONST.FIGINIT.RECT.x = 0.3*CONST.VUE.WIDTH;
 CONST.FIGINIT.RECT.y = 0.15*CONST.VUE.HEIGHT;
 CONST.FIGINIT.RECT.width = CONST.VUE.WIDTH;
 CONST.FIGINIT.RECT.height = CONST.VUE.HEIGHT;
@@ -63,7 +63,7 @@ CONST.FIGINIT.POINTS = [
 function createInitFigure (){
   CONST.FIGINIT.D3 = svg.append("svg")
                   .attr("class", "Initfig")
-                  .attr("x", 0.7*CONST.VUE.WIDTH)
+                  .attr("x", 0.3*CONST.VUE.WIDTH)
                   .attr("y", 0.7*CONST.VUE.HEIGHT)
                   .attr("width", CONST.FIGINIT.RECT.width)
                   .attr("height", CONST.FIGINIT.RECT.height)
@@ -118,10 +118,7 @@ function createInitFigure (){
 
 function displayInitFigure (){
   if (currentIndex===0){
-    CONST.FIGINIT.D3.transition()
-                .duration(2*CONST.TIMETRANSITION)
-                .attr("x", CONST.FIGINIT.RECT.x)
-                .attr("y", CONST.FIGINIT.RECT.y);
+    // Rien
   } else {
     // On n'affiche pas le texte SCROLL
     d3.select(window).on("click", function (){})
@@ -337,6 +334,27 @@ function moveBadge(y){
                   .attr("y", CONST.BADGE.y + y);
   svg.select(".point")
                   .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")));
+}
+
+// On gère la montée de la figure
+function manageFigSec0 (pos){
+  var startsection = 0;
+  var alpha = 3*(pos - startsection)/scrollheight;
+  // Définir ici les alphasteps de la section 1
+  var alphasteps = [0,1]
+  for (var i=0; i<alphasteps.length; i++){
+    if ((Math.abs(alpha-alphasteps[i])<=CONST.ALPHALIM)){
+      alpha = alphasteps[i];
+    }
+  }
+  if (alpha<=0){
+    d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT)
+  } else if (alpha<=1){
+    d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT - alpha*(0.7*CONST.VUE.HEIGHT-CONST.FIGINIT.RECT.y))
+  } else {
+    d3.select("svg.Initfig").attr("y", CONST.FIGINIT.RECT.y)
+  }
+
 }
 
 // On gère la fiche aux sections 1 et 2

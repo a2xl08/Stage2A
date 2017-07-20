@@ -95,6 +95,9 @@ function scrollAnim(index, pos) {
     displayResult(index-5,pos)
   } else {
   switch (index){
+  case 0:
+    manageFigSec0(pos);
+    break;
   case 1:
     manageFicheSec1(pos);
     break;

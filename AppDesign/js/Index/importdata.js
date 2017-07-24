@@ -78,6 +78,8 @@ d3.csv("data/Index/nomsDeploye.csv", function (data){
 
 d3.csv("data/Noeud4juillet.csv", function (data){
   CONST.DATASET=data;
+  // Chargé de conserver des données filtrées intermédiaires, en cas de sauts successifs d'étapes
+  CONST.AUXDATASET = CONST.DATASET;
   datafiltre=CONST.DATASET.slice();
   CONST.ALLDATAFILTRE.push(datafiltre.slice());
   nbloby = CONST.DATASET.length;

@@ -254,7 +254,7 @@ function circleonclick (intselect,i){
 function createsection (inttosee){
   var sections = d3.select("#sections");
   for (var i=currentIndex+1; i<currentIndex+6; i++){
-    sections.select("#sec"+i).remove()
+    sections.select("#sec"+(i+CONST.SECTIONSJUMPED.length)).remove()
   }
   var section = sections
                   .append("section")
@@ -265,17 +265,29 @@ function createsection (inttosee){
   writeTextInSection(inttosee+5);
 }
 
+// Contient les sections ou on a sauté une étape de choix
+CONST.SECTIONSJUMPED = [];
+// On saute une étape de choix
+function jumpsection (inttosee, selector){
+  CONST.AUXDATASET = CONST.ALLDATAFILTRE[inttosee];
+  choices[inttosee+CONST.SECTIONSJUMPED.length]=CONST.ALLTHEMELIST[inttosee][0];
+  d3.select("#answers").select("span."+selector).text(choices[inttosee+CONST.SECTIONSJUMPED.length]);
+  d3.select("#answers").select("p."+selector).style("color", colorlastanswer);
+  CONST.SECTIONSJUMPED.push(inttosee+5+CONST.SECTIONSJUMPED.length)
+}
+
 // On charge des données : remplissage des variables graphiques utiles
 function filterAndLoad (filter, value, nextissue, inttosee){
   CONST.ALLDATAFILTRE[inttosee]=[]
   // On filtre les données selon la position choisie
-  for (var i=0; i<CONST.ALLDATAFILTRE[inttosee-1].length; i++){
-    if (CONST.ALLDATAFILTRE[inttosee-1][i][filter]===value){
-      CONST.ALLDATAFILTRE[inttosee].push(CONST.ALLDATAFILTRE[inttosee-1][i])
+  for (var i=0; i<CONST.AUXDATASET.length; i++){
+    if (CONST.AUXDATASET[i][filter]===value){
+      CONST.ALLDATAFILTRE[inttosee].push(CONST.AUXDATASET[i])
     } else {
       // On enlève
     }
   }
+  CONST.AUXDATASET = CONST.ALLDATAFILTRE[inttosee]
 
   // On génère le jeu de variables graphiques
   datafiltre=CONST.ALLDATAFILTRE[inttosee].slice();
@@ -335,7 +347,7 @@ function loadNewData (inttosee){
     // nbloby=1, On génère le résultat dans generateResult
 
   } else 
-  switch (inttosee) {
+  switch (inttosee+CONST.SECTIONSJUMPED.length) {
   case 1:
     /* Seul le thème a été choisi, 
     charger la position POURS/CONTRES 
@@ -344,13 +356,14 @@ function loadNewData (inttosee){
           // On ne peux pas appeler filterAndLoad ici, on le fait manuellement 
     // On filtre les données selon le thème choisi
     CONST.ALLDATAFILTRE[inttosee]=[];
-    for (var i=0; i<CONST.ALLDATAFILTRE[inttosee-1].length; i++){
-      if (CONST.ALLDATAFILTRE[inttosee-1][i][choices[0]]){
-        CONST.ALLDATAFILTRE[inttosee].push(CONST.ALLDATAFILTRE[inttosee-1][i])
+    for (var i=0; i<CONST.AUXDATASET.length; i++){
+      if (CONST.AUXDATASET[i][choices[0]]){
+        CONST.ALLDATAFILTRE[inttosee].push(CONST.AUXDATASET[i])
       } else {
         // On enlève
       }
-    } 
+    }
+    CONST.AUXDATASET = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1];
 
     // On génère le jeu de variable pour les éléments graphiques
     datafiltre = CONST.ALLDATAFILTRE[inttosee].slice();
@@ -364,6 +377,22 @@ function loadNewData (inttosee){
     }
     CONST.ALLPIEZEDDATA[inttosee] = pie(piedata);
     CONST.ALLTHEMELIST[inttosee] = ["POUR", "CONTRE"];
+
+    if (piedata[0]===0){
+      // On choisit contre et on charge la suite des données
+      choices[1]="CONTRE"
+      d3.select("#answers").select("span.position").text(choices[1]);
+      d3.select("#answers").select("p.position").style("color", colorlastanswer);
+      CONST.SECTIONSJUMPED.push(inttosee+5);
+      loadNewData(inttosee);
+    } else if (piedata[1]===0){
+      // On choisit pour et on charge la suite des données
+      choices[1]="POUR"
+      d3.select("#answers").select("span.position").text(choices[1]);
+      d3.select("#answers").select("p.position").style("color", colorlastanswer);
+      CONST.SECTIONSJUMPED.push(inttosee+5);
+      loadNewData(inttosee);
+    }
     break;
 
   case 2:
@@ -372,6 +401,10 @@ function loadNewData (inttosee){
     Charger maintenant la catégorie de lobbyist */
 
     filterAndLoad(choices[0], choices[1], "Type", inttosee);
+    if (CONST.ALLTHEMELIST[inttosee].length===1){
+      jumpsection(inttosee, "type");
+      loadNewData(inttosee);
+    }
     break;
 
   case 3:
@@ -381,6 +414,10 @@ function loadNewData (inttosee){
     Charger maintenant le secteur de lobby */
 
     filterAndLoad("Type", choices[2], "Secteurs d’activité", inttosee);
+    if (CONST.ALLTHEMELIST[inttosee].length===1){
+      jumpsection(inttosee, "secteur");
+      loadNewData(inttosee);
+    }
     break;
 
   case 4:
@@ -391,6 +428,10 @@ function loadNewData (inttosee){
     Charger maintenant le pays de lobby */
 
     filterAndLoad("Secteurs d’activité", choices[3], "Pays/Région", inttosee);
+    if (CONST.ALLTHEMELIST[inttosee].length===1){
+      jumpsection(inttosee, "country");
+      loadNewData(inttosee);
+    }
     break;
 
   case 5:
@@ -735,7 +776,7 @@ function clickable (intselect,alpha){
         resetEvents();
       } else {
         // Création des nouvelles sections  
-        createsection(intselect+1);
+        createsection(intselect+1+CONST.SECTIONSJUMPED.length);
         majsectionspos();
         generatePie(intselect+1);
       }
@@ -957,9 +998,12 @@ function removelastsection (intselect){
     avirer.select("p.appel").html("Retournez plus haut !");
     // On supprime le dernier élément de CONST.ALLDATAFILTRE
     CONST.ALLDATAFILTRE.splice(intselect+1,1);
+    CONST.AUXDATASET = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1];
     // On supprime les cercles associés à cette section
-    CONST.QUEST.ARCS[intselect+1].remove();
-    CONST.QUEST.ARCS.splice(intselect+1,1);
+    if (CONST.QUEST.ARCS[intselect+1]){
+      CONST.QUEST.ARCS[intselect+1].remove();
+      CONST.QUEST.ARCS.splice(intselect+1,1);
+    }
     // On supprime la dernière entrée de tabnbloby et on remet nbloby à jour
     tabnbloby.splice(intselect+1,1);
     nbloby = tabnbloby[tabnbloby.length-1];
@@ -990,6 +1034,7 @@ function resetcircles (intselect){
                   .duration(CONST.TIMETRANSITION)
                   .attr("opacity", 1);
   // Taille des textes : valeur définie dans svgstyles.css à récupérer
+  textes.attr("opacity", 1);
   textes.select("p").style("font-size", "12px");
 }
 

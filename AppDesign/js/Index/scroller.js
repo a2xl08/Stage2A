@@ -69,6 +69,7 @@ function majvue(index,preced) {
           avirer.select("p.appel").html("Retournez plus haut !");
           // On supprime le dernier élément de CONST.ALLDATAFILTRE
           CONST.ALLDATAFILTRE.splice(CONST.ALLDATAFILTRE.length-1,1);
+          CONST.AUXDATASET = CONST.ALLDATAFILTRE[CONST.ALLDATAFILTRE.length-1]
           // On supprime la dernière entrée de tabnbloby et on remet nbloby à jour
           tabnbloby.splice(tabnbloby.length-1,1);
           nbloby = tabnbloby[tabnbloby.length-1];
@@ -78,8 +79,11 @@ function majvue(index,preced) {
           resetcircles(index-5);
           cancelChoiceAnswer(index-5);
     }
-    // On s'assure que l'élément morphing est disparu
-    d3.selectAll(".morphing").remove();
+    if (CONST.SECTIONSJUMPED[CONST.SECTIONSJUMPED.length-1]>=index){
+            console.log("retour saut arrière")
+            CONST.SECTIONSJUMPED.splice(CONST.SECTIONSJUMPED.length-1,1);
+            choices.splice(choices.length-1,1);
+    }
   }
 }
 

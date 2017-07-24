@@ -74,7 +74,7 @@ function createInitFigure (){
                   .attr("width", CONST.FIGINIT.RECT.width)
                   .attr("height", CONST.FIGINIT.RECT.height)
                   .attr("stroke-width", CONST.strokewidth)
-                  .attr("stroke", "black")
+                  .attr("stroke", "#111627")
                   .attr("fill", "gray")
   for (var i=0; i<4; i++){
     for (var j=i+1; j<4; j++){
@@ -84,7 +84,7 @@ function createInitFigure (){
                     .attr("x2", CONST.FIGINIT.POINTS[j].x + CONST.FIGINIT.POINTS[j].dx)
                     .attr("y1", CONST.FIGINIT.POINTS[i].y + CONST.FIGINIT.POINTS[i].dy)
                     .attr("y2", CONST.FIGINIT.POINTS[j].y + CONST.FIGINIT.POINTS[j].dy)
-                    .attr("stroke", "black")
+                    .attr("stroke", "#111627")
     }
   }
   for (var i=0; i<4; i++){
@@ -105,7 +105,7 @@ function createInitFigure (){
                       return textpos.bottom - textpos.top + 2*CONST.FIGINIT.textpadding;
                     })
                     .attr("stroke-width", CONST.strokewidth)
-                    .attr("stroke", "black")
+                    .attr("stroke", "#111627")
                     .attr("fill", "rgba(255,255,255,0)")
   }
   CONST.FIGINIT.D3.append("text")
@@ -193,7 +193,7 @@ function setupFiche(){
       .attr("width", CONST.FICHE.width)
       .attr("height", CONST.FICHE.height)
       .attr("stroke-width", CONST.strokewidth)
-      .attr("stroke", "black")
+      .attr("stroke", "#111627")
       .attr("fill", "rgb(200,200,200)")
   CONST.FICHE.D3.append("image")
       .attr("class", "commission")
@@ -262,7 +262,7 @@ function setupBadge(){
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "black")
+                .attr("stroke", "#111627")
   var textelem = CONST.BADGE.D3.append("text")
                 .attr("x", 0)
                 .attr("y", CONST.BADGE.TEXT.dy)
@@ -279,7 +279,7 @@ function setupBadge(){
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "black")
+                .attr("stroke", "#111627")
   CONST.BADGE.D3.append("image")
                 .attr("x", 0)
                 .attr("y", CONST.BADGE.width)
@@ -317,7 +317,7 @@ function setupFicheQuestion (){
                 .attr("width", CONST.QUEST.FICHE.width)
                 .attr("height", CONST.QUEST.FICHE.height)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "black")
+                .attr("stroke", "#111627")
                 .attr("fill", "rgb(220,220,220)");
 }
 // L'appel à cette fonction se fait au cours su chargement des données dans importdata.js

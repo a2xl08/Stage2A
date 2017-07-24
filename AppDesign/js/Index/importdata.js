@@ -159,7 +159,7 @@ d3.csv("data/Noeud4juillet.csv", function (data){
     .attr("fill", function (d,i){
       return color(i);
     })
-    .attr("stroke", "black")
+    .attr("stroke", "#111627")
     .attr("stroke-width", 3);
 
   CONST.QUEST.ARCS[0].append("foreignObject")

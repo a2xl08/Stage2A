@@ -220,16 +220,22 @@ function circleonclick (intselect,i){
         .attr("transform", function (){
           var textpos = this.getBoundingClientRect();
           var string="translate(";
-          string += (-textpos.right + textpos.left)/2;
+          string += -0.4*CONST.VUE.WIDTH;
           string += ", ";
-          string += (-0.3*CONST.VUE.HEIGHT);
+          string += 0.25*CONST.VUE.HEIGHT;
           string += ")";
           return string;
         })
+        .select("p").style("font-size", "20px");
 
     // Si l'élément est le dernier cercle, on lui donne la couleur user
     if (CONST.ALLPIEZEDDATA[CONST.ALLPIEZEDDATA.length-1][i].data===1){
       selected.select("path").transition().duration(CONST.TIMETRANSITION).attr("fill", "rgb(0,255,165)")
+        .attr("d", arc.outerRadius(function (){
+          return outerRadius;
+        }))
+    } else {
+      selected.select("path").transition().duration(CONST.TIMETRANSITION).attr("fill", colorlastanswer)
         .attr("d", arc.outerRadius(function (){
           return outerRadius;
         }))
@@ -332,7 +338,7 @@ function loadNewData (inttosee){
   switch (inttosee) {
   case 1:
     /* Seul le thème a été choisi, 
-    charger la position SUPPORTS/OPPOSES 
+    charger la position POURS/CONTRES 
     du thème choisi */
 
           // On ne peux pas appeler filterAndLoad ici, on le fait manuellement 
@@ -348,16 +354,16 @@ function loadNewData (inttosee){
 
     // On génère le jeu de variable pour les éléments graphiques
     datafiltre = CONST.ALLDATAFILTRE[inttosee].slice();
-    piedata = [0,0]; // SUPPORTS, OPPOSES
+    piedata = [0,0]; // POURS, CONTRES
     for (var i=0; i<datafiltre.length; i++){
-      if (datafiltre[i][choices[0]]==="SUPPORT"){
+      if (datafiltre[i][choices[0]]==="POUR"){
         piedata[0]++;
-      } else if (datafiltre[i][choices[0]]==="OPPOSE"){
+      } else if (datafiltre[i][choices[0]]==="CONTRE"){
         piedata[1]++;
       }
     }
     CONST.ALLPIEZEDDATA[inttosee] = pie(piedata);
-    CONST.ALLTHEMELIST[inttosee] = ["SUPPORT", "OPPOSE"];
+    CONST.ALLTHEMELIST[inttosee] = ["POUR", "CONTRE"];
     break;
 
   case 2:
@@ -421,7 +427,7 @@ function generatePie (inttosee){
     .attr("fill", function (d,i){
       return color(i);
     })
-    .attr("stroke", "black")
+    .attr("stroke", "#111627")
     .attr("stroke-width", 3)
 
   CONST.QUEST.ARCS[inttosee].append("foreignObject")
@@ -466,7 +472,7 @@ CONST.RESULT.width = 0.45*CONST.VUE.WIDTH;
 CONST.RESULT.height = 1.3*CONST.RESULT.width;
 CONST.RESULT.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.RESULT.width;
 CONST.RESULT.y = 0.07*CONST.VUE.HEIGHT;
-CONST.RESULT.titlepos = {x: 0.31*CONST.VUE.WIDTH,y: 0.38*CONST.VUE.HEIGHT};
+CONST.RESULT.titlepos = {x: 0.29*CONST.VUE.WIDTH,y: 0.38*CONST.VUE.HEIGHT};
 CONST.RESULT.parag1pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.21*CONST.VUE.HEIGHT};
 CONST.RESULT.parag2pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.55*CONST.VUE.HEIGHT};
 CONST.RESULT.parag3pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.68*CONST.VUE.HEIGHT};
@@ -622,7 +628,7 @@ function generateResult (){
         .attr("width", CONST.RESULT.LINK.width)
         .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
         .attr("stroke-width", CONST.strokewidth)
-        .attr("stroke", "black");
+        .attr("stroke", "#111627");
   var textelem = link.append("text")
                   .attr("x", 0)
                   .attr("y", CONST.RESULT.LINK.textdy)
@@ -639,7 +645,7 @@ function generateResult (){
         .attr("width", CONST.RESULT.LINK.width)
         .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
         .attr("stroke-width", CONST.strokewidth)
-        .attr("stroke", "black");
+        .attr("stroke", "#111627");
   link.append("image")
         .attr("x", CONST.RESULT.LINK.x)
         .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.width)
@@ -983,6 +989,8 @@ function resetcircles (intselect){
   CONST.QUEST.ARCS[intselect].transition()
                   .duration(CONST.TIMETRANSITION)
                   .attr("opacity", 1);
+  // Taille des textes : valeur définie dans svgstyles.css à récupérer
+  textes.select("p").style("font-size", "12px");
 }
 
 function cancelChoiceAnswer(intselect){

@@ -62,8 +62,8 @@ function setcolor(){
         return ennemycolor;
       }
     } else {
-      // Sinon, SUPPORT en vert OPPOSE en gris
-      if (d[theme]==="SUPPORT"){
+      // Sinon, POUR en vert OPPOSE en gris
+      if (d[theme]==="POUR"){
         return supportcolor;
       } else {
         return opposecolor;
@@ -85,8 +85,8 @@ function setcolor(){
         return ennemycolorhalo;
       }
     } else {
-      // Sinon, SUPPORT en vert OPPOSE en gris
-      if (d[theme]==="SUPPORT"){
+      // Sinon, POUR en vert CONTRE en gris
+      if (d[theme]==="POUR"){
         return supportcolorhalo;
       } else {
         return opposecolorhalo;
@@ -113,9 +113,9 @@ function setMeanSectorColors (data){
       // Récupération des composantes RGB
       var color1 = allycolor.split("(")[1].split(")")[0].split(",").map(Number);
       var color2 = ennemycolor.split("(")[1].split(")")[0].split(",").map(Number);
-      var coefsup = (d.value["SUPPORT"])/(d.value["TOTAL"]);
-      var coefopp = (d.value["OPPOSE"])/(d.value["TOTAL"]);
-      if (lobyist[theme]==="SUPPORT"){
+      var coefsup = (d.value["POUR"])/(d.value["TOTAL"]);
+      var coefopp = (d.value["CONTRE"])/(d.value["TOTAL"]);
+      if (lobyist[theme]==="POUR"){
         var red = Math.round(coefsup*color1[0] + coefopp*color2[0]);
         var green = Math.round(coefsup*color1[1] + coefopp*color2[1]);
         var blue = Math.round(coefsup*color1[2] + coefopp*color2[2]);
@@ -129,8 +129,8 @@ function setMeanSectorColors (data){
     } else {
       var color1 = supportcolor.split("(")[1].split(")")[0].split(",").map(Number);
       var color2 = opposecolor.split("(")[1].split(")")[0].split(",").map(Number);
-      var coefsup = (d.value["SUPPORT"])/(d.value["TOTAL"]);
-      var coefopp = (d.value["OPPOSE"])/(d.value["TOTAL"]);
+      var coefsup = (d.value["POUR"])/(d.value["TOTAL"]);
+      var coefopp = (d.value["CONTRE"])/(d.value["TOTAL"]);
       var red = Math.round(coefsup*color1[0] + coefopp*color2[0]);
       var green = Math.round(coefsup*color1[1] + coefopp*color2[1]);
       var blue = Math.round(coefsup*color1[2] + coefopp*color2[2]);

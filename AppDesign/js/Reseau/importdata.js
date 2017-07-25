@@ -28,7 +28,7 @@ var lobyist;
 var themelist;
 
 // Données regroupées pour les diffénrentes sections
-// Section 1 : SUPPORT vs OPPOSE
+// Section 1 : POUR vs CONTRE
 var dataByPos;
 // Section 2 : Division par type
 var dataByPosType;
@@ -463,15 +463,15 @@ function createdatasets (){
               var depense = Number(v[i]["Dépenses Lobby (€)"]);
               if (depense){
                 somme += depense;
-                if (v[i][theme]==="SUPPORT"){
+                if (v[i][theme]==="POUR"){
                   sommesup += depense;
-                } else if (v[i][theme]==="OPPOSE") {
+                } else if (v[i][theme]==="CONTRE") {
                   sommeopp += depense;
                 }
               }
             }
-            res["SUPPORT"] = sommesup;
-            res["OPPOSE"] = sommeopp;
+            res["POUR"] = sommesup;
+            res["CONTRE"] = sommeopp;
             res["TOTAL"] = somme;
             res["count"] = v.length;
             return res;
@@ -499,7 +499,7 @@ function creategraphDOM (){
         .attr("fillStyle", colornode)
         .attr("fillHalo", colorhalo);
 
-  // Pour la section 1 : SUPPORT vs OPPOSE
+  // Pour la section 1 : POUR vs CONTRE
   circlePos = CustomDOM.selectAll("custom.pos")
         .data(dataByPos)
         .enter()
@@ -516,7 +516,7 @@ function creategraphDOM (){
               return ennemycolor;
             }
           } else {
-            if (d.key === "SUPPORT"){
+            if (d.key === "POUR"){
               return supportcolor;
             } else {
               return opposecolor;
@@ -531,7 +531,7 @@ function creategraphDOM (){
               return ennemycolorhalo;
             }
           } else {
-            if (d.key === "SUPPORT"){
+            if (d.key === "POUR"){
               return supportcolorhalo;
             } else {
               return opposecolorhalo;
@@ -556,7 +556,7 @@ function creategraphDOM (){
                   return ennemycolor;
                 }
               } else {
-                if (d.key.split(",")[0] === "SUPPORT"){
+                if (d.key.split(",")[0] === "POUR"){
                   return supportcolor;
                 } else {
                   return opposecolor;
@@ -571,7 +571,7 @@ function creategraphDOM (){
                   return ennemycolorhalo;
                 }
               } else {
-                if (d.key.split(",")[0] === "SUPPORT"){
+                if (d.key.split(",")[0] === "POUR"){
                   return supportcolorhalo;
                 } else {
                   return opposecolorhalo;
@@ -596,7 +596,7 @@ function creategraphDOM (){
                   return ennemycolor;
                 }
               } else {
-                if (d.key.split(",")[0] === "SUPPORT"){
+                if (d.key.split(",")[0] === "POUR"){
                   return supportcolor;
                 } else {
                   return opposecolor;
@@ -611,7 +611,7 @@ function creategraphDOM (){
                   return ennemycolorhalo;
                 }
               } else {
-                if (d.key.split(",")[0] === "SUPPORT"){
+                if (d.key.split(",")[0] === "POUR"){
                   return supportcolorhalo;
                 } else {
                   return opposecolorhalo;

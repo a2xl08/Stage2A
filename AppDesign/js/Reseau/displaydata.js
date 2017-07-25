@@ -184,7 +184,7 @@ function tickedSec1 (){
 
     // Esapcement ! Recentrage !
     circlePos.each(function (d){
-      if (d.key === "SUPPORT"){
+      if (d.key === "POUR"){
         d.x += (CONST.VUE.WIDTH/3 - d.x)*simulation.alpha();
       } else {
         d.x += (2*CONST.VUE.WIDTH/3 - d.x)*simulation.alpha();
@@ -229,7 +229,7 @@ function tickedSec2 (){
 
     // Esapcement ! Recentrage !
     circlePosType.each(function (d){
-      if (d.key.split(",")[0] === "SUPPORT"){
+      if (d.key.split(",")[0] === "POUR"){
         d.x += (CONST.VUE.WIDTH/3 - d.x)*simulation.alpha();
       } else {
         d.x += (2*CONST.VUE.WIDTH/3 - d.x)*simulation.alpha();

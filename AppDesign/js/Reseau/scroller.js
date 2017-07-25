@@ -100,4 +100,7 @@ function scrollAnim(index, pos) {
 
 // On déclenche la fonction position à chaque scroll de la page
 d3.select(window)
-  .on("scroll.scroller", position);
+  .on("scroll.scroller", function (){
+    majsectionspos();
+    position();
+  });

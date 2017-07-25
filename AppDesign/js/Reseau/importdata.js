@@ -156,6 +156,16 @@ d3.csv("data/liensActionnairesIndirect.csv", function (data){
 
 });
 
+d3.json("data/Reseau/stories.json", function (err,data){
+
+  if (err){
+    throw err;
+  }
+  // On récupère les stories
+  CONST.STORIES = data;
+
+})
+
 d3.csv("data/Affiliation19juin.csv", function (data){
   affiliations = data;
   CONST.ALL_AFFILIATIONS = data.slice();

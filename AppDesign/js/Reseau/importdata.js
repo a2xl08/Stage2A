@@ -172,6 +172,13 @@ var processData = function(files){
   };
 }
 
+var writeTextInSection = function (i){
+  var element = d3.select("#sec"+i);
+  element.select("h1").html(CONSTANTS.SCENARIO[i]["Titre"]);
+  element.select("p.texte").html(CONSTANTS.SCENARIO[i]["Texte"])
+  element.select("p.appel").html(CONSTANTS.SCENARIO[i]["Appel d’action"])
+}
+
 var importData = function(){
   var csv = CONSTANTS.DATA.CSV_FILES;
   var queue = d3.queue();
@@ -183,12 +190,20 @@ var importData = function(){
     csv.NODES_PROPRIETARY,
     csv.LINKS_PROPRIETARY,
     csv.LINKS_INDIRECT_PROPRIETARY,
-    csv.LINKS_AFFILIATION
+    csv.LINKS_AFFILIATION,
   ];
   // ajoute à la queue le chargement du chargement du fichier
   files.forEach(function(file){
     queue = queue.defer(d3.csv, file);
   });
+
+  d3.csv(csv.SCENARIO, function (scenar){
+    CONSTANTS.SCENARIO = scenar;
+
+    for (var i=0; i<7; i++){
+      writeTextInSection(i);
+    }
+  })
 
   queue.await(function(error){
     if(error){

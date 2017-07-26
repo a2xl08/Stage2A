@@ -348,4 +348,10 @@ var runExperimentation = function(data){
 
   // nous démarrons ensuite la simulation
   simulation.start();
+
+  d3.select(window)
+  .on("scroll.scroller", function (){
+    majsectionspos();
+    position(simulation);
+  });
 };

@@ -70,7 +70,11 @@ var CONSTANTS = {
       NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect.csv",
       LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
       LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",
-      LINKS_AFFILIATION:"data/Affiliation19juin.csv"
+      LINKS_AFFILIATION:"data/Affiliation19juin.csv",
+      SCENARIO: "data/Reseau/Scenario.csv"
+    },
+    JSON_FILES: {
+      STORIES: "data/Reseau/stories.json"
     }
   }
 };

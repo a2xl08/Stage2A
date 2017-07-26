@@ -31,10 +31,26 @@ var packLayout = d3.pack()
 
 var getClusterColor = function(data, cluster){
   var colors = CONSTANTS.COLORS;
-  var userPosition = data.userChoice.position;
   var clusterPosition = cluster.data.key;
-  return clusterPosition === userPosition ? colors.SAME_POSITION : colors.DIFFERENT_POSITION;
+  if (data.userChoice.position){
+    var userPosition = data.userChoice.position;
+    return clusterPosition === userPosition ? colors.ALLY : colors.ENEMY;
+  } else {
+    return clusterPosition === "POUR" ? colors.SUPPORT : colors.OPPOSE;
+  }
 };
+
+var contactCollide = function(d){
+  var kernelRadius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
+  return (d.radius > kernelRadius ? d.radius : kernelRadius) 
+    + CONSTANTS.FORCES.COLLIDE_PADDING;
+}
+
+var spaceCollide =  function(d){
+  var kernelRadius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
+  return (d.radius > kernelRadius ? d.radius : kernelRadius) 
+    + CONSTANTS.FORCES.COLLIDE_PADDING + CONSTANTS.FORCES.SPACE_PADDING;
+}
 
 var firstSection = function(data){
   var clusters = [];
@@ -69,6 +85,7 @@ var firstSection = function(data){
     data: { nodes: nodes, links: [] },
     showMembranes: true,
     showLinks: false,
+    collideRadius: contactCollide,
   };
 }
 /* 
@@ -112,6 +129,7 @@ var secondSection = function(data){
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
+    collideRadius: contactCollide,
   }
 };
 
@@ -155,6 +173,7 @@ var thirdSection = function(data){
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
+    collideRadius: contactCollide,
   }
 };
 
@@ -165,7 +184,11 @@ var thirdSection = function(data){
 var fourthSection = function(data){
   var colors = CONSTANTS.COLORS;
   var valueScale = d3.scaleLinear().range([0.0,1.0]);
-  var colorScale = chroma.scale([colors.DIFFERENT_POSITION, colors.SAME_POSITION]);
+  if (data.userChoice.position){
+    var colorScale = chroma.scale([colors.ENEMY, colors.ALLY]);
+  } else {
+    var colorScale = chroma.scale([colors.OPPOSE, colors.SUPPORT]);
+  }
   var clusters = [];
   var clusterKey = function(c){
     var parent = c.parent;
@@ -193,7 +216,12 @@ var fourthSection = function(data){
 
     // couleur moyenne
     var samePositionCluster = c.children.find(function(d){
-      return d.data.key == data.userChoice.position;
+      if (data.userChoice.position){
+        return d.data.key == data.userChoice.position;
+      } else {
+        return d.data.key == "POUR";
+      }
+      
     });
     var samePositionTotal = samePositionCluster ? samePositionCluster.data.total : 0; 
     var clusterNodes = c.children
@@ -217,6 +245,7 @@ var fourthSection = function(data){
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
+    collideRadius: contactCollide,
   }
 };
 
@@ -256,6 +285,7 @@ var fifthSection = function(data){
     data: { nodes: nodes, links: []},
     showMembranes: false,
     showLinks: false,
+    collideRadius: contactCollide,
   }
 };
 /* 
@@ -271,6 +301,7 @@ var sixthSection = function(data){
     },
     showMembranes: false,
     showLinks: true,
+    collideRadius: spaceCollide,
   };
 };
 var seventhSection = function(data){
@@ -282,7 +313,8 @@ var seventhSection = function(data){
       links: data.utils.links.all()
     },
     showMembranes: false,
-    showLinks: true
+    showLinks: true,
+    collideRadius: spaceCollide,
   };
 };
 var eighthSection = function(data){};

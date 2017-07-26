@@ -171,7 +171,8 @@ var configureSimulation = function(scene, data, sectionsConfig){
             return (d.radius > kernelRadius ? d.radius : kernelRadius) 
               + collidePadding;
           }))
-    .force('cluster', d3.forceCluster()
+      .force('center', d3.forceCenter().x(0.5*CONSTANTS.VUE.WIDTH).y(0.5*CONSTANTS.VUE.HEIGHT))
+      .force('cluster', d3.forceCluster()
         .centers(function(d){
           var cluster = findNodeCluster(d);
           return cluster;
@@ -193,6 +194,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
 
     _simulation.nodes(section.data.nodes);
     _simulation.force('link').links(section.data.links);
+    _simulation.force('collide').radius(section.collideRadius)
 
     // à vous de voir ici quelles parties des noeuds doivent être en mouvement ou non.
     // on peut imaginer le code suivant:

@@ -3,6 +3,7 @@
 var sectionlist;
 // Indice de la section active
 var currentIndex = -1;
+var prevIndex = -1;
 // Positions des différentes sections sur la page
 var sectionPositions;
 
@@ -42,9 +43,10 @@ function position() {
   // Si on change la section active
   if (currentIndex !== sectionIndex) {
     // Mise à jour de l'indice de section active
+    prevIndex = currentIndex;
     currentIndex = sectionIndex;
     // Mise en place des modifications de la vue : changement de couleur
-    majvue.call(this, sectionIndex);
+    majvue.call(this, sectionIndex, prevIndex);
   }
   scrollAnim();
   if (window.innerHeight + window.scrollY >= document.body.offsetHeight){
@@ -56,38 +58,15 @@ function position() {
 
 // Fonction à appeler pour mettre la vue à jour
 // argument index : indice de la nouvelle section
-function majvue(index) {
+function majvue(index, preced) {
   // Modifications lors d'un changement de section
-    switch (index){
-    case 0:
-      setupSec1();
-      animSec1();
-      break;
-    case 1:
-      setupSec2();
-      animSec2();
-      break;
-    case 2:
-      setupSec3();
-      animSec3();
-      break;
-    case 3:
-      setupSec4();
-      animSec4();
-      break;
-    case 4:
-      setupSec5();
-      animSec5();
-      break;
-    case 5:
-      setupSec6();
-      animSec6();
-      break;
-    case 6:
-      setupSec7();
-      animSec7();
-      break;
-    }
+  if (preced===index-1){
+    // On affiche la section suivante
+    simulation.nextSection();
+  } else if (preced===index+1){
+    // On retourne à la section précédente
+    simulation.previousSection();
+  }
 }
 
 // Mettre dans cette fonction les transitions qui s"alignent sur le scroll utilisateur

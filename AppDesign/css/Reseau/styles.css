@@ -91,12 +91,6 @@ section > p.appel {
   height: 100%;
 }
 
-#vue canvas {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
 #answers {
   position: fixed;
   left: 0px;

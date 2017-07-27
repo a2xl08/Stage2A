@@ -161,7 +161,7 @@ var drawNodes = function(nodes){
   var nodeEnter = $nodes.enter().append('g')
     .classed('node', true)
     .attr('transform', Utils.transform)
-    .attr('id', function(d){ return d.ID; });
+    .attr('id', function(d){ return "lobby"+d.ID; });
 
 
   nodeEnter.append('path')
@@ -190,6 +190,23 @@ var drawNodes = function(nodes){
     return radialLine(d.kernelPoints);
   });
 
+  // Les textes associés aux nodes sont ajoutés à la toute fin du canvas
+  // On doit d'abord récupérer les données
+  $nodes.data().forEach(function (node){
+    var coords = Utils.revtransform(canvas.select("#lobby"+node.ID).attr("transform"));
+    var textelem = canvas.append("text")
+      .classed("lobbytext", true)
+      .attr("id", "lobbytext"+node.ID)
+      .attr("x", coords.x+CONSTANTS.CIRCLE.TEXTdx)
+      .attr("y", coords.y+CONSTANTS.CIRCLE.TEXTdy)
+    textelem.append("tspan")
+      .classed("name", true)
+      .attr("x", coords.x+CONSTANTS.CIRCLE.TEXTdx)
+      .attr("y", coords.y+CONSTANTS.CIRCLE.TEXTdy)
+      .attr("fill-opacity", 0)
+      .text(function (d){return node["Nom1"]})
+  })
+
    // suppresion des noeuds supprimé (propriété par exemple)
   // TODO: rajouter une constante. 
   $nodes.exit().transition()
@@ -201,6 +218,8 @@ var drawNodes = function(nodes){
   $nodes = nodeEnter.merge($nodes);
 
   $nodes.on('mouseover', function(node){
+    // On affiche le texte
+    canvas.select("#lobbytext"+node.ID).select("tspan.name").attr("fill-opacity", 1);
     if(node.type === TYPES.PROPRIETARY){
       var $nodeLinks = canvas.selectAll('.link')
         .filter(function(link){
@@ -212,6 +231,8 @@ var drawNodes = function(nodes){
       $nodeLinks.classed('hidden', false);
     }
   }).on('mouseout', function(node){
+    // On écrase le texte
+    canvas.select("#lobbytext"+node.ID).select("tspan.name").attr("fill-opacity", 0);
     if(node.type === TYPES.PROPRIETARY){
       var $nodeLinks = canvas.selectAll('.link')
         .filter(function(link){

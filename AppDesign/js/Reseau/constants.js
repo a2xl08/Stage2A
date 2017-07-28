@@ -23,12 +23,14 @@ var CONSTANTS = {
     POSITION: vue.getBoundingClientRect(),
     WIDTH: vue.offsetWidth - 2*vuepadding,
     HEIGHT: vue.offsetHeight - 2*vuepadding,
+    NODE_PADDING: 15
   },
   // réglages de la membranes
   MEMBRANE: {
     // espace entre les points et la membranes.
-    PADDING: 0,
+    PADDING: 5,
     CURVE: d3.curveCatmullRomClosed,
+    TEXT_PADDING: 15
   },
   LINK:{
     CURVE: d3.curveBasis,
@@ -46,11 +48,12 @@ var CONSTANTS = {
     RADIUS_JITTER: 0.12,
     RADIUS_RANGE: [12, 50],
     TEXTdx: -15,
-    TEXTdy: -10
+    TEXTdy: -10,
+    TEXT_PADDING: 11
   },
   FORCES: {
     COLLIDE_PADDING: 3,
-    SPACE_PADDING: 30,
+    SPACE_PADDING: 25,
     PACK_PADDING: 8,
   },
   UPDATE_INTERVAL: 500,
@@ -83,6 +86,13 @@ var CONSTANTS = {
   }
 };
 
+CONSTANTS.CLICK_FICHE = {
+  x: 0.7*CONSTANTS.VUE.WIDTH,
+  y: 0.05*CONSTANTS.VUE.HEIGHT,
+  width: 0.27*CONSTANTS.VUE.WIDTH,
+  height: 0.5*CONSTANTS.VUE.HEIGHT,
+};
+
 var baseLinkWidth = CONSTANTS.CIRCLE.KERNEL_RADIUS * CONSTANTS.LINK.KERNEL_SCALE - 2;
 var endLinkWidth = baseLinkWidth*0.25;
 
@@ -106,7 +116,7 @@ var animations = {
   },
   linkShapes: {
     interval: 200,
-    duration: 1000
+    duration: 2500
   }
 };
 

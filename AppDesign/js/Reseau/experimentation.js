@@ -173,7 +173,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
             return (d.radius > kernelRadius ? d.radius : kernelRadius) 
               + collidePadding;
           }))
-      .force('center', d3.forceCenter().x(0.5*CONSTANTS.VUE.WIDTH).y(0.5*CONSTANTS.VUE.HEIGHT))
+      .force('center', d3.forceCenter().x(0.4*CONSTANTS.VUE.WIDTH).y(0.5*CONSTANTS.VUE.HEIGHT))
       .force('cluster', d3.forceCluster()
         .centers(function(d){
           var cluster = findNodeCluster(d);
@@ -273,6 +273,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
 
 
   var updateSimulation = function(){
+    d3.selectAll(".lobbytext").remove();
     updateMembranes();
     updateSimulationData();
     // initializeNodesPosition();
@@ -288,8 +289,8 @@ var configureSimulation = function(scene, data, sectionsConfig){
       var size = scene.getSize();
       var width = size[0];
       var height = size[1];
-      node.x = Math.max(node.radius, Math.min(width - node.radius, node.x));
-      node.y = Math.max(node.radius, Math.min(height - node.radius, node.y));
+      node.x = Math.max(node.radius+CONSTANTS.VUE.NODE_PADDING, Math.min(width-CONSTANTS.VUE.NODE_PADDING - node.radius, node.x));
+      node.y = Math.max(node.radius+CONSTANTS.VUE.NODE_PADDING, Math.min(height-CONSTANTS.VUE.NODE_PADDING - node.radius, node.y));
       return node;
     }
     if(!ticked){
@@ -313,7 +314,9 @@ var configureSimulation = function(scene, data, sectionsConfig){
       textelem.select("tspan.name")
         .attr("x", node.x+CONSTANTS.CIRCLE.TEXTdx)
         .attr("y", node.y+CONSTANTS.CIRCLE.TEXTdy)
-        .text(function (d){return node["Nom1"]})
+      textelem.select("tspan.budget")
+        .attr("x", node.x+CONSTANTS.CIRCLE.TEXTdx)
+        .attr("y", node.y+CONSTANTS.CIRCLE.TEXTdy+CONSTANTS.CIRCLE.TEXT_PADDING)
     })
     // idem pour les membranes.
     $membranes.attr('transform', function(membrane){ return Utils.transform(membrane);});

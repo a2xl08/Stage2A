@@ -11,13 +11,15 @@ var CONSTANTS = {
   WIDTH: 1280,
   HEIGHT: 600,
   COLORS: {
-    PROPRIETARY: '7d7d7d',
-    BACKGROUND: '111627',
-    ENEMY: 'b17d1d',
-    ALLY: '4d8d9c',
-    SUPPORT: '00ff00',
-    OPPOSE: 'ff0000',
-    USER: '00ff90'
+    PROPRIETARY: '#7d7d7d',
+    BACKGROUND: '#111627',
+    ENEMY: '#b17d1d',
+    ALLY: '#4d8d9c',
+    SUPPORT: '#00ff00',
+    OPPOSE: '#ff0000',
+    USER: '#00ff90',
+    UNSELECTED: '#A0A0A0',
+    UNSELECTED_OPACITY : 0.3
   },
   VUE: {
     POSITION: vue.getBoundingClientRect(),
@@ -74,16 +76,20 @@ var CONSTANTS = {
       }
     },
     CSV_FILES: {
-      NODES: "data/Noeud4juillet.csv",
-      NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect.csv",
+      NODES: "data/Noeud27juillet.csv",
+      NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect27juillet.csv",
       LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
       LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",
-      LINKS_AFFILIATION:"data/Affiliation19juin.csv",
+      LINKS_AFFILIATION:"data/Affiliation27juillet.csv",
       SCENARIO: "data/Reseau/Scenario.csv"
     },
     JSON_FILES: {
       STORIES: "data/Reseau/stories.json"
     }
+  },
+  FINAL_IMGS: {
+    width: 50,
+    height: 50
   }
 };
 
@@ -93,6 +99,16 @@ CONSTANTS.CLICK_FICHE = {
   width: 0.27*CONSTANTS.VUE.WIDTH,
   height: 0.5*CONSTANTS.VUE.HEIGHT,
 };
+
+CONSTANTS.BESTIES_FICHES = {
+  x: 0.6*CONSTANTS.VUE.WIDTH,
+  y1: 0.01*CONSTANTS.VUE.HEIGHT,
+  y2: 0.51*CONSTANTS.VUE.HEIGHT,
+  width: 0.37*CONSTANTS.VUE.WIDTH,
+  height: 0.48*CONSTANTS.VUE.HEIGHT,
+};
+
+CONSTANTS.MEMBRANE.TEXTdx = -0.12*CONSTANTS.VUE.WIDTH
 
 var baseLinkWidth = CONSTANTS.CIRCLE.KERNEL_RADIUS * CONSTANTS.LINK.KERNEL_SCALE - 2;
 var endLinkWidth = baseLinkWidth*CONSTANTS.LINK.END_SCALE;

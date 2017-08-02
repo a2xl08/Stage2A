@@ -2,7 +2,7 @@ function setUpClickFiche (node){
   d3.select(".clickfiche").remove();
   d3.selectAll(".bestiesfiche").remove();
 
-  d3.select("svg").append("foreignObject")
+  d3.select("svg.experimentation").append("foreignObject")
     .classed("clickfiche", true)
     .attr("id", "fiche"+node.ID)
     .attr("x", CONSTANTS.CLICK_FICHE.x)
@@ -24,10 +24,10 @@ function setUpClickFiche (node){
   fiche.append("h2").text("LOBBYING");
   fiche.append("p").text(function (){
     var string = "Dépenses de lobbying estimées : ";
-    if (node["Dépenses Lobby (€)"]==="NaN"){
+    if (node[CONSTANTS.DATA.SPENDING_KEY]==="NaN"){
       string += "Inconnu";
     } else {
-      string += node["Dépenses Lobby (€)"]+" €";
+      string += node[CONSTANTS.DATA.SPENDING_KEY]+" €";
     }
     return string;
   })
@@ -58,9 +58,9 @@ function setUpClickFiche (node){
     })
   }
 
-  d3.select("svg").on("mouseleave", function (){
+  d3.select("svg.experimentation").on("mouseleave", function (){
     d3.select("#fiche"+node.ID).remove();
-    d3.select("svg").on("mouseleave", null);
+    d3.select("svg.experimentation").on("mouseleave", null);
   })
 }
 
@@ -79,7 +79,7 @@ function computeBesties (){
         position: alldata.nodes[i][alldata.userChoice.theme],
         Nom1: alldata.nodes[i].Nom1,
         Nom2: alldata.nodes[i].Nom2,
-        budget: alldata.nodes[i]["Dépenses Lobby (€)"],
+        budget: alldata.nodes[i][CONSTANTS.DATA.SPENDING_KEY],
         allydirectlinks: 0,
         allydirectbudget: 0,
         ennemydirectlinks: 0,

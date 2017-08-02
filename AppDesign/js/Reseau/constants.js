@@ -19,7 +19,9 @@ var CONSTANTS = {
     OPPOSE: '#ff0000',
     USER: '#00ff90',
     UNSELECTED: '#A0A0A0',
-    UNSELECTED_OPACITY : 0.3
+    UNSELECTED_OPACITY : 0.3,
+    STORY: "white",
+    STORY_VISITED: "gray"
   },
   VUE: {
     POSITION: vue.getBoundingClientRect(),
@@ -94,9 +96,9 @@ var CONSTANTS = {
 };
 
 CONSTANTS.CLICK_FICHE = {
-  x: 0.7*CONSTANTS.VUE.WIDTH,
+  x: 0.65*CONSTANTS.VUE.WIDTH,
   y: 0.05*CONSTANTS.VUE.HEIGHT,
-  width: 0.27*CONSTANTS.VUE.WIDTH,
+  width: 0.32*CONSTANTS.VUE.WIDTH,
   height: 0.5*CONSTANTS.VUE.HEIGHT,
 };
 

@@ -74,7 +74,7 @@ var drawMembranes = function(nodes, membranes){
       .classed("name", true)
       .attr("x", membrane.x + CONSTANTS.MEMBRANE.TEXTdx)
       .attr("y", function (){
-        if (membrane.key[membrane.key.length-1]==="R"){ return membrane.y; }
+        if (membrane.key[membrane.key.length-1]==="r"){ return membrane.y; }
         else { return membrane.y + 10; }
       })
       .text(membrane.key)
@@ -99,8 +99,8 @@ var drawMembranes = function(nodes, membranes){
         // On calcule le budget total de lobbying
         var somme = 0;
         for (var i=0; i<nodes.length; i++){
-          if (membrane.nodeIDS.indexOf(nodes[i].ID)!==-1 && nodes[i]["Dépenses Lobby (€)"]!=="NaN"){
-            somme += Number(nodes[i]["Dépenses Lobby (€)"]);
+          if (membrane.nodeIDS.indexOf(nodes[i].ID)!==-1 && nodes[i][CONSTANTS.DATA.SPENDING_KEY]!=="NaN"){
+            somme += Number(nodes[i][CONSTANTS.DATA.SPENDING_KEY]);
           }
         }
         return "Budget Lobby : "+somme+" €";

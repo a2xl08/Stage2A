@@ -220,6 +220,37 @@ var writeBestAllyEnnemyTextInLastSection = function (){
   element.select("p.appel").html(CONSTANTS.SCENARIO[8]["Appel d’action"])
 }
 
+var writeStoriesTextInLastSection = function (){
+  var element = d3.select("#secfin");
+  element.select("h1").html(CONSTANTS.SCENARIO[9]["Titre"]);
+  var listelem = element.select("p.texte").text("").append("ul");
+  for (var i=0; i<CONSTANTS.STORIES.Histoires.length; i++){
+    //if (CONSTANTS.STORIES.Histoires[i][getUserChoice().theme]){
+      listelem.append("li")
+        .classed("storyitem", true)
+        .attr("id", "listory"+i)
+        .text(CONSTANTS.STORIES.Histoires[i].titre)
+        .style("color", CONSTANTS.STORIES.colors[i])
+      // Survol histoire
+      listelem.select("#listory"+i).on("mouseover", function (){
+        d3.select(this).style("cursor", "pointer");
+        var numid = d3.select(this).attr("id").slice(7);
+        listelem.selectAll(".storyitem:not(#listory"+numid+")").style("color", CONSTANTS.COLORS.STORY_VISITED)
+      })
+      // Stop survol histoire
+      listelem.select("#listory"+i).on("mouseout", function (){
+        d3.select(this).style("cursor", "default")
+        d3.selectAll(".storyitem").style("color", CONSTANTS.STORIES.colors[i])
+      })
+    //}
+  }
+}
+
+var writeStory = function(i){
+  var element = d3.select("#secfin")
+
+}
+
 var writeNewThemeTextInLastSection = function (){
   var element = d3.select("#secfin");
   element.select("h1").html(CONSTANTS.SCENARIO[10]["Titre"]);
@@ -236,6 +267,13 @@ var eraseLastSectionContent = function (){
 
 var storestories = function (jsondata){
   CONSTANTS.STORIES = jsondata;
+  // Couleur d'une histoire : white si non visitée
+  CONSTANTS.STORIES.colors = [];
+  for (var i=0; i<CONSTANTS.STORIES.Histoires.length; i++){
+    //if (CONSTANTS.STORIES.Histoires[i][getUserChoice().theme]){
+      CONSTANTS.STORIES.colors.push(CONSTANTS.COLORS.STORY);
+    //}
+  }
 }
 
 var importData = function(){
@@ -282,7 +320,7 @@ var importData = function(){
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Pays/Région"), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Type"), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Secteurs d’activité"), 1);
-    CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Dépenses Lobby (€)"), 1);
+    CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf(CONSTANTS.DATA.SPENDING_KEY), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Personnes impliquées"), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Equivalent Temps plein"), 1);
     // Récupération du thème

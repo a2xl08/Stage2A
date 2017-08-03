@@ -20,6 +20,7 @@ var CONSTANTS = {
     USER: '#00ff90',
     UNSELECTED: '#A0A0A0',
     UNSELECTED_OPACITY : 0.3,
+    // Ne pas oublier de modifier la valeur correspondante dans styles.css : a.sourcelink
     STORY: "white",
     STORY_VISITED: "gray"
   },
@@ -54,7 +55,12 @@ var CONSTANTS = {
     RADIUS_RANGE: [12, 50],
     TEXTdx: -15,
     TEXTdy: -10,
-    TEXT_PADDING: 11
+    TEXT_PADDING: 11,
+    STORY_CIRCLE_dx : -22,
+    STORY_CIRCLE_dy : 10,
+    STORY_CIRCLE_RADIUS : 3,
+    // WARNING : PERLINE < 10 !
+    STORY_CIRCLE_PERLINE : 5
   },
   FORCES: {
     COLLIDE_PADDING: 3,

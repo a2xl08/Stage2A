@@ -225,7 +225,7 @@ var writeStoriesTextInLastSection = function (){
   element.select("h1").html(CONSTANTS.SCENARIO[9]["Titre"]);
   var listelem = element.select("p.texte").text("").append("ul");
   for (var i=0; i<CONSTANTS.STORIES.Histoires.length; i++){
-    //if (CONSTANTS.STORIES.Histoires[i][getUserChoice().theme]){
+    if (CONSTANTS.STORIES.Histoires[i][CONSTANTS.STORIES.THEMES[CONSTANTS.STORIES.themeid]]){
       listelem.append("li")
         .classed("storyitem", true)
         .attr("id", "listory"+i)
@@ -234,21 +234,60 @@ var writeStoriesTextInLastSection = function (){
       // Survol histoire
       listelem.select("#listory"+i).on("mouseover", function (){
         d3.select(this).style("cursor", "pointer");
-        var numid = d3.select(this).attr("id").slice(7);
+        var numid = Number(d3.select(this).attr("id").slice(7));
         listelem.selectAll(".storyitem:not(#listory"+numid+")").style("color", CONSTANTS.COLORS.STORY_VISITED)
+        fadeNotInvolved(numid);
       })
       // Stop survol histoire
       listelem.select("#listory"+i).on("mouseout", function (){
-        d3.select(this).style("cursor", "default")
-        d3.selectAll(".storyitem").style("color", CONSTANTS.STORIES.colors[i])
+        d3.select(this).style("cursor", "default");
+        listelem.selectAll(".storyitem").style("color", function (){
+          var numid = Number(d3.select(this).attr("id").slice(7));
+          return CONSTANTS.STORIES.colors[numid];
+        })
+        resetMouseOut();
       })
-    //}
+      // Click Story
+      listelem.select("#listory"+i).on("click", function (){
+        var numid = Number(d3.select(this).attr("id").slice(7));
+        onclickStory(numid);
+      })
+    }
   }
+  element.select("p.appel").text("");
 }
 
 var writeStory = function(i){
-  var element = d3.select("#secfin")
+  var element = d3.select("#secfin");
+  element.select("h1").text(CONSTANTS.STORIES.Histoires[i].titre);
+  element.select("p.texte").html(CONSTANTS.STORIES.Histoires[i].txt);
+  element.insert("h1", "p.appel").classed("titlesource", true).text("Sources");
+  var sourcelist = element.select("p.appel").append("ul");
+  for (var j=0; j<CONSTANTS.STORIES.Histoires[i].sources.length; j++){
+    sourcelist.append("li").append("a")
+      .classed("sourcelink", true)
+      .text(CONSTANTS.STORIES.Histoires[i].sources[j].source)
+      .attr("href", CONSTANTS.STORIES.Histoires[i].sources[j].link)
+      .attr("target", "_blank")
+  }
+}
 
+var computeStoryCircles = function (){
+  var alldata = CONSTANTS.LOADEDDATA;
+  CONSTANTS.STORIES.NODESTORY = {};
+  for (var j=0; j<alldata.nodes.length; j++){
+    CONSTANTS.STORIES.NODESTORY[Number(alldata.nodes[j].ID)] = [];
+  }
+  var activesstories = Object.keys(CONSTANTS.STORIES.colors).map(Number);
+  for (var i=0; i<activesstories.length; i++){
+    var involvedkey = CONSTANTS.STORIES.Histoires[activesstories[i]]["Noeuds principaux"] ? "Noeuds principaux" : "Noeuds du réseau";
+    for (var j=0; j<CONSTANTS.STORIES.Histoires[activesstories[i]][involvedkey].length; j++){
+      // Sécurité pour éviter le plantage
+      if (CONSTANTS.STORIES.NODESTORY[CONSTANTS.STORIES.Histoires[activesstories[i]][involvedkey][j]]){
+        CONSTANTS.STORIES.NODESTORY[CONSTANTS.STORIES.Histoires[activesstories[i]][involvedkey][j]].push(activesstories[i]);
+      }
+    }
+  }
 }
 
 var writeNewThemeTextInLastSection = function (){
@@ -262,18 +301,34 @@ var eraseLastSectionContent = function (){
   d3.select("#secfin").selectAll("div.blocfin").remove();
   d3.select("#bestally").remove();
   d3.select("#worstrival").remove();
+  d3.select("svg#closestory").style("display", "none")
+  d3.select("h1.titlesource").remove();
   clicklocknode = false;
 }
 
 var storestories = function (jsondata){
   CONSTANTS.STORIES = jsondata;
+  CONSTANTS.STORIES.THEMES = Object.keys(CONSTANTS.STORIES.Histoires[0]).slice();
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("ID"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("titre"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("txt"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("sources"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Noeuds principaux"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Noeuds du réseau"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Nouveau noeud"),1);
+  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Liens"),1);
+  console.log(CONSTANTS.STORIES.THEMES)
+  CONSTANTS.STORIES.themeid = Number(params["theme"]);
+
   // Couleur d'une histoire : white si non visitée
-  CONSTANTS.STORIES.colors = [];
+  CONSTANTS.STORIES.colors = {};
   for (var i=0; i<CONSTANTS.STORIES.Histoires.length; i++){
-    //if (CONSTANTS.STORIES.Histoires[i][getUserChoice().theme]){
-      CONSTANTS.STORIES.colors.push(CONSTANTS.COLORS.STORY);
-    //}
+    if (CONSTANTS.STORIES.Histoires[i][CONSTANTS.STORIES.THEMES[CONSTANTS.STORIES.themeid]]){
+      CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY;
+    }
   }
+
+  computeStoryCircles();
 }
 
 var importData = function(){

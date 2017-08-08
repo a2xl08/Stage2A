@@ -157,8 +157,10 @@ var nodeFill = function(node){
   // return fade(Color.node(node), colors.BACKGROUND, 0.5);
   if(node.type === TYPES.LOBBY){
     return fade(Color.node(node), colors.BACKGROUND, 0.5);
-  } else {
+  } else if (node.type === TYPES.PROPRIETARY) {
     return 'url(#radialGradient)'
+  } else {
+    return fade(CONSTANTS.COLORS.STORYNODE, CONSTANTS.COLORS.BACKGROUND, 0.5)
   }
 };
 
@@ -172,20 +174,37 @@ function opacityNotOn (node){
 
 var fadeNotNeighbours = function (node){
   // On grise les noeuds non voisins
-  var alldata = CONSTANTS.LOADEDDATA;
+  var alldata = CONSTANTS.NOTPROCESSEDDATA;
   var neighboursID = [node.ID];
   // On récupère les IDs de tous les voisins
-  for (var i=0; i<alldata.links.length; i++){
-    if (alldata.links[i].data.source.ID === node.ID){
-      neighboursID.push(alldata.links[i].data.target.ID)
-    } else if (alldata.links[i].data.target.ID === node.ID){
-      neighboursID.push(alldata.links[i].data.source.ID)
+  for (var i=0; i<alldata.linksaffiliation.length; i++){
+    if (alldata.linksaffiliation[i].data.source.ID === node.ID){
+      neighboursID.push(alldata.linksaffiliation[i].data.target.ID)
+    } else if (alldata.linksaffiliation[i].data.target.ID === node.ID){
+      neighboursID.push(alldata.linksaffiliation[i].data.source.ID)
     } else {
       // On grise le lien
-      canvas.selectAll(".source-"+alldata.links[i].data.source.ID).selectAll(".target-"+alldata.links[i].data.target.ID+" path")
+      canvas.selectAll(".source-"+alldata.linksaffiliation[i].data.source.ID).selectAll(".target-"+alldata.linksaffiliation[i].data.target.ID+" path")
         .attr("fill", function (){
           return Color.fade(CONSTANTS.COLORS.UNSELECTED, CONSTANTS.COLORS.BACKGROUND, CONSTANTS.COLORS.UNSELECTED_OPACITY)
         })
+    }
+  }
+  // On n'oublie pas les voisins actionnaires
+  var directprop = CONSTANTS.NOTPROCESSEDDATA.linksproprietary;
+  var undirectprop = CONSTANTS.NOTPROCESSEDDATA.undirectlinks;
+  for (var i=0; i<directprop.length; i++){
+    if (directprop[i].data.source.ID === node.ID){
+      neighboursID.push(directprop[i].data.target.ID)
+    } else if (directprop[i].data.target.ID === node.ID){
+      neighboursID.push(directprop[i].data.source.ID)
+    }
+  }
+  for (var i=0; i<undirectprop.length; i++){
+    if (undirectprop[i].data.source.ID === node.ID){
+      neighboursID.push(undirectprop[i].data.target.ID)
+    } else if (undirectprop[i].data.target.ID === node.ID){
+      neighboursID.push(undirectprop[i].data.source.ID)
     }
   }
   console.log("neighboursID = ", neighboursID)
@@ -240,7 +259,7 @@ var fadeNotInvolved = function (i){
 }
 
 var resetMouseOut = function (){
-  var alldata = CONSTANTS.LOADEDDATA;
+  var alldata = CONSTANTS.NOTPROCESSEDDATA;
   // On reset les noeuds
   for (var i=0; i<alldata.nodes.length; i++){
     canvas.select("#lobby"+alldata.nodes[i].ID).select(".circle-kernel").attr("fill", Color.node(alldata.nodes[i])).attr("stroke", Color.node(alldata.nodes[i]));
@@ -249,6 +268,7 @@ var resetMouseOut = function (){
   // On reset les liens
   canvas.selectAll(".link path").attr("fill", Color.link);
   // On reset les textes
+  canvas.selectAll(".lobbytext").selectAll("tspan").attr("fill-opacity", 0);
   for (var i=0; i<alldata.nodes.length; i++){
     canvas.select("#lobbytext"+alldata.nodes[i].ID).select("tspan.name").attr("fill-opacity", opacityNotOn(alldata.nodes[i]));
   }
@@ -278,7 +298,7 @@ var drawNodes = function(nodes){
 
 
   var lobbyNodeEnter = nodeEnter.filter(function(d){
-    return d.type == TYPES.LOBBY;
+    return (d.type == TYPES.LOBBY || d.type == TYPES.STORY);
   });
 
   // deuxième cercle, le noyau.
@@ -313,6 +333,8 @@ var drawNodes = function(nodes){
             return node["Nom"];
           case TYPES.LOBBY:
             return node["Nom1"];
+          case TYPES.STORY:
+            return node["Nom"];
         }
       })
     if (node.type===TYPES.LOBBY && node[CONSTANTS.DATA.SPENDING_KEY]!="NaN"){
@@ -352,7 +374,7 @@ var drawNodes = function(nodes){
         .style('opacity', 1);
 
       $nodeLinks.classed('hidden', false);
-    } else {
+    } else if (node.type === TYPES.LOBBY) {
       if (!clicklocknode){
         canvas.select("#lobby"+node.ID).style("cursor", "pointer");
       }

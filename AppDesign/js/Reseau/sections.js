@@ -317,7 +317,147 @@ var seventhSection = function(data){
     collideRadius: spaceCollide,
   };
 };
-var eighthSection = function(data){};
+
+CONSTANTS.STORY_SECTION = {
+    id: 7,
+    clusters: [],
+    /*data: {
+      nodes: nodes,
+      links: links,
+      storynodes: storynodes,
+    }, On ne connait pas encore les data */
+    showMembranes: false,
+    showLinks: true,
+    collideRadius: spaceCollide,
+  };
+var eighthSection = function(data){
+  return CONSTANTS.STORY_SECTION;
+};
+
+function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
+  for (var j=0; j<CONSTANTS.STORIES.Histoires[i][key].length; j++){
+    var absentinnodes = true;
+    for (var k=0; k<nodes.length; k++){
+      if (Number(nodes[k].ID) === Number(CONSTANTS.STORIES.Histoires[i][key][j])){
+        absentinnodes = false;
+        break;
+      }
+    }
+                         // On vérifie que le noeud existe
+    if (absentinnodes && CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
+      nodes.push(CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
+      nodesindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])] = nodes.length-1;
+      // On rentre les points, calcule le radius etc...
+      var node = nodes[nodes.length-1]
+      var spending = parseInt(node[CONSTANTS.DATA.SPENDING_KEY])||0;
+      if(spending > 0){
+        node.radius = spendingScale(spending);
+        node.points = circlePoints(node.radius);
+      } else {
+        node.radius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
+        node.points = [];
+      }
+      node.spending = spending;
+      node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
+      node.type = CONSTANTS.DATA.TYPES.NODE.LOBBY;
+    }
+  }
+}
+
+var updateEighthSection = function (i){
+
+  var SPENDING_KEY = CONSTANTS.DATA.SPENDING_KEY;
+  console.log(CONSTANTS.LOADEDDATA.utils.nodes.all())
+  console.log(CONSTANTS.LOADEDDATA.utils.links.all())
+  var nodes = CONSTANTS.LOADEDDATA.utils.nodes.all().slice();
+  var nodesindexor = {};
+  var links = CONSTANTS.LOADEDDATA.utils.links.all().slice();
+
+  var spendingDomain = [1, d3.max(CONSTANTS.NOTPROCESSEDDATA.nodes, function(d){
+    return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0; 
+  })];
+  var spendingScale = CONSTANTS.CIRCLE.SCALE().domain(spendingDomain).range(CONSTANTS.CIRCLE.RADIUS_RANGE);
+
+  // Construction de nodesindexor
+  for (var j=0; j<nodes.length; j++){
+    nodesindexor[Number(nodes[j].ID)] = j;
+  }
+
+  // Ajout des "noeuds du réseau" sans position sur le thème
+  addstorynodes(i,nodes,nodesindexor,"Noeuds du réseau", spendingScale);
+  // Ajout des "noeuds principaux" sans position sur le thème
+  if (CONSTANTS.STORIES.Histoires[i]["Noeuds principaux"]){
+    addstorynodes(i,nodes,nodesindexor,"Noeuds principaux", spendingScale);
+  }
+  
+  // Ajout des nouveaux noeuds
+  var newsID = [];
+  if (CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"]){
+  for (var j=0; j<CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"].length; j++){
+    // On ajoute à la liste des IDs
+    newsID.push(String(CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"][j].id))
+    // on traite le nouveau noeud
+    var node = {};
+    node.ID = String(CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"][j].id);
+    node.Nom = CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"][j].nom;
+    node.type = CONSTANTS.DATA.TYPES.NODE.STORY;
+    node[SPENDING_KEY] = CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"][j][SPENDING_KEY] || 0;
+    if (node[SPENDING_KEY] > 0){
+      node.radius = spendingScale(node[SPENDING_KEY])
+      node.points = circlePoints(node.radius)
+    } else {
+      node.radius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
+      node.points = [];
+    }
+    node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
+    nodes.push(node);
+    nodesindexor[Number(node.ID)] = nodes.length-1;
+  }
+  }
+  // Ajout des liens spécifiques
+  if (CONSTANTS.STORIES.Histoires[i]["Liens"]){
+  var jsonlinks = CONSTANTS.STORIES.Histoires[i]["Liens"];
+  console.log("jsonlinks = ",jsonlinks)
+  var linktypes = Object.keys(jsonlinks);
+  for (var j=0; j<linktypes.length; j++){
+    // On parcourt les liens de type j
+    for (var k=0; k<jsonlinks[linktypes[j]].length; k++){
+      // source et target doivent être des noeuds reconnus
+      console.log("source = ", Number(jsonlinks[linktypes[j]][k].source))
+      console.log("target = ", Number(jsonlinks[linktypes[j]][k].target))
+      console.log(CONSTANTS.NOTPROCESSEDDATA.indexor[Number(jsonlinks[linktypes[j]][k].source)])
+      console.log(newsID.indexOf(String(jsonlinks[linktypes[j]][k].source)))
+      console.log(CONSTANTS.NOTPROCESSEDDATA.indexor[Number(jsonlinks[linktypes[j]][k].target)])
+      console.log(newsID.indexOf(String(jsonlinks[linktypes[j]][k].target)))
+      if (CONSTANTS.NOTPROCESSEDDATA.indexor[Number(jsonlinks[linktypes[j]][k].source)] || newsID.indexOf(String(jsonlinks[linktypes[j]][k].source))!==-1){
+      if (CONSTANTS.NOTPROCESSEDDATA.indexor[Number(jsonlinks[linktypes[j]][k].target)] || newsID.indexOf(String(jsonlinks[linktypes[j]][k].target))!==-1){  
+        var link = {};
+        link.source = String(jsonlinks[linktypes[j]][k].source);
+        link.target = String(jsonlinks[linktypes[j]][k].target);
+        link.data = {
+          source: nodes[nodesindexor[Number(jsonlinks[linktypes[j]][k].source)]],
+          target: nodes[nodesindexor[Number(jsonlinks[linktypes[j]][k].target)]],
+        };
+        link.type = linktypes[j];
+        links.push(link);
+      }
+      }
+    }
+  }
+  }
+
+  sections[7] = {
+    id: 7,
+    clusters: [],
+    data: {
+      nodes: nodes,
+      links: links,
+    },
+    showMembranes: false,
+    showLinks: true,
+    collideRadius: spaceCollide,
+  };
+}
 
 var configureSections = function(data){
   packLayout = packLayout.size(getSize());
@@ -338,7 +478,7 @@ var configureSections = function(data){
   // voir Experimentation/sections/seventh.js
   allSections.push(seventhSection(data));
   // voir Experimentation/sections/eighth.js
-  // allSections.push(eighthSection(data));
+  allSections.push(eighthSection(data));
   // création d'un objet pour chaque cluster de section
   // afin d'alléger encore un peu la tache lors du tracé
   // de la membrane.
@@ -375,16 +515,24 @@ function onclickBestAlly (){
 }
 d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 
+
+
 var storyactive = false;
+var storyonread = false;
 
 function onclickStory (i){
   eraseLastSectionContent();
   writeStory(i);
+  storyonread = true;
   stopeventsStoriesCircles();
+  updateEighthSection(i);
+  simulation.nextSection();
   resetMouseOut();
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
   d3.select("svg#closestory")
     .on("click", function (){
+      storyonread = false;
+      simulation.previousSection();
       eraseLastSectionContent();
       writeStoriesTextInLastSection();
       eventsStoriesCircles();
@@ -545,12 +693,22 @@ function rebornUser (){
         return chroma(colors.USER);
       }
       if (userChoice.position){
-        color = d[userChoice.theme] === userChoice.position ? colors.ALLY : colors.ENEMY;
+        if (d[userChoice.theme]){
+          color = d[userChoice.theme] === userChoice.position ? colors.ALLY : colors.ENEMY;
+        } else {
+          color = colors.UNSELECTED;
+        }
       } else {
-        color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+        if (d[userChoice.theme]){
+          color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+        } else {
+          color = colors.UNSELECTED;
+        }
       }
-    } else {
+    } else if (d.type === TYPES.PROPRIETARY) {
       color = colors.PROPRIETARY;
+    } else {
+      color = colors.STORYNODE;
     }
     return chroma(color);
   };

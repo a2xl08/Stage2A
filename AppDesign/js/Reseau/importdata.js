@@ -76,7 +76,7 @@ var processData = function(files){
   var indirectProprietaryLinks = filterLinksByTargets(files[3], lobbyNodes);
   var proprietaryNodes = filterNodesByLinkSource(files[1], indirectProprietaryLinks);
   
-  var spendingDomain = [1, d3.max(lobbyNodes, function(d){
+  var spendingDomain = [1, d3.max(files[0], function(d){
     return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0; 
   })];
   
@@ -307,7 +307,7 @@ var eraseLastSectionContent = function (){
   d3.select("#secfin").selectAll("div.blocfin").remove();
   d3.select("#bestally").remove();
   d3.select("#worstrival").remove();
-  d3.select("svg#closestory").style("display", "none")
+  d3.select("svg#closestory").style("display", "none");
   d3.select("h1.titlesource").remove();
   clicklocknode = false;
 }
@@ -372,6 +372,37 @@ var importData = function(){
     CONSTANTS.NOTPROCESSEDDATA.linksproprietary = files[2];
     CONSTANTS.NOTPROCESSEDDATA.undirectlinks = files[3];
     CONSTANTS.NOTPROCESSEDDATA.linksaffiliation = files[4];
+    // On crée l'index de nodes
+    CONSTANTS.NOTPROCESSEDDATA.indexor = {};
+    for (var i=0; i<CONSTANTS.NOTPROCESSEDDATA.nodes.length; i++){
+      CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.nodes[i].ID)] = i;
+    }
+    for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksaffiliation.length; j++){
+      CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data = {
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].source]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].target]],
+      };
+    }
+    for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksproprietary.length; j++){
+      CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].data = {
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].source]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].target]],
+      };
+    }
+    for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.undirectlinks.length; j++){
+      CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data = {
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].source]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].target]],
+      };
+      if (!(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source)){
+        CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source = {};
+        CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source.ID = CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].source;
+      }
+      if (!(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target)){
+        CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target = {};
+        CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target.ID = CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].target;
+      }
+    }
 
     // On écrit le texte des sections
     for (var i=0; i<7; i++){

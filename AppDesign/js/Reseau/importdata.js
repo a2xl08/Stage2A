@@ -125,6 +125,27 @@ var processData = function(files){
     node.links = links.length;
   });
 
+  // On supprime les actionnaires de degré 1 et les lies associés
+  badproprietaries = [];
+  for (var i=0; i<proprietaryNodes.length; i++){
+    if (proprietaryNodes[i].links===1){
+      badproprietaries.push(proprietaryNodes[i].ID)
+      proprietaryNodes[i]=0;
+    }
+  }
+  while (proprietaryNodes.indexOf(0)!==-1){
+    proprietaryNodes.splice(proprietaryNodes.indexOf(0),1)
+  }
+  for (var i=0; i<allLinks.length; i++){
+    if (badproprietaries.indexOf(allLinks[i].source)!==-1){
+      allLinks[i]=0;
+    }
+  }
+  while (allLinks.indexOf(0)!==-1){
+    allLinks.splice(allLinks.indexOf(0),1)
+  }
+
+
   // échelle de calcul du radius du noeud.
   var proprietaryScale = d3.scaleLinear()
     .range(CONSTANTS.CIRCLE.RADIUS_RANGE)
@@ -166,7 +187,7 @@ var processData = function(files){
         },
         affiliationsAndDirect: function(){
           return allLinks.filter(function(link){
-            return [ TYPES.LINK.AFFILIATION, TYPES.LINK.PROPRIETY.DIRECT ].indexOf(link.type) != -1;
+            return [ TYPES.LINK.AFFILIATION, TYPES.LINK.PROPRIETARY.DIRECT ].indexOf(link.type) != -1;
           });
         }
       }
@@ -383,12 +404,14 @@ var importData = function(){
         source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].source]],
         target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].target]],
       };
+      CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].type = CONSTANTS.DATA.TYPES.LINK.AFFILIATION;
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksproprietary.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].data = {
         source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].source]],
         target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].target]],
       };
+      CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].type = CONSTANTS.DATA.TYPES.LINK.PROPRIETARY.DIRECT;
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.undirectlinks.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data = {
@@ -403,6 +426,7 @@ var importData = function(){
         CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target = {};
         CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target.ID = CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].target;
       }
+      CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].type = CONSTANTS.DATA.TYPES.LINK.PROPRIETARY.INDIRECT;
     }
 
     // On écrit le texte des sections
@@ -485,9 +509,11 @@ var importData = function(){
     }
 
     // On remplit la légende
-    drawlegcolors();
-    drawlegcolorscale();
-    drawlegaff();
+    drawlegcolors(true);
+    drawlegcolorscale(true);
+    drawlegaff(true);
+    drawlegprop(true);
+    updaterectcoords();
 
     // On écrit le texte dans le dernière section
     writeBaseTextInLastSection();

@@ -280,6 +280,9 @@ var configureSimulation = function(scene, data, sectionsConfig){
     updateNodes();
     updateLinks();
     updateAnimations();
+    if (answershow){
+      updateLegendContent();
+    }
   };
 
 
@@ -323,7 +326,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
     $membranes.attr('d', function(d){return membranePath(nodes, d); });
     $membranesExit.attr('d', function(d){return membranePath(nodes, d); });
     // idem pour les storycircles
-    if (storyactive){
+    if (storyactive && (storyonread===false)){
       updateStoriesCircles();
     }
     

@@ -197,9 +197,13 @@ var processData = function(files){
 
 var writeTextInSection = function (i){
   var element = d3.select("#sec"+i);
-  element.select("h1").html(CONSTANTS.SCENARIO[i]["Titre"]);
-  element.select("p.texte").html(CONSTANTS.SCENARIO[i]["Texte"])
-  element.select("p.appel").html(CONSTANTS.SCENARIO[i]["Appel d’action"])
+  if (i===7){
+    element.select("p.texte").html(CONSTANTS.RESULTAT[0][getUserChoice().theme])
+  } else {
+    element.select("h1").html(CONSTANTS.SCENARIO[i]["Titre"]);
+    element.select("p.texte").html(CONSTANTS.SCENARIO[i]["Texte"]);
+    element.select("p.appel").html(CONSTANTS.SCENARIO[i]["Appel d’action"]);
+  }
 }
 
 var writeBaseTextInLastSection = function (){
@@ -372,6 +376,7 @@ var importData = function(){
     csv.LINKS_INDIRECT_PROPRIETARY,
     csv.LINKS_AFFILIATION,
     csv.SCENARIO,
+    csv.RESULTAT,
   ];
   // ajoute à la queue le chargement du chargement du fichier
   files.forEach(function(file){
@@ -394,10 +399,15 @@ var importData = function(){
     CONSTANTS.NOTPROCESSEDDATA.linksproprietary = files[2];
     CONSTANTS.NOTPROCESSEDDATA.undirectlinks = files[3];
     CONSTANTS.NOTPROCESSEDDATA.linksaffiliation = files[4];
-    // On crée l'index de nodes
+    CONSTANTS.RESULTAT = files[6];
+    // On crée l'index de nodes et on le remplit avec les IDs des lobby nodes et proprietary nodes
     CONSTANTS.NOTPROCESSEDDATA.indexor = {};
     for (var i=0; i<CONSTANTS.NOTPROCESSEDDATA.nodes.length; i++){
       CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.nodes[i].ID)] = i;
+    }
+    CONSTANTS.NOTPROCESSEDDATA.propindexor = {};
+    for (var i=0; i<CONSTANTS.NOTPROCESSEDDATA.proprietaries.length; i++){
+      CONSTANTS.NOTPROCESSEDDATA.propindexor[Number(CONSTANTS.NOTPROCESSEDDATA.proprietaries[i].ID)] = i;
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksaffiliation.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data = {
@@ -429,11 +439,6 @@ var importData = function(){
       CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].type = CONSTANTS.DATA.TYPES.LINK.PROPRIETARY.INDIRECT;
     }
 
-    // On écrit le texte des sections
-    for (var i=0; i<7; i++){
-      writeTextInSection(i);
-    }
-
     // On obtient la liste des thèmes
     CONSTANTS.THEMELIST = Object.keys(files[0][0]);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("ID"), 1);
@@ -452,6 +457,11 @@ var importData = function(){
       if ((urlthemeid>=0) && (urlthemeid<CONSTANTS.THEMELIST.length)){
         userChoice.theme = CONSTANTS.THEMELIST[urlthemeid];
       }
+    }
+
+    // On écrit le texte des sections
+    for (var i=0; i<8; i++){
+      writeTextInSection(i);
     }
 
     // Créer les liens de retour vers le thème

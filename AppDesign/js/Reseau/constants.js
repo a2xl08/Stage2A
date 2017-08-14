@@ -15,6 +15,8 @@ var CONSTANTS = {
     svgheightcolorscale: 70,
     svgheightaff: 80,
     svgheightprop: 110,
+    svgheightstoryshort: 80,
+    svgheightstory: 110,
   },
   COLORS: {
     PROPRIETARY: '#7d7d7d',
@@ -30,6 +32,7 @@ var CONSTANTS = {
     STORY: "white",
     STORY_VISITED: "gray",
     STORYNODE: "#996c6c",
+    STORYLINK2: "yellow",
   },
   VUE: {
     POSITION: vue.getBoundingClientRect(),
@@ -88,7 +91,11 @@ var CONSTANTS = {
         PROPRIETARY: {
           DIRECT: 'link/proprietary/direct',
           INDIRECT: 'link/proprietary/indirect',
-        }
+        },
+        STORY: {
+          LINK1: "",
+          LINK2: "", // Complétés à l'import de la story
+        },
       }
     },
     CSV_FILES: {
@@ -97,7 +104,8 @@ var CONSTANTS = {
       LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
       LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",
       LINKS_AFFILIATION:"data/Affiliation27juillet.csv",
-      SCENARIO: "data/Reseau/Scenario.csv"
+      SCENARIO: "data/Reseau/Scenario.csv",
+      RESULTAT: "data/Reseau/texteResultat.csv",
     },
     JSON_FILES: {
       STORIES: "data/Reseau/stories.json"
@@ -124,7 +132,8 @@ CONSTANTS.BESTIES_FICHES = {
   height: 0.48*CONSTANTS.VUE.HEIGHT,
 };
 
-CONSTANTS.MEMBRANE.TEXTdx = -0.12*CONSTANTS.VUE.WIDTH;
+CONSTANTS.MEMBRANE.TEXTdx = -0.11*CONSTANTS.VUE.WIDTH;
+CONSTANTS.MEMBRANE.TEXTdy = 0.02*CONSTANTS.VUE.HEIGHT;
 
 CONSTANTS.CIRCLE.STORY_CIRCLE_LAYOUT = [];
 for (var i=0; i<CONSTANTS.CIRCLE.STORY_CIRCLE_PERLINE; i++){

@@ -88,7 +88,7 @@ var firstSection = function(data){
     collideRadius: contactCollide,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop"],
+      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   };
 }
@@ -136,7 +136,7 @@ var secondSection = function(data){
     collideRadius: contactCollide,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop"],
+      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -184,7 +184,7 @@ var thirdSection = function(data){
     collideRadius: contactCollide,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop"],
+      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -260,7 +260,7 @@ var fourthSection = function(data){
     collideRadius: contactCollide,
     legend: {
       active: ["#legcolors", "#legcolorscale"],
-      inactive: ["#legaff", "#legprop"],
+      inactive: ["#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -304,7 +304,7 @@ var fifthSection = function(data){
     collideRadius: contactCollide,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop"],
+      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -324,7 +324,7 @@ var sixthSection = function(data){
     collideRadius: spaceCollide,
     legend: {
       active: ["#legcolors", "#legaff"],
-      inactive: ["#legcolorscale", "#legprop"],
+      inactive: ["#legcolorscale", "#legprop", "#legstory"],
     },
   };
 };
@@ -341,7 +341,7 @@ var seventhSection = function(data){
     collideRadius: spaceCollide,
     legend: {
       active: ["#legcolors", "#legaff", "#legprop"],
-      inactive: ["#legcolorscale"],
+      inactive: ["#legcolorscale", "#legstory"],
     },
   };
 };
@@ -366,6 +366,8 @@ var eighthSection = function(data){
   return CONSTANTS.STORY_SECTION;
 };
 
+// Etant donné qu'on ajoute que les noeuds story, ne pas tenir de compte de absentinnides, 
+// Au cas ou, le premier paragraphe de code permet d'éviter les doublons de noeuds. 
 function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
   for (var j=0; j<CONSTANTS.STORIES.Histoires[i][key].length; j++){
     var absentinnodes = true;
@@ -392,6 +394,15 @@ function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
       node.spending = spending;
       node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
       node.type = CONSTANTS.DATA.TYPES.NODE.LOBBY;
+    } else if (absentinnodes && CONSTANTS.NOTPROCESSEDDATA.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
+      nodes.push(CONSTANTS.NOTPROCESSEDDATA.proprietaries[CONSTANTS.NOTPROCESSEDDATA.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
+      nodesindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])] = nodes.length-1;
+      // On rentre les points, calcule le radius etc...
+      var node = nodes[nodes.length-1];
+      node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
+      node.type = CONSTANTS.DATA.TYPES.NODE.PROPRIETARY;
+      // Les updates de node.link et node.radius seront réalisés plus tard, qd on saura les liens
+      node.links = 0;
     }
   }
 }
@@ -420,6 +431,7 @@ var updateEighthSection = function (i){
     addstorynodes(i,nodes,nodesindexor,"Noeuds principaux", spendingScale);
   }
   var idlist = Object.keys(nodesindexor).map(Number);
+  console.log(idlist);
   for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksaffiliation.length; j++){
     var sourceid = Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data.source.ID);
     var targetid = Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data.target.ID);
@@ -439,6 +451,28 @@ var updateEighthSection = function (i){
     var targetid = Number(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target.ID);
     if ((idlist.indexOf(sourceid)!==-1) && (idlist.indexOf(targetid)!==-1)){
       links.push(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j])
+      links[links.length-1].data.source = nodes[nodesindexor[sourceid]];
+      links[links.length-1].data.target = nodes[nodesindexor[targetid]];
+      // On incrémente le nombre de liens de source
+      nodes[nodesindexor[sourceid]].links++;
+    }
+  }
+
+    // échelle de calcul du radius du noeud.
+  var proprietaryScale = d3.scaleLinear()
+    .range(CONSTANTS.CIRCLE.RADIUS_RANGE)
+    .domain(
+      // récupère le [ min, max ] du tableau passé en paramètre.
+      d3.extent(
+        // récupère uniquement le nombre de liens des noeuds.
+        nodes.map(function(node){ return node.links||2; })
+      )
+    );
+  // On ajoute les radius et points aux proprietaries
+  for (var j=0; j<nodes.length; j++){
+    if (nodes[j].type === CONSTANTS.DATA.TYPES.NODE.PROPRIETARY){
+      nodes[j].radius = proprietaryScale(nodes[j].links);
+      nodes[j].points = circlePoints(nodes[j].radius);
     }
   }
   
@@ -504,7 +538,7 @@ var updateEighthSection = function (i){
     showLinks: true,
     collideRadius: spaceCollide,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop"],
+      active: ["#legcolors", "#legaff", "#legprop", "#legstory"],
       inactive: ["legcolorscale"],
     },
   };
@@ -571,8 +605,20 @@ d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 var storyactive = false;
 var storyonread = false;
 
+function updateTypesLinks (i){
+  if (CONSTANTS.STORIES.Histoires[i].Liens){
+    var linktypes = Object.keys(CONSTANTS.STORIES.Histoires[i].Liens);
+    CONSTANTS.DATA.TYPES.LINK.STORY.LINK1 = linktypes[0]
+    if (linktypes[1]){
+      CONSTANTS.DATA.TYPES.LINK.STORY.LINK1 = linktypes[1]
+    }
+  }
+}
+
 function onclickStory (i){
   storyonread = i;
+  updateTypesLinks(i);
+  drawlegstory(i);
   eraseLastSectionContent();
   writeStory(i);
   stopeventsStoriesCircles();
@@ -580,6 +626,8 @@ function onclickStory (i){
   simulation.nextSection();
   resetMouseOut();
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
+  d3.select("#bestallyworstrival").style("display", "none");
+  d3.select("#themes").style("display", "none");
   d3.select("svg#closestory")
     .on("click", function (){
       storyonread = false;
@@ -587,6 +635,8 @@ function onclickStory (i){
       eraseLastSectionContent();
       writeStoriesTextInLastSection();
       eventsStoriesCircles();
+      d3.select("#bestallyworstrival").style("display", "inline-block");
+      d3.select("#themes").style("display", "inline-block");
     })
     .style("display", "inline-block");
 }
@@ -678,9 +728,14 @@ function onclickStories (){
     eraseLastSectionContent();
     writeBaseTextInLastSection();
     storyactive = false;
+    if (storyonread!==false){
+      storyonread = false;
+      simulation.previousSection();
+    }
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
     d3.select("img#stories").on("click", onclickStories);
-    d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
+    d3.select("img#bestallyworstrival").on("click", onclickBestAlly).style("display", "inline-block");
+    d3.select("img#themes").style("display", "inline-block");
   });
   d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
@@ -695,7 +750,11 @@ function anonymizeUser (){
     var colors = CONSTANTS.COLORS;
     var color;
     if(d.type === TYPES.LOBBY){
-      color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+      if (d[userChoice.theme]){
+        color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+      } else {
+        color = colors.UNSELECTED;
+      }
     } else {
       color = colors.PROPRIETARY;
     }

@@ -38,14 +38,18 @@ var CONSTANTS = {
     POSITION: vue.getBoundingClientRect(),
     WIDTH: vue.offsetWidth - 2*vuepadding,
     HEIGHT: vue.offsetHeight - 2*vuepadding,
-    NODE_PADDING: 15
+    AGREG_PADDING: 30,
+    NODE_PADDING: 15,
   },
   // réglages de la membranes
   MEMBRANE: {
     // espace entre les points et la membranes.
     PADDING: 5,
     CURVE: d3.curveCatmullRomClosed,
-    TEXT_PADDING: 15
+    TEXT_PADDING: 15,
+    DECALTEXT: 50,
+    UPDECALTEXT: -60,
+    DOWNDECALTEXT: 60,
   },
   LINK:{
     CURVE: d3.curveBasis,
@@ -106,6 +110,7 @@ var CONSTANTS = {
       LINKS_AFFILIATION:"data/Affiliation27juillet.csv",
       SCENARIO: "data/Reseau/Scenario.csv",
       RESULTAT: "data/Reseau/texteResultat.csv",
+      NOMS_DEPLOYES: "data/nomsDeploye27juillet.csv"
     },
     JSON_FILES: {
       STORIES: "data/Reseau/stories.json"
@@ -113,7 +118,7 @@ var CONSTANTS = {
   },
   FINAL_IMGS: {
     width: 50,
-    height: 50
+    height: 50,
   }
 };
 

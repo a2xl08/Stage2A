@@ -186,6 +186,22 @@ td {
   overflow: visible;
   height: auto;
   display: inline-block;
+  width: 220px;
+}
+
+#answers > p > span.allthemes > img {
+  margin-left: 5px;
+}
+
+#answers > div.cartouche {
+  position: absolute;
+  z-index: 6;
+  background-color: rgba(50,50,50,0.9);
+  width: 186;
+  padding: 3px;
+  height: auto;
+  font-size: 10px;
+  pointer-events: none;
 }
 
 span.nom {
@@ -216,9 +232,14 @@ span.fonction {
   width: 271px;
 }
 
+section > p.appel > div.blocfin {
+  margin-bottom: 30px;
+}
+
 section > p.appel > div.blocfin > img {
   float: left;
   margin: 3px;
+  margin-bottom: 25px;
 }
 
 ul > li {

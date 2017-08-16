@@ -86,6 +86,7 @@ var firstSection = function(data){
     showMembranes: true,
     showLinks: false,
     collideRadius: contactCollide,
+    nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
@@ -134,6 +135,7 @@ var secondSection = function(data){
     showMembranes: true,
     showLinks: false,
     collideRadius: contactCollide,
+    nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
@@ -182,6 +184,7 @@ var thirdSection = function(data){
     showMembranes: true,
     showLinks: false,
     collideRadius: contactCollide,
+    nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
@@ -258,6 +261,7 @@ var fourthSection = function(data){
     showMembranes: true,
     showLinks: false,
     collideRadius: contactCollide,
+    nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors", "#legcolorscale"],
       inactive: ["#legaff", "#legprop", "#legstory"],
@@ -302,6 +306,7 @@ var fifthSection = function(data){
     showMembranes: false,
     showLinks: false,
     collideRadius: contactCollide,
+    nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
       active: ["#legcolors"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
@@ -322,6 +327,7 @@ var sixthSection = function(data){
     showMembranes: false,
     showLinks: true,
     collideRadius: spaceCollide,
+    nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
       active: ["#legcolors", "#legaff"],
       inactive: ["#legcolorscale", "#legprop", "#legstory"],
@@ -339,6 +345,7 @@ var seventhSection = function(data){
     showMembranes: false,
     showLinks: true,
     collideRadius: spaceCollide,
+    nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
       active: ["#legcolors", "#legaff", "#legprop"],
       inactive: ["#legcolorscale", "#legstory"],
@@ -357,6 +364,7 @@ CONSTANTS.STORY_SECTION = {
     showMembranes: false,
     showLinks: true,
     collideRadius: spaceCollide,
+    nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
       active: ["#legcolors", "#legaff", "#legprop"],
       inactive: ["#legcolorscale"],
@@ -537,6 +545,7 @@ var updateEighthSection = function (i){
     showMembranes: false,
     showLinks: true,
     collideRadius: spaceCollide,
+    nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
       active: ["#legcolors", "#legaff", "#legprop", "#legstory"],
       inactive: ["legcolorscale"],
@@ -615,6 +624,26 @@ function updateTypesLinks (i){
   }
 }
 
+// L'appel à emphacize se situe dans resetMouseOut : nodes.js
+function emphacizeMainNodes (i){
+  if (i !== false){
+  var mainnodes = CONSTANTS.STORIES.Histoires[i]["Noeuds principaux"];
+  console.log(mainnodes)
+  if (mainnodes){
+    for (var j=0; j<mainnodes.length; j++){
+      if (CONSTANTS.NOTPROCESSEDDATA.indexor[Number(mainnodes[j])]!==undefined){
+        d3.select("#lobby"+mainnodes[j]).select(".circle-membrane")
+          .attr("fill", function (){
+            var node = CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(mainnodes[j])]];
+            console.log(node)
+            return fade(Color.node(node), CONSTANTS.COLORS.BACKGROUND, 0.9)
+          })
+      }
+    }
+  }
+  }
+}
+
 function onclickStory (i){
   storyonread = i;
   updateTypesLinks(i);
@@ -624,7 +653,7 @@ function onclickStory (i){
   stopeventsStoriesCircles();
   updateEighthSection(i);
   simulation.nextSection();
-  resetMouseOut();
+  resetMouseOut(); // Et emphacize
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
   d3.select("#bestallyworstrival").style("display", "none");
   d3.select("#themes").style("display", "none");
@@ -632,6 +661,7 @@ function onclickStory (i){
     .on("click", function (){
       storyonread = false;
       simulation.previousSection();
+      resetMouseOut();
       eraseLastSectionContent();
       writeStoriesTextInLastSection();
       eventsStoriesCircles();
@@ -781,25 +811,46 @@ function anonymizeUser (){
   // On écrit un unique answer
   d3.select("#answers").insert("p", "p.small")
     .classed("sujet", true)
-    .html("<span class='sujets'>Sujets d'intervention : </span><span class='allthemes'></span>")
+    .html("<span class='sujets'>Sujets : </span><span class='allthemes'></span>")
   d3.select("#answers").select("span.allthemes")
   for (var i=0; i<CONSTANTS.THEMELIST.length; i++){
+    // i2 vaut la valeur courante de i
+    (function (i2){
     d3.select("#answers").select("span.allthemes")
       .append("a")
-      .attr("href", "reseau.html?theme="+i)
-      .text(CONSTANTS.THEMELIST[i])
+      .attr("href", "reseau.html?theme="+i2)
+      .text(CONSTANTS.THEMELIST[i2])
+    d3.select("#answers").select("span.allthemes")
+      .append("img")
+      .attr("width", 13)
+      .attr("height", 13)
+      .attr("src", "img/i.svg")
+      .on("mouseover", function (){
+        console.log("hover")
+        console.log(i2);
+        console.log(CONSTANTS.THEMELIST[i2])
+        console.log(CONSTANTS.NOMS_DEPLOYES[CONSTANTS.THEMELIST[i2]])
+        var x = d3.mouse(d3.select("#answers").node())[0];
+        var y = d3.mouse(d3.select("#answers").node())[1];
+        d3.select("#answers")
+          .append("div")
+          .classed("cartouche", true)
+          .text(CONSTANTS.NOMS_DEPLOYES[CONSTANTS.THEMELIST[i2]])
+          .style("top", y)
+          .style("left", x)
+      })
+      .on("mouseout", function (){
+        d3.select("#answers").select("div.cartouche").remove();
+      })
     d3.select("#answers").select("span.allthemes")
       .append("br")
+    })(i);
   }
   drawlegcolors(false);
   drawlegcolorscale(false);
   drawlegaff(false);
   drawlegprop(false);
   updaterectcoords();
-  if (!answershow){
-    d3.select("#answers")
-      .style("bottom", -rectcoords.height+63)
-  }
 }
 
 function rebornUser (){
@@ -884,17 +935,19 @@ function rebornUser (){
   updaterectcoords();
   if (!answershow){
     d3.select("#answers")
-      .style("bottom", -rectcoords.height+63)
+      .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
   }
 }
 
 function onclickNewTheme (){
   eraseLastSectionContent();
   writeNewThemeTextInLastSection();
+  showanswers();
   anonymizeUser();
   d3.select("img#themes").on("click", function (){
     eraseLastSectionContent();
     writeBaseTextInLastSection();
+    showanswers();
     rebornUser();
     d3.select("img#themes").on("click", onclickNewTheme);
   })

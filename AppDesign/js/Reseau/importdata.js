@@ -24,7 +24,7 @@ var getUserChoice = function(){ return userChoice; };
 var filterNodesByTheme = function(nodes, theme){
   return nodes.filter(function(node){
     var position = node[theme];
-    return position != null && position != '';
+    return position != null && position != '' && position != "NSPP" && position != "Controversé";
   });
 };
 
@@ -345,11 +345,16 @@ var storestories = function (jsondata){
   CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("titre"),1);
   CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("txt"),1);
   CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("sources"),1);
-  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Noeuds principaux"),1);
+  if (CONSTANTS.STORIES.THEMES.indexOf("Noeuds principaux")!==-1){
+    CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Noeuds principaux"),1);
+  }
   CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Noeuds du réseau"),1);
-  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Nouveau noeud"),1);
-  CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Liens"),1);
-  console.log(CONSTANTS.STORIES.THEMES)
+  if (CONSTANTS.STORIES.THEMES.indexOf("Nouveau noeud")!==-1){
+    CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Nouveau noeud"),1);
+  }
+  if (CONSTANTS.STORIES.THEMES.indexOf("Liens")!==-1){
+    CONSTANTS.STORIES.THEMES.splice(CONSTANTS.STORIES.THEMES.indexOf("Liens"),1);
+  }
   CONSTANTS.STORIES.themeid = Number(params["theme"]);
 
   // Couleur d'une histoire : white si non visitée

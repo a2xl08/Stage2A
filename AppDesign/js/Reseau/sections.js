@@ -781,7 +781,13 @@ function anonymizeUser (){
     var color;
     if(d.type === TYPES.LOBBY){
       if (d[userChoice.theme]){
-        color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+        if (d[userChoice.theme]==="Pour"){
+          color = colors.SUPPORT;
+        } else if (d[userChoice.theme]==="Contre"){
+          color = colors.OPPOSE;
+        } else {
+          color = colors.UNSELECTED;
+        }
       } else {
         color = colors.UNSELECTED;
       }
@@ -824,7 +830,7 @@ function anonymizeUser (){
       .append("img")
       .attr("width", 13)
       .attr("height", 13)
-      .attr("src", "img/i.svg")
+      .attr("src", "img/i_blanc.svg")
       .on("mouseover", function (){
         console.log("hover")
         console.log(i2);
@@ -860,19 +866,31 @@ function rebornUser (){
     var colors = CONSTANTS.COLORS;
     var color;
     if(d.type === TYPES.LOBBY){
-      var userChoice = getUserChoice(); 
+      var userChoice = getUserChoice();
       if(userChoice.lobbyID == d.ID){
         return chroma(colors.USER);
       }
-      if (userChoice.position){
+      if (userChoice.position === "Pour" || userChoice.position === "Contre"){
         if (d[userChoice.theme]){
-          color = d[userChoice.theme] === userChoice.position ? colors.ALLY : colors.ENEMY;
+          if (d[userChoice.theme]===userChoice.position){
+            color = colors.ALLY;
+          } else if (d[userChoice.theme]==="Pour" || d[userChoice.theme]==="Contre"){
+            color = colors.ENEMY;
+          } else {
+            color = colors.UNSELECTED;
+          }
         } else {
           color = colors.UNSELECTED;
         }
       } else {
         if (d[userChoice.theme]){
-          color = d[userChoice.theme] === "Pour" ? colors.SUPPORT : colors.OPPOSE;
+          if (d[userChoice.theme]==="Pour"){
+            color = colors.SUPPORT;
+          } else if (d[userChoice.theme]==="Contre"){
+            color = colors.OPPOSE;
+          } else {
+            color = colors.UNSELECTED;
+          }
         } else {
           color = colors.UNSELECTED;
         }

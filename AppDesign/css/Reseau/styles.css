@@ -9,6 +9,26 @@ font-style: normal;
 }
 
 @font-face {
+font-family: 'Open Sans Bold';
+src: url('../font/OpenSansBold/OpenSans-Bold.eot?') format('eot'),
+     url('../font/OpenSansBold/OpenSans-Bold.otf') format('truetype'),
+     url('../font/OpenSansBold/OpenSans-Bold.woff') format('woff'),
+     url('../font/OpenSansBold/OpenSans-Bold.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Open Sans Italic';
+src: url('../font/OpenSansItalic/OpenSans-Italic.eot?') format('eot'),
+     url('../font/OpenSansItalic/OpenSans-Italic.otf') format('truetype'),
+     url('../font/OpenSansItalic/OpenSans-Italic.woff') format('woff'),
+     url('../font/OpenSansItalic/OpenSans-Italic.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
 font-family: 'Antique Olive Standard Compact';
 src: url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.eot?') format('eot'),
      url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.otf') format('truetype'),
@@ -101,6 +121,7 @@ section > h1.titlesource {
 
 table {
   border-collapse: collapse;
+  width: 100%;
 }
 
 th, td {
@@ -118,7 +139,7 @@ th {
 td {
   border: solid rgb(45, 82, 252) 1px;
   border-right: none;
-  width: 22%;
+  width: 100%;
   padding-left: 6px;
 }
 
@@ -280,12 +301,16 @@ div.menu > img {
   margin: 5px;
   cursor: pointer;
   display: none;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 div.menu > svg#closestory {
   margin: 5px;
   cursor: pointer;
   display: none;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 svg.experimentation {
@@ -377,4 +402,70 @@ a#backloby:hover {
 #reloadbox:hover {
   background-color: orange;
   cursor: pointer;
+}
+
+#credits {
+  display: none;
+  position: fixed;
+  background-color: rgba(50,50,50,0.95);
+  width: 70%;
+  height: 70%;
+  top: 15%;
+  left: 15%;
+  overflow: scroll;
+  overflow-x: hidden;
+  z-index: 10;
+  padding: 10px;
+}
+
+#credits > #closecredits {
+  position: fixed;
+  top: 10%;
+  right: 15%;
+  background-color: rgb(191,191,191);
+  border: solid black 2px;
+  border-radius: 10px;
+  padding: 5px;
+  color: black;
+  font-weight: bold;
+}
+
+#credits > #closecredits:hover {
+  background-color: red;
+  cursor: pointer;
+}
+
+p#opencredits:hover {
+  cursor: pointer;
+}
+
+#credits > h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+#credits > p {
+  text-align: justify;
+}
+
+#credits > p > em {
+  font-style: italic;
+}
+
+#credits > p > a {
+  color: inherit;
+}
+
+#credits > p > a:hover {
+  color: inherit;
+}
+
+#credits > p > a:visited {
+  color: inherit;
+}
+
+#credits > img {
+  display: block;
+  margin: auto;
 }

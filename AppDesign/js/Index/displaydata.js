@@ -19,32 +19,15 @@ var choices = [];
 var pas = 45;
 var resultindex;
 
-// Cette fonction ajuste la taille des disques en fonction de la donnée
-function scalablesize (intselect,d){
-  var max = tabnbloby[intselect];
-  return d/max+0.2
-}
-
-// Cette fonction est appelée pour positionner le texte
-// Elle permet d'éviter les recoupements entre les dernières
-// tranches de la pie. 
-function coefeloign (intselect, d){
-  if ((d.index>3) && (d.index!==CONST.ALLPIEZEDDATA[intselect].length-1)){
-    return 1.5 - 0.3*(d.index%2);
-  } else {
-    return 1.3;
-  }
-}
-
 CONST.HOVERTEXT = {};
 CONST.HOVERTEXT.singulier = [];
-CONST.HOVERTEXT.singulier[0] = "organisation a pris position sur ce sujet";
+CONST.HOVERTEXT.singulier[0] = "organisation a pris position sur ce sujet parmi celles dont le rapport a été analysé jusque-là (voir \"A propos\")";
 CONST.HOVERTEXT.singulier[1] = "organisation a pris cette position sur le sujet sélectionné";
 CONST.HOVERTEXT.singulier[2] = "organisation qui a la même position que vous sur le sujet sélectionné est de ce type";
 CONST.HOVERTEXT.singulier[3] = "organisation qui est de même type et a la même position que vous provient de ce secteur d'activité";
 CONST.HOVERTEXT.singulier[4] = "organisation qui est du même secteur, même type et même position que vous provient de cette région";
 CONST.HOVERTEXT.pluriel = [];
-CONST.HOVERTEXT.pluriel[0] = "organisations ont pris position sur ce sujet";
+CONST.HOVERTEXT.pluriel[0] = "organisations ont pris position sur ce sujet parmi celles dont le rapport a été analysé jusque-là (voir \"A propos\")";
 CONST.HOVERTEXT.pluriel[1] = "organisations ont pris cette position sur le sujet sélectionné";
 CONST.HOVERTEXT.pluriel[2] = "organisations qui ont la même position que vous sur le sujet sélectionné sont de ce type";
 CONST.HOVERTEXT.pluriel[3] = "organisations qui sont de même type et ont la même position que vous proviennent de ce secteur d'activité";
@@ -516,19 +499,20 @@ CONST.RESULT.width = 0.45*CONST.VUE.WIDTH;
 CONST.RESULT.height = 1.3*CONST.RESULT.width;
 CONST.RESULT.x = 0.5*CONST.VUE.WIDTH - 0.5*CONST.RESULT.width;
 CONST.RESULT.y = 0.07*CONST.VUE.HEIGHT;
-CONST.RESULT.titlepos = {x: 0.29*CONST.VUE.WIDTH,y: 0.38*CONST.VUE.HEIGHT};
-CONST.RESULT.parag1pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.21*CONST.VUE.HEIGHT};
-CONST.RESULT.parag2pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.55*CONST.VUE.HEIGHT};
-CONST.RESULT.parag3pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.68*CONST.VUE.HEIGHT};
-CONST.RESULT.pastitle = 25;
-CONST.RESULT.pas = 22;
+CONST.RESULT.titlepos = {x: 0.5*CONST.VUE.WIDTH,y: 0.41*CONST.VUE.HEIGHT};
+CONST.RESULT.parag1pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.27*CONST.VUE.HEIGHT};
+CONST.RESULT.parag2pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.52*CONST.VUE.HEIGHT};
+CONST.RESULT.parag3pos = {x: 0.38*CONST.VUE.WIDTH,y: 0.63*CONST.VUE.HEIGHT};
+CONST.RESULT.pastitle = 31;
+CONST.RESULT.pasfulltitle = 26;
+CONST.RESULT.pas = 20;
 CONST.RESULT.tabulation = 20;
 CONST.RESULT.LINK = {};
 CONST.RESULT.LINK.x = 0.8*CONST.VUE.WIDTH;
 CONST.RESULT.LINK.y = 0.6*CONST.VUE.HEIGHT;
 CONST.RESULT.LINK.width = 0.1*CONST.VUE.WIDTH;
 CONST.RESULT.LINK.height = 2*CONST.RESULT.LINK.width;
-CONST.RESULT.LINK.texte = ["Entrez", "dans le", "réseau"];
+CONST.RESULT.LINK.texte = ["Entrer", "dans le", "réseau"];
 CONST.RESULT.LINK.textdx = 0.5*CONST.RESULT.LINK.width;
 CONST.RESULT.LINK.textdy = 0.3*CONST.RESULT.LINK.height;
 CONST.RESULT.LINK.textpadding = 25;
@@ -545,8 +529,8 @@ function generateResult (){
                   .attr("x", CONST.RESULT.titlepos.x)
                   .attr("y", CONST.RESULT.titlepos.y)
   var titrecoupe = [];
-  titrecoupe[0] = user["Nom1"].split(" ").slice(0,3).join(" ");
-  titrecoupe[1] = user["Nom1"].split(" ").slice(3).join(" ");
+  titrecoupe[0] = user["Nom1"].split(" ").slice(0,2).join(" ");
+  titrecoupe[1] = user["Nom1"].split(" ").slice(2).join(" ");
 
   title.append("tspan")
         .attr("class", "mainname")
@@ -562,13 +546,13 @@ function generateResult (){
     title.append("tspan")
         .attr("class", "fullname")
         .attr("x", Number(d3.select("text.title").attr("x")))
-        .attr("y", Number(d3.select("text.title").attr("y"))+2*CONST.RESULT.pastitle)
+        .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle+CONST.RESULT.pasfulltitle)
         .text(user["Nom2"])
   } else {
     title.append("tspan")
         .attr("class", "fullname")
         .attr("x", Number(d3.select("text.title").attr("x")))
-        .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pastitle)
+        .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pasfulltitle)
         .text(user["Nom2"])
   } 
   
@@ -579,7 +563,7 @@ function generateResult (){
                   .attr("y", CONST.RESULT.parag1pos.y)
   parag1.append("tspan")
         .attr("class", "paragtitle")
-        .attr("x", Number(d3.select("text.parag1").attr("x"))+CONST.RESULT.tabulation)
+        .attr("x", Number(d3.select("text.parag1").attr("x")))
         .attr("y", Number(d3.select("text.parag1").attr("y")))
         .text("STRUCTURE")
   parag1.append("tspan")
@@ -604,7 +588,7 @@ function generateResult (){
                   .attr("y", CONST.RESULT.parag2pos.y)
   parag2.append("tspan")
         .attr("class", "paragtitle")
-        .attr("x", Number(d3.select("text.parag2").attr("x"))+CONST.RESULT.tabulation)
+        .attr("x", Number(d3.select("text.parag2").attr("x")))
         .attr("y", Number(d3.select("text.parag2").attr("y")))
         .text("LOBBYING")
   parag2.append("tspan")
@@ -629,7 +613,7 @@ function generateResult (){
                   .attr("y", CONST.RESULT.parag3pos.y)
   parag3.append("tspan")
         .attr("class", "paragtitle")
-        .attr("x", Number(d3.select("text.parag3").attr("x"))+CONST.RESULT.tabulation)
+        .attr("x", Number(d3.select("text.parag3").attr("x")))
         .attr("y", Number(d3.select("text.parag3").attr("y")))
         .text("POSITION")
   for (var i=0; i<CONST.ALLTHEMELIST[0].length; i++){
@@ -664,11 +648,11 @@ function generateResult (){
   // Création du lien vers le réseau
   var link = CONST.RESULT.D3.append("svg:a")
               .attr("class", "link")
-              .attr("display", "none")
               .attr("href", "")
   link.append("rect")
+        .classed("firstrect", true)
         .attr("x", CONST.RESULT.LINK.x)
-        .attr("y", CONST.RESULT.LINK.y)
+        .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y)
         .attr("width", CONST.RESULT.LINK.width)
         .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
         .attr("stroke-width", CONST.strokewidth)
@@ -678,24 +662,84 @@ function generateResult (){
                   .attr("y", CONST.RESULT.LINK.textdy)
   for (var i=0; i<CONST.RESULT.LINK.texte.length; i++){
     textelem.append("tspan")
-            .attr("class", "linktext")
+            .classed("linktext", true)
+            .attr("id", "linktext"+i)
             .attr("x", CONST.RESULT.LINK.x + 0.5*CONST.RESULT.LINK.width)
-            .attr("y", CONST.RESULT.LINK.y + (i+1.5)*CONST.RESULT.LINK.textpadding)
+            .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y + (i+1.5)*CONST.RESULT.LINK.textpadding)
             .text(CONST.RESULT.LINK.texte[i])
   }
   link.append("rect")
+        .classed("secondrect", true)
         .attr("x", CONST.RESULT.LINK.x)
-        .attr("y", CONST.RESULT.LINK.y+CONST.RESULT.LINK.width)
+        .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y+CONST.RESULT.LINK.width)
         .attr("width", CONST.RESULT.LINK.width)
         .attr("height", CONST.RESULT.LINK.width) // Oui c'est bien width !
         .attr("stroke-width", CONST.strokewidth)
         .attr("stroke", "#111627");
   link.append("image")
-        .attr("x", CONST.RESULT.LINK.x)
-        .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.width)
-        .attr("width", CONST.RESULT.LINK.width)
-        .attr("height", CONST.RESULT.LINK.width) // oui c'est bien width !
+        .attr("x", CONST.RESULT.LINK.x+CONST.RESULT.LINK.width/4)
+        .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y + CONST.RESULT.LINK.width+CONST.RESULT.LINK.width/4)
+        .attr("width", CONST.RESULT.LINK.width/2)
+        .attr("height", CONST.RESULT.LINK.width/2) // oui c'est bien width !
         .attr("href", "img/pointIdentification.svg");
+}
+
+var linkshow = false;
+function showlink (){
+  if (linkshow===false){
+    linkshow=true;
+    var link = svg.select("a.link");
+    link.select("rect.firstrect")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x)
+      .attr("y", CONST.RESULT.LINK.y)
+    link.select("rect.secondrect")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x)
+      .attr("y", CONST.RESULT.LINK.y+CONST.RESULT.LINK.width)
+    for (var i=0; i<CONST.RESULT.LINK.texte.length; i++){
+      link.select("#linktext"+i)
+        .transition()
+        .duration(2*CONST.TIMETRANSITION)
+        .attr("x", CONST.RESULT.LINK.x + 0.5*CONST.RESULT.LINK.width)
+        .attr("y", CONST.RESULT.LINK.y + (i+1.5)*CONST.RESULT.LINK.textpadding)
+    }
+    link.select("image")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x+CONST.RESULT.LINK.width/4)
+      .attr("y", CONST.RESULT.LINK.y + CONST.RESULT.LINK.width+CONST.RESULT.LINK.width/4)
+  }
+}
+function hidelink (){
+  if (linkshow===true){
+    linkshow=false;
+    var link = svg.select("a.link");
+    link.select("rect.firstrect")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x)
+      .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y)
+    link.select("rect.secondrect")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x)
+      .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y+CONST.RESULT.LINK.width)
+    for (var i=0; i<CONST.RESULT.LINK.texte.length; i++){
+      link.select("#linktext"+i)
+        .transition()
+        .duration(2*CONST.TIMETRANSITION)
+        .attr("x", CONST.RESULT.LINK.x + 0.5*CONST.RESULT.LINK.width)
+        .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y + (i+1.5)*CONST.RESULT.LINK.textpadding)
+    }
+    link.select("image")
+      .transition()
+      .duration(2*CONST.TIMETRANSITION)
+      .attr("x", CONST.RESULT.LINK.x+CONST.RESULT.LINK.width/4)
+      .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y + CONST.RESULT.LINK.width+CONST.RESULT.LINK.width/4)
+  }
 }
 
 function eraseResult(){

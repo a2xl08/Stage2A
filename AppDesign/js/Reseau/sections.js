@@ -608,6 +608,14 @@ function onclickBestAlly (){
   d3.select("img#themes").on("click", onclickNewTheme);
 }
 d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
+d3.select("img#bestallyworstrival").on("mouseover", function (){
+  d3.select("img#bestallyworstrival")
+    .attr("src", "img/icon_WinLose_blanc.svg")
+});
+d3.select("img#bestallyworstrival").on("mouseout", function (){
+  d3.select("img#bestallyworstrival")
+    .attr("src", "img/icon_WinLose.svg")
+});
 
 
 
@@ -619,7 +627,7 @@ function updateTypesLinks (i){
     var linktypes = Object.keys(CONSTANTS.STORIES.Histoires[i].Liens);
     CONSTANTS.DATA.TYPES.LINK.STORY.LINK1 = linktypes[0]
     if (linktypes[1]){
-      CONSTANTS.DATA.TYPES.LINK.STORY.LINK1 = linktypes[1]
+      CONSTANTS.DATA.TYPES.LINK.STORY.LINK2 = linktypes[1]
     }
   }
 }
@@ -770,6 +778,15 @@ function onclickStories (){
   d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
 d3.select("img#stories").on("click", onclickStories);
+d3.select("img#stories").on("mouseover", function (){
+  d3.select("img#stories")
+    .attr("src", "img/icon_Story_blanc.svg")
+});
+d3.select("img#stories").on("mouseout", function (){
+  d3.select("img#stories")
+    .attr("src", "img/icon_Story.svg")
+});
+
 
 
 
@@ -786,7 +803,7 @@ function anonymizeUser (){
         } else if (d[userChoice.theme]==="Contre"){
           color = colors.OPPOSE;
         } else {
-          color = colors.UNSELECTED;
+          color = colors.NSPP_CONTROV;
         }
       } else {
         color = colors.UNSELECTED;
@@ -877,7 +894,7 @@ function rebornUser (){
           } else if (d[userChoice.theme]==="Pour" || d[userChoice.theme]==="Contre"){
             color = colors.ENEMY;
           } else {
-            color = colors.UNSELECTED;
+            color = colors.NSPP_CONTROV;
           }
         } else {
           color = colors.UNSELECTED;
@@ -889,7 +906,7 @@ function rebornUser (){
           } else if (d[userChoice.theme]==="Contre"){
             color = colors.OPPOSE;
           } else {
-            color = colors.UNSELECTED;
+            color = colors.NSPP_CONTROV;
           }
         } else {
           color = colors.UNSELECTED;
@@ -973,3 +990,11 @@ function onclickNewTheme (){
   d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
 d3.select("img#themes").on("click", onclickNewTheme);
+d3.select("img#themes").on("mouseover", function (){
+  d3.select("img#themes")
+    .attr("src", "img/icon_Theme_blanc.svg")
+});
+d3.select("img#themes").on("mouseout", function (){
+  d3.select("img#themes")
+    .attr("src", "img/icon_Theme.svg")
+});

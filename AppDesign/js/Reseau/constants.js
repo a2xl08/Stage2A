@@ -25,8 +25,10 @@ var CONSTANTS = {
     ALLY: '#5092A1',
     SUPPORT: '#36A86D',
     OPPOSE: '#d13b35',
+    NSPP_CONTROV: "#3E5A31",
     USER: '#00ffa5',
-    UNSELECTED: '#3E5A31',
+    UNSELECTED_MEMBRANE: "#404040",
+    UNSELECTED: '#A0A0A0',
     UNSELECTED_OPACITY : 0.3,
     // Ne pas oublier de modifier la valeur correspondante dans styles.css : a.sourcelink
     STORY: "white",
@@ -70,7 +72,7 @@ var CONSTANTS = {
     TEXTdx: 0,
     TEXTdy: -10,
     TEXT_PADDING: 11,
-    STORY_CIRCLE_dx : 0,
+    STORY_CIRCLE_dx : 20,
     STORY_CIRCLE_dy : 10,
     STORY_CIRCLE_RADIUS : 3,
     // WARNING : PERLINE < 10 !

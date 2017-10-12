@@ -1,0 +1,33 @@
+// Ce script gère les liens vers la plateforme
+
+var linksloby = d3.select("#links");
+
+function createlinks (){
+  // Création des liens vers les thèmes
+  for (var i=0; i<CONSTANTS.THEMELIST.length; i++){
+    linksloby.select("#boxes-container")
+        .append("a")
+        .text(CONSTANTS.THEMELIST[i])
+        .attr("href", "reseau.html?theme="+i);
+  }
+
+  linksloby.select("#boxes-container")
+        .append("a")
+        .text("Identifiez-vous !")
+        .attr("href", "index.html");
+}
+
+function displaylinksError (){
+
+  // Afficher le texte d'erreur
+  linksloby.select("p")
+      .text("Désolé, il y a eu une erreur !")
+
+  linksloby.style("display", "block");
+  d3.select("#backloby").style("display", "block");
+
+}
+
+function invisiblelinks (){
+  linksloby.style("display", "none");
+}

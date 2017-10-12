@@ -1,0 +1,147 @@
+svg text {
+  fill: rgb(22, 27, 48);
+  font-family: 'Open Sans';
+}
+
+svg foreignObject {
+  pointer-events: none;
+}
+
+svg foreignObject.arctext > p {
+  color: rgb(22, 27, 48);
+  font-family: 'Open Sans';
+  font-size: 12px;
+  font-weight: bold;
+  margin: 1px;
+}
+
+svg.BADGE > text > tspan {
+  font-family: 'Open Sans Bold', Arial, sans-serif;
+  fill: #111627;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+svg.Initfig text.titre {
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+  fill: #111627;
+  font-size: 20px;
+}
+
+svg.Initfig text.texte {
+  font-family: 'Open Sans Bold', Arial, sans-serif;
+  fill: #111627;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+svg.BADGE rect {
+  fill: rgb(0,255,165);
+}
+
+svg.BADGE tspan {
+  fill: #111627;
+  font-size: 17px;
+  font-weight: bold;
+  text-anchor: middle;
+}
+
+svg text.scroll {
+  fill: rgba(76, 144, 255, 0.6);
+  font-weight: bolder;
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+}
+
+svg g text {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+svg g > foreignObject.arctext {
+  overflow: visible;
+}
+
+svg foreignObject.cartouche {
+  pointer-events: none;
+}
+
+svg foreignObject.cartouche > div.foreigncontainer {
+  border: solid 4px #111627;
+}
+
+svg foreignObject.cartouche > div.foreigncontainer > h1 {
+  background-color: white;/*rgba(50,50,50,0.6);*/
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  margin: auto;
+  color: #111627;
+  padding-bottom : 0;
+  padding-top : 7px;
+  padding-left: 7px;
+}
+svg foreignObject.cartouche > div.foreigncontainer > p {
+  background-color: white;/*rgba(50,50,50,0.6);*/
+  font-family: 'Open Sans Italic', Arial, sans-serif;
+  font-size: 11px;
+  color: #111627;
+  margin: auto;
+  padding: 7px;
+}
+
+img.information {
+  height: 18px;
+  width: 18px;
+  pointer-events: auto;
+}
+
+#vue svg {
+  overflow: visible;
+}
+
+svg g.result > text > tspan.mainname {
+  font-family: 'Antique Olive Standard Compact';
+  font-size: 34px;
+  text-anchor: middle;
+}
+
+svg g.result > text > tspan.fullname {
+  font-family: 'Antique Olive Roman';
+  font-size: 15px;
+  text-anchor: middle;
+}
+
+svg g.result > text > tspan.paragtitle {
+  font-family: 'Antique Olive Standard Compact';
+  font-size: 18px;
+}
+
+svg g.result > text > tspan.item {
+  font-family: 'Antique Olive Roman';
+  font-size: 12px;
+}
+
+.linktext {
+  fill: #111627;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.linktext:hover {
+  fill: #111627;
+  text-decoration: none;
+}
+
+.linktext:visited {
+  fill: #111627;
+  text-decoration: none;
+}
+
+svg g.result rect {
+  fill: rgb(0,255,165);
+}
+
+svg g.result tspan.linktext {
+  font-family: 'Open Sans Bold', Arial, sans-serif;
+  text-anchor: middle;
+}

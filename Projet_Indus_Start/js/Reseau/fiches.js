@@ -27,7 +27,7 @@ function setUpClickFiche (node){
     if (node[CONSTANTS.DATA.SPENDING_KEY]==="NaN"){
       string += "Inconnu";
     } else {
-      string += node[CONSTANTS.DATA.SPENDING_KEY]+" €";
+      string += sep_mille(node[CONSTANTS.DATA.SPENDING_KEY])+" €";
     }
     return string;
   })
@@ -192,7 +192,7 @@ function computeBesties (){
   CONSTANTS.BESTIES.WORSTRIVAL = worstrival;
 }
 
-// Cette variable vaut true si la sortie bestallyworstrival est active. Elle sert à bloquer les clicks events sur les nodes. 
+// Cette variable vaut true si la sortie bestallyworstrival est active. Elle sert à bloquer les clicks events sur les nodes.
 var clicklocknode = false;
 
 function displayBesties (){
@@ -217,19 +217,19 @@ function displayBesties (){
     fiche.select(".fullname").style("margin-bottom", "1px");
   }
   fiche.append("h2").text("Budget de lobbying en nom propre");
-  fiche.append("p").text(CONSTANTS.BESTIES.BESTALLY.budget+" €/an");
+  fiche.append("p").text(sep_mille(CONSTANTS.BESTIES.BESTALLY.budget)+" €/an");
   fiche.append("h2").text("Liens directs avec vos alliés");
   fiche.append("p").text(CONSTANTS.BESTIES.BESTALLY.allydirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.BESTALLY.allydirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.BESTALLY.allydirectbudget)+" €/an");
   fiche.append("h2").text("Liens indirects avec vos alliés");
   fiche.append("p").text(CONSTANTS.BESTIES.BESTALLY.allyundirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.BESTALLY.allyundirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.BESTALLY.allyundirectbudget)+" €/an");
   fiche.append("h2").text("Liens directs avec vos opposants");
   fiche.append("p").text(CONSTANTS.BESTIES.BESTALLY.ennemydirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.BESTALLY.ennemydirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.BESTALLY.ennemydirectbudget)+" €/an");
   fiche.append("h2").text("Liens indirects avec vos opposants");
   fiche.append("p").text(CONSTANTS.BESTIES.BESTALLY.ennemyundirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.BESTALLY.ennemyundirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.BESTALLY.ennemyundirectbudget)+" €/an");
 
   // Pire opposant
   d3.select("svg.experimentation").append("foreignObject")
@@ -249,17 +249,17 @@ function displayBesties (){
     fiche.select(".fullname").style("margin-bottom", "1px");
   }
   fiche.append("h2").text("Budget de lobbying en nom propre");
-  fiche.append("p").text(CONSTANTS.BESTIES.WORSTRIVAL.budget+" €/an");
+  fiche.append("p").text(sep_mille(CONSTANTS.BESTIES.WORSTRIVAL.budget)+" €/an");
   fiche.append("h2").text("Liens directs avec vos opposants");
   fiche.append("p").text(CONSTANTS.BESTIES.WORSTRIVAL.ennemydirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.WORSTRIVAL.ennemydirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.WORSTRIVAL.ennemydirectbudget)+" €/an");
   fiche.append("h2").text("Liens indirects avec vos opposants");
   fiche.append("p").text(CONSTANTS.BESTIES.WORSTRIVAL.ennemyundirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.WORSTRIVAL.ennemyundirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.WORSTRIVAL.ennemyundirectbudget)+" €/an");
   fiche.append("h2").text("Liens directs avec vos alliés");
   fiche.append("p").text(CONSTANTS.BESTIES.WORSTRIVAL.allydirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.WORSTRIVAL.allydirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.WORSTRIVAL.allydirectbudget)+" €/an");
   fiche.append("h2").text("Liens indirects avec vos alliés");
   fiche.append("p").text(CONSTANTS.BESTIES.WORSTRIVAL.allyundirectlinks+" organisations");
-  fiche.append("p").text("Budget total cumulé de lobbying : "+CONSTANTS.BESTIES.WORSTRIVAL.allyundirectbudget+" €/an");
+  fiche.append("p").text("Budget total cumulé de lobbying : "+sep_mille(CONSTANTS.BESTIES.WORSTRIVAL.allyundirectbudget)+" €/an");
 }

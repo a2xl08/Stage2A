@@ -6,7 +6,7 @@ var vuepadding = 5;
 
 var CONSTANTS = {
   USE_CANVAS: false,
-  DEBUG: false,
+  DEBUG: true,
   PHI: Math.PI * 4,
   WIDTH: 1280,
   HEIGHT: 600,
@@ -183,7 +183,3 @@ var animations = {
     duration: 2500
   }
 };
-
-
-
-

@@ -15,7 +15,7 @@ var circlePoints = function(radius, nbPoints){
         (radius*radiusJitter)*(Math.random())
     );
     points.push({
-      // précalcul des cosinus et sinus pour éviter d'avoir à le faire 
+      // précalcul des cosinus et sinus pour éviter d'avoir à le faire
       // lors du calcul de la membrane
       cosAngle: Math.cos(angle),
       sinAngle: Math.sin(angle),
@@ -33,7 +33,7 @@ var stopReshapeNodes = function($nodes){
 // démarre la déformation des noeuds à interval régulier.
 var startReshapeNodes = function($nodes){
   this.stop($nodes);
-  
+
   this.interval = d3.interval(function(){
     reshapeNodes($nodes) }, animations.circleShapes.interval);
 };
@@ -55,8 +55,8 @@ var reshapeNodes = function($nodes){
       return node.points && node.points.length;
     })
     .select('.circle-membrane');
-  
-    
+
+
   // tire aléatoirement 5 noeuds.
   Utils.rand.pick($nodeStill.nodes(), 5)
     .forEach(function(node,i){
@@ -91,11 +91,11 @@ var moveNode = function(node, duration){
   var interpolateX = d3.interpolateNumber(node.x, otherPosition.x);
   var interpolateY = d3.interpolateNumber(node.y, otherPosition.y);
 
-  var revInterpolateX = d3.interpolateNumber(otherPosition.x, node.x); 
-  var revInterpolateY = d3.interpolateNumber(otherPosition.y, node.y); 
+  var revInterpolateX = d3.interpolateNumber(otherPosition.x, node.x);
+  var revInterpolateY = d3.interpolateNumber(otherPosition.y, node.y);
 
   var timer = d3.timer(function(time){
-    var timeRatio = time/duration; 
+    var timeRatio = time/duration;
     var _interpolatorX = timeRatio <= 0.5 ? interpolateX : revInterpolateX;
     var _interpolatorY = timeRatio <= 0.5 ? interpolateY : revInterpolateY;
     node.fx = _interpolatorX(timeRatio);
@@ -226,7 +226,7 @@ var fadeNotNeighbours = function (node){
           neighboursID.push(String(storylinks[linktypes[i]][j].target));
         } else if (String(storylinks[linktypes[i]][j].target) === node.ID){
           neighboursID.push(String(storylinks[linktypes[i]][j].source));
-        } 
+        }
       }
     }
   }
@@ -300,7 +300,7 @@ var resetMouseOut = function (){
   canvas.selectAll("tspan.budget").attr("fill-opacity", 0);
   // Emphacize de la story
   emphacizeMainNodes(storyonread);
-} 
+}
 
 var drawNodes = function(nodes){
   var TYPES = CONSTANTS.DATA.TYPES.NODE;
@@ -371,12 +371,12 @@ var drawNodes = function(nodes){
         .attr("x", coords.x+CONSTANTS.CIRCLE.TEXTdx)
         .attr("y", coords.y+CONSTANTS.CIRCLE.TEXTdy+CONSTANTS.CIRCLE.TEXT_PADDING)
         .attr("fill-opacity", 0)
-        .text("Budget lobbying : "+node[CONSTANTS.DATA.SPENDING_KEY]+" €")
+        .text("Budget lobbying : "+sep_mille(node[CONSTANTS.DATA.SPENDING_KEY])+" €")
     }
   })
 
   // suppresion des noeuds supprimé (propriété par exemple)
-  // TODO: rajouter une constante. 
+  // TODO: rajouter une constante.
   $nodes.exit().transition()
   .duration(300)
   .attrTween('opacity', function(){
@@ -431,4 +431,3 @@ var drawNodes = function(nodes){
 
   return $nodes;
 }
-

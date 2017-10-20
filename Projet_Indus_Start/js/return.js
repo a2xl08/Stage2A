@@ -31,3 +31,11 @@ closer.addEventListener("click", function (){
   opener.removeEventListener("click", onclickCloseOpener);
   opener.addEventListener("click", onclickOpenOpener);
 })
+
+// Séparateur de milliers
+function sep_mille(num) {
+    var c = num;
+    var d;
+    while ((d=c.toString().replace(/(\d)([\d]{3})(\.|\s|\b)/,"$1 $2$3")) && d!=c) c=d;
+    return c;
+}

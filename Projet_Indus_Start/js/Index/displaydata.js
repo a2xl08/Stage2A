@@ -1,4 +1,4 @@
-/* 
+/*
 
 Attention, les fonctions utilisées dans ce script
 sont prévues pour s'exécuter après chargement
@@ -108,7 +108,7 @@ function hoverize (intselect, alpha){
         avirer.transition()
           .duration(0.5*CONST.TIMETRANSITION)
           .attr("opacity", 1)
-  
+
         avirer.select("path")
           .transition()
           .duration(0.5*CONST.TIMETRANSITION)
@@ -311,21 +311,21 @@ function loadNewData (inttosee){
           CONST.ALLDATAFILTRE[inttosee][i]=0
         }
       }
-    } 
+    }
     while (CONST.ALLDATAFILTRE[inttosee].indexOf(0)!==-1){
       CONST.ALLDATAFILTRE[inttosee].splice(CONST.ALLDATAFILTRE[inttosee].indexOf(0), 1);
     }
 
     // nbloby=1, On génère le résultat dans generateResult
 
-  } else 
+  } else
   switch (inttosee+CONST.SECTIONSJUMPED.length) {
   case 1:
-    /* Seul le thème a été choisi, 
-    charger la position POURS/CONTRES 
+    /* Seul le thème a été choisi,
+    charger la position POURS/CONTRES
     du thème choisi */
 
-          // On ne peux pas appeler filterAndLoad ici, on le fait manuellement 
+          // On ne peux pas appeler filterAndLoad ici, on le fait manuellement
     // On filtre les données selon le thème choisi
     CONST.ALLDATAFILTRE[inttosee]=[];
     for (var i=0; i<CONST.AUXDATASET.length; i++){
@@ -369,7 +369,7 @@ function loadNewData (inttosee){
 
   case 2:
     /* L'utilisateur a choisi son thème
-    ainsi que sa position par rapport à ce thème. 
+    ainsi que sa position par rapport à ce thème.
     Charger maintenant la catégorie de lobbyist */
 
     filterAndLoad(choices[0], choices[1], "Type", inttosee);
@@ -381,8 +381,8 @@ function loadNewData (inttosee){
 
   case 3:
     /* L'utilisateur a choisi son thème
-    ainsi que sa position par rapport à ce thème. 
-    Il vient de choisir le type de structure qui lui convient. 
+    ainsi que sa position par rapport à ce thème.
+    Il vient de choisir le type de structure qui lui convient.
     Charger maintenant le secteur de lobby */
 
     filterAndLoad("Type", choices[2], "Secteurs d’activité", inttosee);
@@ -394,9 +394,9 @@ function loadNewData (inttosee){
 
   case 4:
     /* L'utilisateur a choisi son thème
-    ainsi que sa position par rapport à ce thème. 
-    Il a choisi le type de structure qui lui convient. 
-    Il vient de choisir le secteur qui lui convient. 
+    ainsi que sa position par rapport à ce thème.
+    Il a choisi le type de structure qui lui convient.
+    Il vient de choisir le secteur qui lui convient.
     Charger maintenant le pays de lobby */
 
     filterAndLoad("Secteurs d’activité", choices[3], "Pays/Région", inttosee);
@@ -408,15 +408,15 @@ function loadNewData (inttosee){
 
   case 5:
     /* L'utilisateur a choisi son thème,
-    sa position par rapport à ce thème ainsi que 
-    le type de structure qui lui convient et son secteur. 
-    Il vient de choisir son pays de prédilection. 
+    sa position par rapport à ce thème ainsi que
+    le type de structure qui lui convient et son secteur.
+    Il vient de choisir son pays de prédilection.
     On prop */
 
     filterAndLoad("Pays/Région", choices[4], "Nom1", inttosee);
     break;
 
-  } 
+  }
 }
 
 function generatePie (inttosee){
@@ -469,7 +469,7 @@ function generatePie (inttosee){
         return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p><img src='img/i.svg' class='information loby"+inttosee+"'/>"
       } else {
         return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
-      }     
+      }
     })
 
     var groups = d3.selectAll("g.loby"+(inttosee));
@@ -540,8 +540,8 @@ function generateResult (){
         .attr("x", Number(d3.select("text.title").attr("x")))
         .attr("y", Number(d3.select("text.title").attr("y"))+CONST.RESULT.pasfulltitle)
         .text(user["Nom2"])
-  } 
-  
+  }
+
 
   var parag1 = CONST.RESULT.D3.append("text")
                   .attr("class", "parag1")
@@ -581,7 +581,8 @@ function generateResult (){
         .attr("class", "item")
         .attr("x", Number(d3.select("text.parag2").attr("x")))
         .attr("y", Number(d3.select("text.parag2").attr("y"))+CONST.RESULT.pas)
-        .text("Dépenses de lobbying estimées (€) : "+user["Dépenses Lobby (€)"])
+                                                    // séparateur de milliers
+        .text("Dépenses de lobbying estimées (€) : "+sep_mille(user["Dépenses Lobby (€)"]))
   parag2.append("tspan")
         .attr("class", "item")
         .attr("x", Number(d3.select("text.parag2").attr("x")))
@@ -794,13 +795,13 @@ function clickable (intselect,alpha){
           resetcolors();
           d3.select("tr.country").selectAll("th, td").style("color", colorlastanswer);
           d3.select("tr.nom").style("display", "table-row");
-          break;  
-      } 
+          break;
+      }
 
       // On charge les données pour le choix suivant s'il y en a un
       loadNewData(intselect+1);
       if (nbloby===1){
-        // Création des nouvelles sections  
+        // Création des nouvelles sections
         createsection(6);
         majsectionspos();
         generateResult();
@@ -808,7 +809,7 @@ function clickable (intselect,alpha){
         setlinkURL();
         resetEvents();
       } else {
-        // Création des nouvelles sections  
+        // Création des nouvelles sections
         createsection(intselect+1+CONST.SECTIONSJUMPED.length);
         majsectionspos();
         generatePie(intselect+1);
@@ -876,10 +877,10 @@ function pieSplash (intselect, beta){
         .attr("transform", function (d,i){
           var angle = 0.5 * (CONST.ALLPIEZEDDATA[intselect][i].startAngle + CONST.ALLPIEZEDDATA[intselect][i].endAngle);
           if (angle>Math.PI){
-            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
+            return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
           } else {
             return "translate("+(0.5*CONST.VUE.WIDTH+beta*0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-beta*0.15*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
-          }   
+          }
         });
 }
 
@@ -946,12 +947,12 @@ function manageSecX (intselect,pos){
     // Position des parts
     var beta = abTo01(alphasteps[1],alphasteps[2],alpha);
     pieSplash(intselect, beta);
-    // On s'assure que les parts ne sont pas éclatées  
+    // On s'assure que les parts ne sont pas éclatées
     pieToCircles(intselect, 0);
   } else if (alpha<=1){
     // On s'assure les parts sont bien éclatées
     pieSplash(intselect,1);
-    // On referme les parts 
+    // On referme les parts
     var beta = abTo01(alphasteps[2],1,alpha);
     pieToCircles(intselect, beta);
   } else {

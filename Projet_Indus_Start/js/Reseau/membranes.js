@@ -8,7 +8,7 @@ var membranePath = function(nodes, cluster){
   var y = function(p){ return p.sinAngle * ((p.radius||0)+padding); };
   var points = [], node, nodePoints;
   var nodeIndex, nodeNumber = nodes.length;
-  
+
   var i, n;
   for(nodeIndex = 0; nodeIndex < nodeNumber; nodeIndex++){
     node = nodes[nodeIndex];
@@ -143,7 +143,7 @@ var drawMembranes = function(nodes, membranes){
             somme += Number(nodes[i][CONSTANTS.DATA.SPENDING_KEY]);
           }
         }
-        return "Budget lobbying : "+somme+" €";
+        return "Budget lobbying : "+sep_mille(somme)+" €";
       })
   })
 
@@ -157,13 +157,13 @@ var drawMembranes = function(nodes, membranes){
 
 
   // on cache les membrane qui ne seront plus utilisées.
-  // TODO: ajouter une constante 
+  // TODO: ajouter une constante
   var membranesExit = $membranes.exit();
 
   membranesExit.transition().duration(400)
     .ease(d3.easeCubic)
     .attrTween('fill-opacity', function(){ return d3.interpolateNumber(1,0); });
-  
+
 
   $membranes = membraneEnter.merge($membranes);
 
@@ -187,6 +187,6 @@ var drawMembranes = function(nodes, membranes){
         return chroma(cluster.color);
       })
   })
-  
+
   return {membranes: $membranes, membranesExit: membranesExit};
 }

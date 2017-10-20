@@ -7,6 +7,14 @@ svg foreignObject {
   pointer-events: none;
 }
 
+svg foreignObject.textintro {
+  pointer-events: auto;
+  color: black;
+  font-weight: bold;
+  font-size: 25;
+  font-family: 'Antique Olive Standard Compact';
+}
+
 svg foreignObject.arctext > p {
   color: rgb(22, 27, 48);
   font-family: 'Open Sans';
@@ -19,19 +27,6 @@ svg.BADGE > text > tspan {
   font-family: 'Open Sans Bold', Arial, sans-serif;
   fill: #111627;
   font-size: 20px;
-  font-weight: bold;
-}
-
-svg.Initfig text.titre {
-  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
-  fill: #111627;
-  font-size: 20px;
-}
-
-svg.Initfig text.texte {
-  font-family: 'Open Sans Bold', Arial, sans-serif;
-  fill: #111627;
-  font-size: 15px;
   font-weight: bold;
 }
 

@@ -13,107 +13,38 @@ function abTo01(a,b,x){
 // Création des données de la figure initiale
 CONST.strokewidth = 8;
 CONST.FIGINIT = {};
-CONST.FIGINIT.textpadding = 11;
-CONST.FIGINIT.RECT = {};
-CONST.FIGINIT.RECT.x = 0.3*CONST.VUE.WIDTH;
-CONST.FIGINIT.RECT.y = 0.15*CONST.VUE.HEIGHT;
-CONST.FIGINIT.RECT.width = CONST.VUE.WIDTH;
-CONST.FIGINIT.RECT.height = CONST.VUE.HEIGHT;
-CONST.FIGINIT.TITRE = {
-  x: function (){
-         var textpos = this.getBoundingClientRect();
-         return 0.4*CONST.FIGINIT.RECT.width - (textpos.right - textpos.left)/2
-       }, 
-  y: 0.4*CONST.FIGINIT.RECT.height, 
-  class: "Initfig Titre",
-  text: "Vi(c)e Organique"
-}
-CONST.FIGINIT.POINTS = [
-  {
-    x: 0.4*CONST.FIGINIT.RECT.width,
-    y: 0.65*CONST.FIGINIT.RECT.height,
-    dx: 30,
-    dy: -20,
-    text: "Lobby"
-  }, 
-  {
-    x: 0.15*CONST.FIGINIT.RECT.width,
-    y: 0.56*CONST.FIGINIT.RECT.height,
-    dx: 60,
-    dy: -5,
-    text: "Réseau"
-  }, 
-  {
-    x: 0.35*CONST.FIGINIT.RECT.width,
-    y: 0.2*CONST.FIGINIT.RECT.height,
-    dx: 0,
-    dy: 10,
-    text: "Climat"
-  }, 
-  {
-    x: 0.6*CONST.FIGINIT.RECT.width,
-    y: 0.59*CONST.FIGINIT.RECT.height,
-    dx: -5,
-    dy: -5,
-    text: "Europe"
-  }
-];
+CONST.FICHE1 = {};
+CONST.FICHE1.RECT = {};
+CONST.FICHE1.RECT.x = 0.3*CONST.VUE.WIDTH;
+CONST.FICHE1.RECT.y = 0.15*CONST.VUE.HEIGHT;
+CONST.FICHE1.RECT.width = CONST.VUE.WIDTH;
+CONST.FICHE1.RECT.height = CONST.VUE.HEIGHT;
+CONST.FICHE1.foreignpadding = 20;
 
 
 function createInitFigure (){
-  CONST.FIGINIT.D3 = svg.append("svg")
+  CONST.FICHE1.D3 = svg.append("svg")
                   .attr("class", "Initfig")
                   .attr("x", 0.33*CONST.VUE.WIDTH)
-                  .attr("y", 0.4*CONST.VUE.HEIGHT)
-                  .attr("width", CONST.FIGINIT.RECT.width)
-                  .attr("height", CONST.FIGINIT.RECT.height)
-  CONST.FIGINIT.D3.append("rect")
+                  .attr("y", 0.7*CONST.VUE.HEIGHT)
+                  .attr("width", CONST.FICHE1.RECT.width)
+                  .attr("height", CONST.FICHE1.RECT.height)
+  var rect = CONST.FICHE1.D3.append("rect")
                   .attr("class", "fond")
                   .attr("x", 0)
                   .attr("y", 0)
-                  .attr("width", CONST.FIGINIT.RECT.width)
-                  .attr("height", CONST.FIGINIT.RECT.height)
+                  .attr("width", CONST.FICHE1.RECT.width)
+                  .attr("height", CONST.FICHE1.RECT.height)
                   .attr("stroke-width", CONST.strokewidth)
                   .attr("stroke", "#111627")
                   .attr("fill", "rgb(176,176,176)")//fiche intro
-  for (var i=0; i<4; i++){
-    for (var j=i+1; j<4; j++){
-      CONST.FIGINIT.D3.append("line")
-                    .attr("class", "initline")
-                    .attr("x1", CONST.FIGINIT.POINTS[i].x + CONST.FIGINIT.POINTS[i].dx)
-                    .attr("x2", CONST.FIGINIT.POINTS[j].x + CONST.FIGINIT.POINTS[j].dx)
-                    .attr("y1", CONST.FIGINIT.POINTS[i].y + CONST.FIGINIT.POINTS[i].dy)
-                    .attr("y2", CONST.FIGINIT.POINTS[j].y + CONST.FIGINIT.POINTS[j].dy)
-                    .attr("stroke", "#111627")
-    }
-  }
-  for (var i=0; i<4; i++){
-    var element = CONST.FIGINIT.D3.append("text")
-                    .attr("class", "texte")
-                    .attr("x", CONST.FIGINIT.POINTS[i].x)
-                    .attr("y", CONST.FIGINIT.POINTS[i].y)
-                    .text(CONST.FIGINIT.POINTS[i].text);
-    CONST.FIGINIT.D3.append("rect")
-                    .attr("x", element.attr("x")-CONST.FIGINIT.textpadding)
-                    .attr("y", element.attr("y")-CONST.FIGINIT.textpadding-17)
-                    .attr("width", function (){
-                      var textpos = element.node().getBoundingClientRect();
-                      return textpos.right - textpos.left + 2*CONST.FIGINIT.textpadding;
-                    })
-                    .attr("height", function (){
-                      var textpos = element.node().getBoundingClientRect();
-                      return textpos.bottom - textpos.top + 2*CONST.FIGINIT.textpadding;
-                    })
-                    .attr("stroke-width", CONST.strokewidth)
-                    .attr("stroke", "#111627")
-                    .attr("fill", "rgba(255,255,255,0)")
-  }
-  CONST.FIGINIT.D3.append("text")
-                  .attr("class", "titre")
-                  .attr("x", CONST.FIGINIT.TITRE.x)
-                  .attr("y", CONST.FIGINIT.TITRE.y)
-                  .text(CONST.FIGINIT.TITRE.text)
-  
+  CONST.FICHE1.D3.append("foreignObject")
+    .attr("class", "textintro")
+    .attr("width", CONST.VUE.WIDTH-CONST.FICHE1.RECT.x - 3*CONST.FICHE1.foreignpadding)
+    .attr("height", CONST.FICHE1.RECT.height-CONST.FICHE1.foreignpadding)
+    .attr("x", CONST.FICHE1.foreignpadding)
+    .attr("y", CONST.FICHE1.foreignpadding)
+    .html("<p>Le problème climatique est global. Il menace les écosystèmes, la vie animale et la vie humaine à moyen terme. Cet état d’urgence devrait inciter les gouvernements, animés par la défense de l’intérêt général, à prendre des mesures radicales et immédiates. Or, malgré une apparente prise de conscience et certains engagements de la part des états, les avancées réelles sont jusque là bien trop timides pour renverser la tendance. Pourquoi est-il aussi difficile de concrétiser, par la loi, la transition vers davantage d’énergies renouvelables ou des mesures d’efficacité et d’économie énergétique ? Où se situent les freins ? Pourquoi le politique semble aussi impuissant ? Où se situe le véritable pouvoir et quels sont les contre-pouvoirs ?</p>")
 }
 
 function displayInitFigure (){
@@ -140,7 +71,7 @@ function createScrollText (){
                       // 1138 est la taille de VUE sur mon navigateur en plein écran, dans ce cas -> taille 200
                       .attr("font-size", Math.round(200*CONST.VUE.WIDTH/1138)+"px")
                       .attr("opacity", 0)
-  
+
   d3.select(window).on("click", function (){
     if (document.body.scrollTop===0){
       CONST.SCROLL.D3.attr("opacity", 1);
@@ -156,7 +87,7 @@ function createScrollText (){
 // Section 1 : Données sur les éléments de positionnement
 // de la Fiche
 CONST.FICHE = {};
-CONST.FICHE.width = 0.45*CONST.VUE.WIDTH; 
+CONST.FICHE.width = 0.45*CONST.VUE.WIDTH;
 CONST.FICHE.height = 0.9*CONST.VUE.HEIGHT;  // A ajuster pour la taille de la fiche
 // L'écart de taille : utile pour le scroll
 CONST.FICHE.TOPPOS = 20;
@@ -357,11 +288,11 @@ function manageFigSec0 (pos){
     }
   }
   if (alpha<=0){
-    d3.select("svg.Initfig").attr("y", 0.4*CONST.VUE.HEIGHT)
+    d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT)
   } else if (alpha<=1){
-    d3.select("svg.Initfig").attr("y", 0.4*CONST.VUE.HEIGHT - alpha*(0.4*CONST.VUE.HEIGHT-CONST.FIGINIT.RECT.y))
+    d3.select("svg.Initfig").attr("y", 0.7*CONST.VUE.HEIGHT - alpha*(0.7*CONST.VUE.HEIGHT-CONST.FICHE1.RECT.y))
   } else {
-    d3.select("svg.Initfig").attr("y", CONST.FIGINIT.RECT.y)
+    d3.select("svg.Initfig").attr("y", CONST.FICHE1.RECT.y)
   }
 
 }
@@ -418,7 +349,7 @@ function manageFicheSec2 (pos){
     }
   }
   if (alpha<=0){
-            
+
   } else if (alpha<=alphasteps[1]){
     // Utilisation de l'écart de taille deltay pour la position de la fiche
     var beta = abTo01(0,alphasteps[1],alpha);
@@ -502,7 +433,13 @@ function manageBadgeSec4 (){
   }
 }
 
+// Fonctions de dessin de la figure initiale
+
+
 // Appels à faire au début
+d3.json("data/Index/intrologo.json", function (data){
+  CONST.INTROLOGO = data;
+})
 createInitFigure();
 setupFiche();
 setupBadge();

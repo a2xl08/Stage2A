@@ -437,8 +437,18 @@ function manageBadgeSec4 (){
 
 
 // Appels à faire au début
+var nodes;
+var links;
+var simulation;
 d3.json("data/Index/intrologo.json", function (data){
-  CONST.INTROLOGO = data;
+  CONST.INTROLOGO.DATA = data;
+  var spendingDomain = [1, d3.max(CONST.INTROLOGO.DATA["Noeuds"], function(d){
+    return parseInt(d["Dépenses Lobby (€)"])||0;
+  })];
+  spendingScale = d3.scaleLinear().domain(spendingDomain).range(CONST.INTROLOGO.RADIUS_RANGE);
+  nodes = createdataset();
+  simulation = d3.forceSimulation()
+  configSimulation(simulation);
 })
 createInitFigure();
 setupFiche();

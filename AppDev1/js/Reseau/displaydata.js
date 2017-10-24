@@ -1,18 +1,18 @@
 /*
 
-Ce script reçoit les fonctions qui permettent 
-de représenter les données. 
+Ce script reçoit les fonctions qui permettent
+de représenter les données.
 
-Il s'agit notamment des fonctions 
+Il s'agit notamment des fonctions
 qui dessinent le Canvas pour chacune des sections
 
-Il y a aussi les fonctions qui gèrent l'échelle. 
+Il y a aussi les fonctions qui gèrent l'échelle.
 
 Ces fonctions seront appelées dans des appels du type
 simulation.on("tick", drawCanvasSec1)
 
 Ces appels précédents seront effectués dans le script
-scroller.js 
+scroller.js
 (appel de setupSecX() dans la fonction majvue
 qui marque une séparation entre 2 sections)
 
@@ -27,9 +27,9 @@ var firstickAll = 1;
 var w=Math.round(CONST.VUE.WIDTH/6);
 var h=Math.round(CONST.VUE.HEIGHT/6)
 var centers = [
-[w,h],   [2*w,h],   [3*w,h],   [4*w,h],   [5*w,h], 
-[w,3*h], [2*w,3*h], [3*w,3*h], [4*w,3*h], [5*w,3*h], 
-[w,5*h], [2*w,5*h], [3*w,5*h], [4*w,5*h], [5*w,5*h], 
+[w,h],   [2*w,h],   [3*w,h],   [4*w,h],   [5*w,h],
+[w,3*h], [2*w,3*h], [3*w,3*h], [4*w,3*h], [5*w,3*h],
+[w,5*h], [2*w,5*h], [3*w,5*h], [4*w,5*h], [5*w,5*h],
 ];
 
 // Layout des actionnaires
@@ -45,7 +45,7 @@ for (var i=0; i<3; i++){
 function defIDToIndex (){
   // On remplit l'annuaire
     // Dictionnaire inversé pour faciliter les liens
-    // Il faut placer ce code ici à cause des appels asynchrones. 
+    // Il faut placer ce code ici à cause des appels asynchrones.
     if (firstick){
       var NestedData = d3.nest()
               .key(function (d){return d.ID})
@@ -56,7 +56,7 @@ function defIDToIndex (){
         console.log([d.key, d.value])
         IDToIndex[Number(d.key)] = d.value;
       })
-      firstick=0;  
+      firstick=0;
     }
 }
 
@@ -74,7 +74,7 @@ function defallIDToIndex (){
       console.log([d.key, d.value])
       allIDToIndex[Number(d.key)] = d.value;
     })
-    firstickAll=0;  
+    firstickAll=0;
   }
 }
 
@@ -86,7 +86,7 @@ function boxforce (selection){
     if (d.x < CONST.CANVASPADDING){ d.x = CONST.CANVASPADDING };
     if (d.y < CONST.CANVASPADDING){ d.y = CONST.CANVASPADDING };
     if (d.x > (CONST.VUE.WIDTH - CONST.CANVASPADDING)){ d.x = CONST.VUE.WIDTH - CONST.CANVASPADDING };
-    if (d.y > (CONST.VUE.HEIGHT - CONST.CANVASPADDING)){ d.y = CONST.VUE.HEIGHT - CONST.CANVASPADDING }; 
+    if (d.y > (CONST.VUE.HEIGHT - CONST.CANVASPADDING)){ d.y = CONST.VUE.HEIGHT - CONST.CANVASPADDING };
   })
 }
 
@@ -155,7 +155,7 @@ function drawOrgnizations (){
       // Ajout de la couleur au répertoire
       colToNode[newcol] = node;
 
-    })  
+    })
 }
 
 function drawAffLinks (IDdict, data){
@@ -191,7 +191,7 @@ function tickedSec1 (){
       }
       d.y += (CONST.VUE.HEIGHT/2 - d.y)*simulation.alpha();
     })
-    boxforce(circlePos); 
+    boxforce(circlePos);
 
 
     drawCanvasSec1();
@@ -201,8 +201,8 @@ function tickedSec1 (){
 function drawCanvasSec1 (){
 
     clearCanvas();
-    
-    drawAgreg(circlePos);  
+
+    drawAgreg(circlePos);
 }
 
 function setupSec1 (){
@@ -236,7 +236,7 @@ function tickedSec2 (){
       }
       d.y += (CONST.VUE.HEIGHT/2 - d.y)*simulation.alpha();
     })
-    boxforce(circlePosType); 
+    boxforce(circlePosType);
 
     drawCanvasSec2();
 
@@ -245,8 +245,8 @@ function tickedSec2 (){
 function drawCanvasSec2 (){
 
     clearCanvas();
-    
-    drawAgreg(circlePosType);  
+
+    drawAgreg(circlePosType);
 }
 
 function setupSec2 (){
@@ -289,8 +289,8 @@ function tickedSec3 (){
 function drawCanvasSec3 (){
 
     clearCanvas();
-    
-    drawAgreg(circlePosSecteur);  
+
+    drawAgreg(circlePosSecteur);
 }
 
 function setupSec3 (){
@@ -333,8 +333,8 @@ function tickedSec4 (){
 function drawCanvasSec4 (){
 
     clearCanvas();
-    
-    drawAgreg(circlePosSecteur);  
+
+    drawAgreg(circlePosSecteur);
 }
 
 function setupSec4 (){
@@ -376,7 +376,7 @@ function tickedSec5 (){
 function drawCanvasSec5 (){
 
     clearCanvas();
-    
+
     drawAgreg(circleSecteurPos);
 }
 
@@ -420,7 +420,7 @@ function tickedSec6 (){
 function drawCanvasSec6 (){
 
     clearCanvas();
-    
+
     drawOrgnizations();
 }
 
@@ -457,7 +457,7 @@ function drawCanvasSec7 (){
 
     drawAffLinks(IDToIndex, dataset);
 
-    drawOrgnizations();  
+    drawOrgnizations();
 }
 
 function setupSec7 (){
@@ -501,7 +501,7 @@ function tickedSec8 (){
     })*/
     boxforce(circles);
     boxforce(circleActs);
-    
+
     drawCanvasSec8();
 
 }
@@ -598,7 +598,7 @@ function setupSec8 (){
             } else {
               return 1.5*numlinkradius(d);
             }
-            
+
           }))
           // Permettent d'éviter le hors champ lors du drag
           .force("x", d3.forceX(CONST.VUE.WIDTH/2).strength(0.005))

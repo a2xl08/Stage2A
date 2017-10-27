@@ -42,7 +42,6 @@ var spendingScale; // définie après l'import des données de la figure dans in
 var createdataset = function (){
   var dataset = CONST.INTROLOGO.DATA["Noeuds"];
   for (var i=0; i<dataset.length; i++){
-    console.log(spendingScale(parseInt(dataset[i]["Dépenses Lobby (€)"])))
     dataset[i].points = circlePoints(spendingScale(parseInt(dataset[i]["Dépenses Lobby (€)"])));
     dataset[i].kernelPoints = circlePoints(3);
   }
@@ -68,29 +67,45 @@ var drawfig = function (nodes, links){
     .attr("transform", function (d){return "translate("+d.x+", "+d.y+")"})
   nodeenter.append("path")
     .classed('circle-membrane', true)
-    .attr("fill", "white")
+    .attr("fill", colorfiginit(0.3))
     .attr('d', function(d){
       return radialLine(d.points);
     });
   nodeenter.append("path")
     .classed('circle-kernel', true)
-    .attr("fill", "red")
+    .attr("fill", colorfiginit(1))
     .attr('d', function(d){
       return radialLine(d.kernelPoints);
     });
+  nodeenter.append("text")
+    .attr("dx", 0)
+    .attr("dy", -10)
+    .attr('text-anchor', "middle")
+    .text(function (d){return d.nom})
+}
 
+var updatenodeposition = function (){
+  d3.selectAll(".node")
+    .attr("transform", function (d){return "translate("+d.x+", "+d.y+")"})
+  d3.selectAll("text")
+    .attr("dx", 0)
+    .attr("dy", -10)
 }
 
 // Chargement de la simulation - force layout
+var firsttick = true;
 var configSimulation = function (simulation){
   simulation.nodes(nodes)
-    .force("center", d3.forceCenter(CONST.VUE.WIDTH/2,CONST.VUE.HEIGHT/2))
+    .force("center", d3.forceCenter(CONST.VUE.WIDTH/2,CONST.VUE.HEIGHT/3))
     .force("collide", d3.forceCollide().radius(function (d){
-      console.log(spendingScale(parseInt(d["Dépenses Lobby (€)"])))
-      return 2.3*spendingScale(parseInt(d["Dépenses Lobby (€)"]));
-    }))
-  simulation.on("tick", function (){
-    console.log("tick")
-    drawfig(nodes, links);
-  });
+        return 1.5*spendingScale(parseInt(d["Dépenses Lobby (€)"]));
+      }))
+      simulation.on("tick", function (){
+        if (firsttick){
+          drawfig(nodes, links)
+          firsttick = false;
+        } else {
+          updatenodeposition();
+        }
+      });
 }

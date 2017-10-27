@@ -1,5 +1,5 @@
 /* Pour gérer les couleurs d'affichages,
-modifier les valeurs de couleurs dans ce script. 
+modifier les valeurs de couleurs dans ce script.
 La couleur de fond se modifie dans le fichier styles.css*/
 
 
@@ -18,4 +18,9 @@ function color (i){
     case 5: return "rgb(99, 150, 200)";
     default: return "rgb(56, 116, 252)";
   }
+}
+
+// Couleurs des noeuds de la figure initiale
+function colorfiginit (opacity){
+  return "rgba(255,165,0,"+opacity+")";
 }

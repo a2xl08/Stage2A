@@ -3,6 +3,12 @@ svg text {
   font-family: 'Open Sans';
 }
 
+svg g.node > text {
+  fill: white;
+  font-family: 'Open Sans';
+  font-size: 10px;
+}
+
 svg foreignObject {
   pointer-events: none;
 }

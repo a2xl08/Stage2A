@@ -447,6 +447,7 @@ d3.json("data/Index/intrologo.json", function (data){
   })];
   spendingScale = d3.scaleLinear().domain(spendingDomain).range(CONST.INTROLOGO.RADIUS_RANGE);
   nodes = createdataset();
+  links = createdatalinks();
   simulation = d3.forceSimulation()
   configSimulation(simulation);
 })

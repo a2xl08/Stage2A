@@ -24,3 +24,7 @@ function color (i){
 function colorfiginit (opacity){
   return "rgba(255,165,0,"+opacity+")";
 }
+
+function colorlinkfiginit(){
+  return "rgba(165,0,255,0.4)";
+}

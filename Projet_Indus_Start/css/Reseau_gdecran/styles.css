@@ -1,0 +1,153 @@
+@font-face {
+font-family: 'Open Sans';
+src: url('../font/OpenSans/OpenSans-Regular.eot?') format('eot'),
+     url('../font/OpenSans/OpenSans-Regular.otf') format('truetype'),
+     url('../font/OpenSans/OpenSans-Regular.woff') format('woff'),
+     url('../font/OpenSans/OpenSans-Regular.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Open Sans Bold';
+src: url('../font/OpenSansBold/OpenSans-Bold.eot?') format('eot'),
+     url('../font/OpenSansBold/OpenSans-Bold.otf') format('truetype'),
+     url('../font/OpenSansBold/OpenSans-Bold.woff') format('woff'),
+     url('../font/OpenSansBold/OpenSans-Bold.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Open Sans Italic';
+src: url('../font/OpenSansItalic/OpenSans-Italic.eot?') format('eot'),
+     url('../font/OpenSansItalic/OpenSans-Italic.otf') format('truetype'),
+     url('../font/OpenSansItalic/OpenSans-Italic.woff') format('woff'),
+     url('../font/OpenSansItalic/OpenSans-Italic.svg#OpenSansBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Antique Olive Standard Compact';
+src: url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.eot?') format('eot'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.otf') format('truetype'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.woff') format('woff'),
+     url('../font/AntiqueOliveStdCompact/AntiqueOliveStd-Compact.svg#AntiqueOliveStandardCompactBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+font-family: 'Antique Olive Roman';
+src: url('../font/AntiqueOliveRoman/antiqueolivestd_roman.eot?') format('eot'),
+     url('../font/AntiqueOliveRoman/AntiqueOliveStd-Roman.otf') format('truetype'),
+     url('../font/AntiqueOliveRoman/AntiqueOliveStd-Roman.woff') format('woff'),
+     url('../font/AntiqueOliveRoman/AntiqueOliveStd-Roman.svg#AntiqueOliveStandardCompactBold') format('svg');
+font-weight: normal;
+font-style: normal;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Open Sans', Arial, sans-serif;
+  /*Attention cette valeur est utilisée sans récupération dans le JS*/
+  /*Fond initial*/
+  background-color: #222c4f;
+  color: white;
+}
+
+p {
+  font-size: 15px;
+}
+
+#container {
+  display: inline-block;
+}
+
+#fixpart {
+  left: 0px;
+  position: fixed;
+  z-index: 1;
+  display: inline-block;
+  width: 100%;
+  margin: auto;
+  height: 100%;
+}
+
+#vue {
+  left: 0px;
+  padding: 5px;
+  height: 100%;
+}
+
+#credits {
+  display: none;
+  position: fixed;
+  background-color: rgba(6,8,15,0.8);/*rgba(50,50,50,0.95);*/
+  width: 50%;
+  height: 70%;
+  top: 15%;
+  left: 25%;
+  overflow: scroll;
+  overflow-x: hidden;
+  z-index: 10;
+  padding: 20px;
+}
+
+#credits > #closecredits {
+  font-size: 14px;
+  position: fixed;
+  top: 12%;
+  right: 25%;
+  /*background-color: rgb(191,191,191);
+  border: solid black 2px;
+  border-radius: 10px;
+  padding: 5px;*/
+  color: white;
+  font-weight: bold;
+}
+
+#credits > #closecredits:hover {
+  color: rgba(76, 144, 255, 0.6);
+  /*background-color: white;*/
+  cursor: pointer;
+}
+
+p#opencredits:hover {
+  cursor: pointer;
+}
+
+#credits > h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 25px;
+}
+
+#credits > p {
+  text-align: justify;
+}
+
+#credits > p > em {
+  font-style: italic;
+}
+
+#credits > p > a {
+  color: inherit;
+}
+
+#credits > p > a:hover {
+  color: inherit;
+}
+
+#credits > p > a:visited {
+  color: inherit;
+}
+
+#credits > img {
+  display: block;
+  margin: auto;
+}

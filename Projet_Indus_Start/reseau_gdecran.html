@@ -64,6 +64,11 @@
       </div>
 
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      // On se connecte au Serveur
+      var socket = io.connect("http://localhost:8080");
+    </script>
     <script type="text/javascript" src="js/Reseau_gdecran/getURL.js"></script>
     <script type="text/javascript" src="js/vendor/chroma.min.js"></script>
     <script type="text/javascript" src="js/vendor/d3.js"></script>

@@ -40,7 +40,9 @@ app.use(express.static(__dirname+"/public"));
 // Chargement de socket.indexio
 var io = require('socket.io').listen(server);
 
-io.sockets.on('connection', function (socket) {});
+io.sockets.on('connection', function (socket) {
+  
+});
 
 server.listen(8080);
 console.log("Serveur prêt !")

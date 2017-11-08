@@ -137,7 +137,7 @@
         <!--- Le conteneur flex des liens -->
         </div>
         </div>
-        
+
       </div>
 
       <div id="credits">
@@ -183,6 +183,11 @@
       </div>
 
     </div>
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      // On se connecte au Serveur
+      var socket = io.connect("http://localhost:8080");
+    </script>
     <script type="text/javascript" src="js/return.js"></script>
     <script type="text/javascript" src="js/Reseau/getURL.js"></script>
     <script type="text/javascript" src="js/vendor/chroma.min.js"></script>
@@ -207,6 +212,6 @@
     <script type="text/javascript" src="js/Reseau/importdata.js"></script>
     <script type="text/javascript" src="js/Reseau/scroller.js"></script>
     <script type="text/javascript" src="js/Reseau/linksToLoby.js"></script>
-    
+
   </body>
 </html>

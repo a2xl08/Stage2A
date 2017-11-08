@@ -41,7 +41,14 @@ app.use(express.static(__dirname+"/public"));
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
-  
+  socket.on("push Next", function (message){
+    console.log("push Next");
+    socket.broadcast.emit("pull Next", message);
+  })
+  socket.on("push Prev", function (message){
+    console.log("push Prev")
+    socket.broadcast.emit("pull Prev", message);
+  })
 });
 
 server.listen(8080);

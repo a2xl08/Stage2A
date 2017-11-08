@@ -32,7 +32,7 @@ function majsectionspos(){
 }
 
 
-// Détermine notre position sur la page et adapte la vue. 
+// Détermine notre position sur la page et adapte la vue.
 function position(simulation) {
 
   // Repérage de la position sur la page
@@ -59,10 +59,12 @@ function majvue(simulation, index, preced) {
   if (preced===index-1 && index<=6 && !storyactive){
     // On affiche la section suivante
     simulation.nextSection();
+    socket.emit("push Next", "");
   } else if (preced===index+1 && preced<=6 && storyonread){
     // On retourne à la section précédente
     simulation.previousSection();
     simulation.previousSection();
+    socket.emit("push Prev", "");
     // On force la fermeture de stories si ouvert
     storyonread = false;
     d3.select("svg#closestory").style("display", "none");
@@ -74,6 +76,7 @@ function majvue(simulation, index, preced) {
     d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
   } else if (preced===index+1 && preced<=6 && storyactive){
     simulation.previousSection();
+    socket.emit("push Prev");
     // On force la fermeture de stories si ouvert
     storyactive = false;
     eraseLastSectionContent();
@@ -83,6 +86,7 @@ function majvue(simulation, index, preced) {
     d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
   } else if (preced===index+1 && preced<=6){
     simulation.previousSection();
+    socket.emit("push Prev");
   }
   if (index===8){
     d3.selectAll("div.menu img").style("display", "inline-block");
@@ -101,7 +105,7 @@ function majvue(simulation, index, preced) {
 // argument pos : position sur la page
 // sectionPositions : liste des positions des sections (décalées pour permettre un scroll précis)
 function scrollAnim(index, pos) {
-  
+
 }
 
 // On déclenche la fonction position à chaque scroll de la page : dans le fichier experimentation pour avoir accès à simulation

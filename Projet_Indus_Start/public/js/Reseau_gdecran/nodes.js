@@ -385,7 +385,9 @@ var drawNodes = function(nodes){
 
     $nodes = nodeEnter.merge($nodes);
 
-  $nodes.on('mouseover', function(node){
+  socket.on('pull mouseover node', function(message){
+    // On récupère l'objet node
+    var node = JSON.parse(message);
     //fadeNotNeighbours(node);
     if (currentSectionIndex>=5){
       fadeNotNeighbours(node);
@@ -407,7 +409,11 @@ var drawNodes = function(nodes){
         canvas.select("#lobby"+node.ID).style("cursor", "pointer");
       }
     }
-  }).on('mouseout', function(node){
+  })
+
+  socket.on('pull mouseout node', function(message){
+    // On récupère l'objet node
+    var node = JSON.parse(message);
     // On écrase le texte
     canvas.select("#lobbytext"+node.ID).select("tspan.name").attr("fill-opacity", opacityNotOn(node));
     canvas.select("#lobbytext"+node.ID).select("tspan.budget").attr("fill-opacity", 0);
@@ -423,11 +429,13 @@ var drawNodes = function(nodes){
     } else {
       canvas.select("#lobby"+node.ID).style("cursor", "default");
     }
-  }).on("click", function (node){
+  })
+
+  /*.on("click", function (node){
     if (node.type === TYPES.LOBBY && !clicklocknode){
       setUpClickFiche(node);
     }
-  });
+  });*/
 
   return $nodes;
 }

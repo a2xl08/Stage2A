@@ -41,6 +41,7 @@ app.use(express.static(__dirname+"/public"));
 var io = require('socket.io').listen(server);
 
 io.sockets.on('connection', function (socket) {
+  // Pour chaque message push reçu, on envoie un message pull
   socket.on("push Next", function (message){
     console.log("push Next");
     socket.broadcast.emit("pull Next", message);
@@ -48,6 +49,14 @@ io.sockets.on('connection', function (socket) {
   socket.on("push Prev", function (message){
     console.log("push Prev")
     socket.broadcast.emit("pull Prev", message);
+  })
+  socket.on("push mouseover node", function (message){
+    console.log("push mouseover node")
+    socket.broadcast.emit("pull mouseover node", message);
+  })
+  socket.on("push mouseout node", function (message){
+    console.log("push mouseout node")
+    socket.broadcast.emit("pull mouseout node", message);
   })
 });
 

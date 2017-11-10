@@ -655,23 +655,16 @@ function emphacizeMainNodes (i){
 function onclickStory (i){
   storyonread = i;
   updateTypesLinks(i);
-  drawlegstory(i);
-  eraseLastSectionContent();
-  writeStory(i);
   stopeventsStoriesCircles();
   updateEighthSection(i);
   simulation.nextSection();
   resetMouseOut(); // Et emphacize
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
-  d3.select("#bestallyworstrival").style("display", "none");
-  d3.select("#themes").style("display", "none");
   d3.select("svg#closestory")
     .on("click", function (){
       storyonread = false;
       simulation.previousSection();
       resetMouseOut();
-      eraseLastSectionContent();
-      writeStoriesTextInLastSection();
       eventsStoriesCircles();
       d3.select("#bestallyworstrival").style("display", "inline-block");
       d3.select("#themes").style("display", "inline-block");
@@ -757,34 +750,20 @@ function stopeventsStoriesCircles (){
 }
 
 function onclickStories (){
-  eraseLastSectionContent();
-  writeStoriesTextInLastSection();
   addStoriesCircles();
   eventsStoriesCircles();
   storyactive = true;
-  d3.select("img#stories").on("click", function (){
-    eraseLastSectionContent();
-    writeBaseTextInLastSection();
+  socket.on("pull close stories", function (message){
     storyactive = false;
     if (storyonread!==false){
       storyonread = false;
       simulation.previousSection();
     }
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
-    d3.select("img#stories").on("click", onclickStories);
-    d3.select("img#bestallyworstrival").on("click", onclickBestAlly).style("display", "inline-block");
-    d3.select("img#themes").style("display", "inline-block");
   });
-  d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
-d3.select("img#stories").on("click", onclickStories);
-d3.select("img#stories").on("mouseover", function (){
-  d3.select("img#stories")
-    .attr("src", "img/icon_Story_blanc.svg")
-});
-d3.select("img#stories").on("mouseout", function (){
-  d3.select("img#stories")
-    .attr("src", "img/icon_Story.svg")
+socket.on("pull click stories", function (message){
+  onclickStories();
 });
 
 
@@ -824,56 +803,6 @@ function anonymizeUser (){
   })
   d3.selectAll(".circle-membrane").attr("fill", nodeFill)
   d3.selectAll(".link path").attr("fill", Color.link)
-
-  // On supprime le boutton meilleur allié pire adversaire
-  d3.select("img#bestallyworstrival").style("display", "none");
-
-  // On retire les #answers
-  d3.select("#answers").select("table").remove();
-
-  // On écrit un unique answer
-  d3.select("#answers").insert("p", "p.small")
-    .classed("sujet", true)
-    .html("<span class='sujets'>Sujets : </span><span class='allthemes'></span>")
-  d3.select("#answers").select("span.allthemes")
-  for (var i=0; i<CONSTANTS.THEMELIST.length; i++){
-    // i2 vaut la valeur courante de i
-    (function (i2){
-    d3.select("#answers").select("span.allthemes")
-      .append("a")
-      .attr("href", "reseau.html?theme="+i2)
-      .text(CONSTANTS.THEMELIST[i2])
-    d3.select("#answers").select("span.allthemes")
-      .append("img")
-      .attr("width", 13)
-      .attr("height", 13)
-      .attr("src", "img/i_blanc.svg")
-      .on("mouseover", function (){
-        console.log("hover")
-        console.log(i2);
-        console.log(CONSTANTS.THEMELIST[i2])
-        console.log(CONSTANTS.NOMS_DEPLOYES[CONSTANTS.THEMELIST[i2]])
-        var x = d3.mouse(d3.select("#answers").node())[0];
-        var y = d3.mouse(d3.select("#answers").node())[1];
-        d3.select("#answers")
-          .append("div")
-          .classed("cartouche", true)
-          .text(CONSTANTS.NOMS_DEPLOYES[CONSTANTS.THEMELIST[i2]])
-          .style("top", y)
-          .style("left", x)
-      })
-      .on("mouseout", function (){
-        d3.select("#answers").select("div.cartouche").remove();
-      })
-    d3.select("#answers").select("span.allthemes")
-      .append("br")
-    })(i);
-  }
-  drawlegcolors(false);
-  drawlegcolorscale(false);
-  drawlegaff(false);
-  drawlegprop(false);
-  updaterectcoords();
 }
 
 function rebornUser (){
@@ -930,71 +859,16 @@ function rebornUser (){
   })
   d3.selectAll(".circle-membrane").attr("fill", nodeFill)
   d3.selectAll(".link path").attr("fill", Color.link)
-
-  // On retire les #answers liés au choix du prochain thème
-  d3.select("#answers").selectAll("p.sujet").remove();
-
-  // On réécrit les #answers
-  var table = d3.select("#answers").insert("table", "p.small").classed("useranswers", true)
-  table.append("tr").classed("item", true).html('<th>ID</th><td class="nom"></td>');
-  table.append("tr").classed("item", true).html('<th>Région</th><td class="country"></td>');
-  table.append("tr").classed("item", true).html('<th>Secteur</th><td class="secteur"></td>');
-  table.append("tr").classed("item", true).html('<th>Type</th><td class="type"></td>');
-  table.append("tr").classed("item", true).html('<th>Position</th><td class="position"></td>');
-  table.append("tr").classed("item", true).html('<th>Sujet</th><td class="theme"></td>');
-  table.append("tr").classed("item", true).html('<th>Fonction</th><td class="fonction">Lobbyiste</td>');
-  if (getUserChoice().theme){
-    d3.select("#answers td.theme")
-      .text(getUserChoice().theme);
-  }
-  if (getUserChoice().lobbyist){
-    d3.select("#answers td.nom")
-      .text(getUserChoice().lobbyist["Nom1"]);
-    d3.select("#answers td.type")
-      .text(getUserChoice().lobbyist["Type"]);
-    d3.select("#answers td.secteur")
-      .text(getUserChoice().lobbyist["Secteurs d’activité"]);
-    d3.select("#answers td.country")
-      .text(getUserChoice().lobbyist["Pays/Région"]);
-    if (getUserChoice().lobbyist[getUserChoice().theme]){
-      d3.select("#answers td.position")
-        .text(getUserChoice().lobbyist[getUserChoice().theme]);
-    }
-    // On remet le boutton meilleur allié pire adversaire
-    d3.select("img#bestallyworstrival").style("display", "inline-block");
-  }
-  drawlegcolors(true);
-  drawlegcolorscale(true);
-  drawlegaff(true);
-  drawlegprop(true);
-  updaterectcoords();
-  if (!answershow){
-    d3.select("#answers")
-      .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
-  }
 }
 
 function onclickNewTheme (){
-  eraseLastSectionContent();
-  writeNewThemeTextInLastSection();
-  showanswers();
   anonymizeUser();
-  d3.select("img#themes").on("click", function (){
-    eraseLastSectionContent();
-    writeBaseTextInLastSection();
-    showanswers();
+  socket.on("pull backtheme", function (message){
     rebornUser();
-    d3.select("img#themes").on("click", onclickNewTheme);
   })
   // On remet en place les events des autres
   d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
-d3.select("img#themes").on("click", onclickNewTheme);
-d3.select("img#themes").on("mouseover", function (){
-  d3.select("img#themes")
-    .attr("src", "img/icon_Theme_blanc.svg")
-});
-d3.select("img#themes").on("mouseout", function (){
-  d3.select("img#themes")
-    .attr("src", "img/icon_Theme.svg")
+socket.on("pull newtheme", function (message){
+  onclickNewTheme();
 });

@@ -430,6 +430,7 @@ var drawNodes = function(nodes){
   }).on("click", function (node){
     if (node.type === TYPES.LOBBY && !clicklocknode){
       setUpClickFiche(node);
+      socket.emit("push click node", JSON.stringify(node));
     }
   });
 

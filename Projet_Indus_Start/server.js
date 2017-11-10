@@ -39,25 +39,31 @@ app.use(express.static(__dirname+"/public"));
 
 // Chargement de socket.indexio
 var io = require('socket.io').listen(server);
+// Fonction de retransmission
+function transmit(socket, type){
+  socket.on("push "+type, function (message){
+    console.log(type);
+    socket.broadcast.emit("pull "+type, message)
+  })
+}
 
 io.sockets.on('connection', function (socket) {
   // Pour chaque message push reçu, on envoie un message pull
-  socket.on("push Next", function (message){
-    console.log("push Next");
-    socket.broadcast.emit("pull Next", message);
-  })
-  socket.on("push Prev", function (message){
-    console.log("push Prev")
-    socket.broadcast.emit("pull Prev", message);
-  })
-  socket.on("push mouseover node", function (message){
-    console.log("push mouseover node")
-    socket.broadcast.emit("pull mouseover node", message);
-  })
-  socket.on("push mouseout node", function (message){
-    console.log("push mouseout node")
-    socket.broadcast.emit("pull mouseout node", message);
-  })
+  transmit(socket, "reload")
+  transmit(socket, "Next");
+  transmit(socket, "Prev");
+  transmit(socket, "mouseover node");
+  transmit(socket, "mouseout node");
+  transmit(socket, "click node");
+  transmit(socket, "close node fiche");
+  transmit(socket, "mouseover membrane");
+  transmit(socket, "mouseout membrane");
+  transmit(socket, "click stories");
+  transmit(socket, "close stories");
+  transmit(socket, "newtheme");
+  transmit(socket, "backtheme");
+  transmit(socket, "story");
+  transmit(socket, "closestory");
 });
 
 server.listen(8080);

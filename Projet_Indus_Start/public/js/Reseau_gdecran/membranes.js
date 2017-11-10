@@ -169,20 +169,20 @@ var drawMembranes = function(nodes, membranes){
 
   membranesExit.transition().delay(500).remove();
 
-  $membranes.on("mouseover", function (membrane){
-    console.log(purgeSpaces(membrane.key.split("-")[0]))
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.name").attr("fill-opacity", 1);
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.count").attr("fill-opacity", 1);
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.budget").attr("fill-opacity", 1);
-    canvas.selectAll("path.membrane:not(.membrane"+purgeSpaces(membrane.key.split("-")[0])+")")
+  socket.on("pull mouseover membrane", function (message){
+    console.log(message)
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.name").attr("fill-opacity", 1);
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.count").attr("fill-opacity", 1);
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.budget").attr("fill-opacity", 1);
+    canvas.selectAll("path.membrane:not(.membrane"+message+")")
       .attr("fill", CONSTANTS.COLORS.UNSELECTED_MEMBRANE)
   })
 
-  $membranes.on("mouseout", function (membrane){
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.name").attr("fill-opacity", 0);
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.count").attr("fill-opacity", 0);
-    canvas.selectAll(".membranetext"+purgeSpaces(membrane.key.split("-")[0])).selectAll("tspan.budget").attr("fill-opacity", 0);
-    canvas.selectAll("path.membrane:not(.membrane"+purgeSpaces(membrane.key.split("-")[0])+")")
+  socket.on("pull mouseout membrane", function (message){
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.name").attr("fill-opacity", 0);
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.count").attr("fill-opacity", 0);
+    canvas.selectAll(".membranetext"+message).selectAll("tspan.budget").attr("fill-opacity", 0);
+    canvas.selectAll("path.membrane:not(.membrane"+message+")")
       .attr("fill", function (cluster){
         return chroma(cluster.color);
       })

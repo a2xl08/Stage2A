@@ -58,9 +58,8 @@ function setUpClickFiche (node){
     })
   }
 
-  d3.select("svg.experimentation").on("mouseleave", function (){
-    d3.select("#fiche"+node.ID).remove();
-    d3.select("svg.experimentation").on("mouseleave", null);
+  socket.on("pull close node fiche", function (message){
+    d3.select("#fiche"+message).remove();
   })
 }
 

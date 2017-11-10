@@ -431,11 +431,12 @@ var drawNodes = function(nodes){
     }
   })
 
-  /*.on("click", function (node){
+  socket.on("pull click node", function (message){
+    node = JSON.parse(message);
     if (node.type === TYPES.LOBBY && !clicklocknode){
       setUpClickFiche(node);
     }
-  });*/
+  });
 
   return $nodes;
 }

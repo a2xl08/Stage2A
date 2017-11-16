@@ -660,17 +660,16 @@ function onclickStory (i){
   simulation.nextSection();
   resetMouseOut(); // Et emphacize
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
-  d3.select("svg#closestory")
-    .on("click", function (){
+    socket.on("pull closestory", function (){
       storyonread = false;
       simulation.previousSection();
       resetMouseOut();
       eventsStoriesCircles();
-      d3.select("#bestallyworstrival").style("display", "inline-block");
-      d3.select("#themes").style("display", "inline-block");
     })
-    .style("display", "inline-block");
 }
+socket.on("pull story", function (i){
+  onclickStory(i);
+})
 
 function addStoriesCircles (){
   var alldata = CONSTANTS.LOADEDDATA;
@@ -712,18 +711,13 @@ function updateStoriesCircles (){
 }
 
 function eventsStoriesCircles (){
-  d3.select("svg.experimentation").selectAll("circle.storycircle")
-    .on("mouseover", function (){
-      d3.select(this).style("cursor", "pointer");
-      var numid = Number(d3.select(this).attr("class").slice(23));
+  socket.on("pull storycircle mouseover", function (numid){
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", CONSTANTS.COLORS.STORY_VISITED);
       fadeNotInvolved(numid);
       d3.selectAll("circle.storycircle:not(.storycircle"+numid+")").attr("fill", CONSTANTS.COLORS.STORY_VISITED);
     })
-    .on("mouseout", function (){
-      d3.select(this).style("cursor", "default");
-      var numid = Number(d3.select(this).attr("class").slice(23));
+  socket.on("pull storycircle mouseout", function (numid){
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", function (){
           var numid2 = Number(d3.select(this).attr("id").slice(7));
@@ -735,11 +729,6 @@ function eventsStoriesCircles (){
         return CONSTANTS.STORIES.colors[numid2];
       });
     })
-    .on("click", function (){
-      var numid = Number(d3.select(this).attr("class").slice(23));
-      onclickStory(numid);
-    })
-    .attr("opacity", 1)
 }
 
 function stopeventsStoriesCircles (){

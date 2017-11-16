@@ -725,6 +725,7 @@ function eventsStoriesCircles (){
     .on("mouseover", function (){
       d3.select(this).style("cursor", "pointer");
       var numid = Number(d3.select(this).attr("class").slice(23));
+      socket.emit("push storycircle mouseover", numid);
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", CONSTANTS.COLORS.STORY_VISITED);
       fadeNotInvolved(numid);
@@ -733,6 +734,7 @@ function eventsStoriesCircles (){
     .on("mouseout", function (){
       d3.select(this).style("cursor", "default");
       var numid = Number(d3.select(this).attr("class").slice(23));
+      socket.emit("push storycircle mouseout", numid);
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", function (){
           var numid2 = Number(d3.select(this).attr("id").slice(7));

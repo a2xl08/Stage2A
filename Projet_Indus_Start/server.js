@@ -64,6 +64,8 @@ io.sockets.on('connection', function (socket) {
   transmit(socket, "backtheme");
   transmit(socket, "story");
   transmit(socket, "closestory");
+  transmit(socket, "storycircle mouseover");
+  transmit(socket, "storycircle mouseout");
 });
 
 server.listen(8080);

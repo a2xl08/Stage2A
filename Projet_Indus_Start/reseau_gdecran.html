@@ -66,6 +66,9 @@
     <script type="text/javascript">
       // On se connecte au Serveur
       var socket = io.connect("http://localhost:8080");
+      socket.on("pull index", function (message){
+        window.location.href = "http://localhost:8080/index_gdecran.html";
+      })
     </script>
     <script type="text/javascript" src="js/Reseau_gdecran/getURL.js"></script>
     <script type="text/javascript" src="js/vendor/chroma.min.js"></script>

@@ -140,6 +140,12 @@
 
       </div>
 
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+      // On se connecte au Serveur
+      var socket = io.connect("http://localhost:8080");
+      socket.emit("push index", "");
+    </script>
     <script type="text/javascript" src="js/return.js"></script>
     <script type="text/javascript" src="js/Index/colors.js"></script>
     <script type="text/javascript" src="js/vendor/d3.js"></script>

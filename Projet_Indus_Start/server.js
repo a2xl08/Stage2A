@@ -20,6 +20,13 @@ app.get("/", function (req, res){
       res.end(content);
   });
 })
+.get("/index_gdecran.html", function (req, res){
+  fs.readFile('./index_gdecran.html', 'utf-8', function(error, content) {
+      console.log("New User")
+      res.writeHead(200, {"Content-Type": "text/html"});
+      res.end(content);
+  });
+})
 .get("/reseau.html", function (req, res){
   fs.readFile('./reseau.html', 'utf-8', function(error, content) {
       console.log("Master connected")
@@ -49,7 +56,10 @@ function transmit(socket, type){
 
 io.sockets.on('connection', function (socket) {
   // Pour chaque message push reçu, on envoie un message pull
-  transmit(socket, "reload")
+
+  transmit(socket, "reload");
+  transmit(socket, "index");
+  transmit(socket, "reseau");
   transmit(socket, "Next");
   transmit(socket, "Prev");
   transmit(socket, "mouseover node");

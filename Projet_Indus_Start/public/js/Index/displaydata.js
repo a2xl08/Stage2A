@@ -198,7 +198,6 @@ function circleonclick (intselect,i){
           string += ")";
           return string;
         })
-        .select("p").style("font-size", "20px");
 
     // Si l'élément est le dernier cercle, on lui donne la couleur user
     if (CONST.ALLPIEZEDDATA[CONST.ALLPIEZEDDATA.length-1][i].data===1){

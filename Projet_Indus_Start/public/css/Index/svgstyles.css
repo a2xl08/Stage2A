@@ -146,3 +146,18 @@ svg g.result tspan.linktext {
   font-family: 'Open Sans Bold', Arial, sans-serif;
   text-anchor: middle;
 }
+
+/* Pour les petits écrans : mobiles */
+@media (max-width: 990px){
+
+}
+
+/* Pour les écrans moyens : tablettes */
+@media (min-width: 991px) and (max-width: 1199px){
+
+}
+
+/* Pour les grands écrans : ordinateurs */
+@media (min-width: 1200px){
+
+}

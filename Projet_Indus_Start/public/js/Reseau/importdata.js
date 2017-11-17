@@ -197,7 +197,7 @@ var processData = function(files){
 
 var writeTextInSection = function (i){
   var element = d3.select("#sec"+i);
-  if (i===7){
+  if (i===8){
     element.select("p.texte").html(CONSTANTS.RESULTAT[0][getUserChoice().theme])
   } else {
     element.select("h1").html(CONSTANTS.SCENARIO[i]["Titre"]);
@@ -208,18 +208,8 @@ var writeTextInSection = function (i){
 
 var writeBaseTextInLastSection = function (){
   var element = d3.select("#secfin");
-  element.select("h1").html(CONSTANTS.SCENARIO[7]["Titre"]);
-  element.select("p.texte").html(CONSTANTS.SCENARIO[7]["Texte"])
-  if (getUserChoice().lobbyist){
-    var bloc1 = element.select("p.appel")
-      .append("div")
-      .classed("blocfin", true)
-    bloc1.append("img")
-      .attr("src", "img/icon_WinLose.svg")
-      .attr("width", CONSTANTS.FINAL_IMGS.width)
-      .attr("height", CONSTANTS.FINAL_IMGS.height)
-    bloc1.append("p").html(CONSTANTS.SCENARIO[7]["bloc1"]);
-  }
+  element.select("h1").html(CONSTANTS.SCENARIO[8]["Titre"]);
+  element.select("p.texte").html(CONSTANTS.SCENARIO[8]["Texte"])
   var bloc2 = element.select("p.appel")
     .append("div")
     .classed("blocfin", true)
@@ -227,7 +217,7 @@ var writeBaseTextInLastSection = function (){
     .attr("src", "img/icon_Story.svg")
     .attr("width", CONSTANTS.FINAL_IMGS.width)
     .attr("height", CONSTANTS.FINAL_IMGS.height)
-  bloc2.append("p").html(CONSTANTS.SCENARIO[7]["bloc2"]);
+  bloc2.append("p").html(CONSTANTS.SCENARIO[8]["bloc2"]);
   var bloc3 = element.select("p.appel")
     .append("div")
     .classed("blocfin", true)
@@ -235,14 +225,14 @@ var writeBaseTextInLastSection = function (){
     .attr("src", "img/icon_Theme.svg")
     .attr("width", CONSTANTS.FINAL_IMGS.width)
     .attr("height", CONSTANTS.FINAL_IMGS.height)
-  bloc3.append("p").html(CONSTANTS.SCENARIO[7]["bloc3"]);
+  bloc3.append("p").html(CONSTANTS.SCENARIO[8]["bloc3"]);
 }
 
 var writeBestAllyEnnemyTextInLastSection = function (){
   var element = d3.select("#secfin");
-  element.select("h1").html(CONSTANTS.SCENARIO[8]["Titre"]);
-  element.select("p.texte").html(CONSTANTS.SCENARIO[8]["Texte"])
-  element.select("p.appel").html(CONSTANTS.SCENARIO[8]["Appel d’action"])
+  element.select("h1").html(CONSTANTS.SCENARIO[7]["Titre"]);
+  element.select("p.texte").html(CONSTANTS.SCENARIO[7]["Texte"])
+  element.select("p.appel").html(CONSTANTS.SCENARIO[7]["Appel d’action"])
 }
 
 var writeStoriesTextInLastSection = function (){
@@ -470,7 +460,7 @@ var importData = function(){
     }
 
     // On écrit le texte des sections
-    for (var i=0; i<8; i++){
+    for (var i=0; i<9; i++){
       writeTextInSection(i);
     }
 

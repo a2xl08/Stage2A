@@ -593,30 +593,6 @@ var configureSections = function(data){
   return allSections;
 }
 
-// Mise en place de la dernière section
-function onclickBestAlly (){
-  eraseLastSectionContent();
-  clicklocknode = true;
-  writeBestAllyEnnemyTextInLastSection();
-  displayBesties();
-  d3.select("img#bestallyworstrival").on("click", function (){
-    eraseLastSectionContent();
-    writeBaseTextInLastSection();
-    d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
-  })
-  // On remet en place les events des autres
-  d3.select("img#themes").on("click", onclickNewTheme);
-}
-d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
-d3.select("img#bestallyworstrival").on("mouseover", function (){
-  d3.select("img#bestallyworstrival")
-    .attr("src", "img/icon_WinLose_blanc.svg")
-});
-d3.select("img#bestallyworstrival").on("mouseout", function (){
-  d3.select("img#bestallyworstrival")
-    .attr("src", "img/icon_WinLose.svg")
-});
-
 
 
 var storyactive = false;
@@ -790,10 +766,8 @@ function onclickStories (){
     }
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
     d3.select("img#stories").on("click", onclickStories);
-    d3.select("img#bestallyworstrival").on("click", onclickBestAlly).style("display", "inline-block");
     d3.select("img#themes").style("display", "inline-block");
   });
-  d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
 d3.select("img#stories").on("click", onclickStories);
 d3.select("img#stories").on("mouseover", function (){
@@ -1011,7 +985,6 @@ function onclickNewTheme (){
     d3.select("img#themes").on("click", onclickNewTheme);
   })
   // On remet en place les events des autres
-  d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
 }
 d3.select("img#themes").on("click", onclickNewTheme);
 d3.select("img#themes").on("mouseover", function (){

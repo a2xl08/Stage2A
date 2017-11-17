@@ -59,12 +59,16 @@ function majvue(simulation, index, preced) {
   if (preced===index-1 && index<=6 && !storyactive){
     // On affiche la section suivante
     simulation.nextSection();
-    socket.emit("push Next", "");
+    if (connection){
+      socket.emit("push Next", "");
+    }
   } else if (preced===index+1 && preced<=6 && storyonread){
     // On retourne à la section précédente
     simulation.previousSection();
     simulation.previousSection();
-    socket.emit("push Prev", "");
+    if (connection){
+      socket.emit("push Prev", "");
+    }
     // On force la fermeture de stories si ouvert
     storyonread = false;
     d3.select("svg#closestory").style("display", "none");
@@ -76,7 +80,9 @@ function majvue(simulation, index, preced) {
     d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
   } else if (preced===index+1 && preced<=6 && storyactive){
     simulation.previousSection();
-    socket.emit("push Prev");
+    if (connection){
+      socket.emit("push Prev");
+    }
     // On force la fermeture de stories si ouvert
     storyactive = false;
     eraseLastSectionContent();
@@ -86,14 +92,20 @@ function majvue(simulation, index, preced) {
     d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
   } else if (preced===index+1 && preced<=6){
     simulation.previousSection();
-    socket.emit("push Prev");
+    if (connection){
+      socket.emit("push Prev");
+    }
   }
-  if (index===8){
+  if (index===7){
+    clicklocknode = true;
+    displayBesties();
+  } else {
+    d3.select("#bestally").remove();
+    d3.select("#worstrival").remove();
+  }
+  if (index===9){
     d3.selectAll("div.menu img").style("display", "inline-block");
     updaterectcoords();
-    if (!getUserChoice().lobbyist){
-      d3.select("img#bestallyworstrival").style("display", "none");
-    }
   } else {
     d3.selectAll("div.menu img").style("display", "none");
     updaterectcoords();

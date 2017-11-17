@@ -1,4 +1,4 @@
-var TYPES = CONSTANTS.DATA.TYPES; 
+var TYPES = CONSTANTS.DATA.TYPES;
 
 var setType = function(arr, type){
   return arr.map(function(el){
@@ -45,7 +45,7 @@ var filterLinksByNodes = function(links, nodes){
 var filterLinksByTargets = function(links, nodes){
   return links.filter(function(link){
     return nodes.find(function(node){
-      return node['ID'] === link.target; 
+      return node['ID'] === link.target;
     }) != null;
   });
 };
@@ -67,7 +67,7 @@ var filterNodesByLinkSource = function(nodes, links){
 var processData = function(files){
   // récupération du thème choisi par l'utilisateur
   var theme = getUserChoice().theme;
-  // filtrage par theme des lobbies 
+  // filtrage par theme des lobbies
   var lobbyNodes = filterNodesByTheme(files[0], theme);
   // filtrage des liens d'affiliation & propriétés pertinents
   var affiliationLinks = filterLinksByNodes(files[4], lobbyNodes);
@@ -75,11 +75,11 @@ var processData = function(files){
   // filtrage des liens & noeuds de propriétés indirect
   var indirectProprietaryLinks = filterLinksByTargets(files[3], lobbyNodes);
   var proprietaryNodes = filterNodesByLinkSource(files[1], indirectProprietaryLinks);
-  
+
   var spendingDomain = [1, d3.max(files[0], function(d){
-    return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0; 
+    return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0;
   })];
-  
+
   var spendingScale = CONSTANTS.CIRCLE.SCALE().domain(spendingDomain).range(CONSTANTS.CIRCLE.RADIUS_RANGE);
   // on calcul, pour chaque noeuds, le radius du cercle de base
   lobbyNodes.forEach(function(node){
@@ -94,18 +94,18 @@ var processData = function(files){
     node.spending = spending;
   });
 
-  // assignation des types de noeuds & liens 
+  // assignation des types de noeuds & liens
   affiliationLinks = setType(affiliationLinks, TYPES.LINK.AFFILIATION);
   directProprietaryLinks = setType(directProprietaryLinks, TYPES.LINK.PROPRIETARY.DIRECT);
   indirectProprietaryLinks = setType(indirectProprietaryLinks, TYPES.LINK.PROPRIETARY.INDIRECT);
-  
+
   var allLinks = flattenArray([
       directProprietaryLinks,
       indirectProprietaryLinks,
       affiliationLinks
   ]);
   // assignation des source et target à l'avance afin de faciliter
-  // le "binding" des données (voir `$links.data(links, function(){})` 
+  // le "binding" des données (voir `$links.data(links, function(){})`
   // dans `drawLinks` (links.js)
   allLinks.forEach(function(link){
     link.data = {
@@ -116,7 +116,7 @@ var processData = function(files){
 
   lobbyNodes = setType(lobbyNodes, TYPES.NODE.LOBBY);
   proprietaryNodes = setType(proprietaryNodes, TYPES.NODE.PROPRIETARY);
-  
+
   // affecte le nombre de lien de chaque noeud de propriété.
   proprietaryNodes.forEach(function(node){
     var links = allLinks.filter(function(link){
@@ -164,15 +164,15 @@ var processData = function(files){
     node.points = circlePoints(node.radius);
   });
 
-  var allNodes = flattenArray([lobbyNodes, proprietaryNodes]); 
-  
+  var allNodes = flattenArray([lobbyNodes, proprietaryNodes]);
+
   allNodes.forEach(function(node){
     node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
   });
-  
+
   return {
     userChoice: getUserChoice(),
-    nodes: allNodes, 
+    nodes: allNodes,
     links: allLinks,
     // fonctions utilitaires pour filtrer les données.
     utils: {
@@ -497,7 +497,7 @@ var importData = function(){
         userChoice.lobbyID = Number(params["id"]);
       }
     } // Sinon userChoice.lobbyID est undefined
-  
+
 
     // On récupère le lobyist choisi et la liste des IDs
     for (var i=0; i<CONSTANTS.LOADEDDATA.nodes.length; i++){
@@ -530,6 +530,7 @@ var importData = function(){
 
     // On remplit la légende
     drawlegcolors(true);
+    drawlegdiam(true);
     drawlegcolorscale(true);
     drawlegaff(true);
     drawlegprop(true);
@@ -542,7 +543,7 @@ var importData = function(){
       computeBesties();
     }
 
-    // enfin nous lançons l'expérimentation avec les data obtenues. 
+    // enfin nous lançons l'expérimentation avec les data obtenues.
     runExperimentation(data);
   });
 }

@@ -192,9 +192,9 @@ function circleonclick (intselect,i){
         .attr("transform", function (){
           var textpos = this.getBoundingClientRect();
           var string="translate(";
-          string += -0.4*CONST.VUE.WIDTH;
+          string += -0.43*CONST.VUE.WIDTH;
           string += ", ";
-          string += 0.25*CONST.VUE.HEIGHT;
+          string += 0.30*CONST.VUE.HEIGHT;
           string += ")";
           return string;
         })
@@ -498,7 +498,7 @@ CONST.RESULT.LINK.x = 0.8*CONST.VUE.WIDTH;
 CONST.RESULT.LINK.y = 0.6*CONST.VUE.HEIGHT;
 CONST.RESULT.LINK.width = 0.1*CONST.VUE.WIDTH;
 CONST.RESULT.LINK.height = 2*CONST.RESULT.LINK.width;
-CONST.RESULT.LINK.texte = ["Entrer", "dans le", "réseau"];
+CONST.RESULT.LINK.texte = ["Entrez", "dans le", "réseau"];
 CONST.RESULT.LINK.textdx = 0.5*CONST.RESULT.LINK.width;
 CONST.RESULT.LINK.textdy = 0.3*CONST.RESULT.LINK.height;
 CONST.RESULT.LINK.textpadding = 25;
@@ -765,6 +765,7 @@ function clickable (intselect,alpha){
           var element = d3.select("td.theme");
           element.text(choices[0]);
           resetcolors();
+          //createScrollText3 ();
           d3.select("tr.theme").selectAll("th, td").style("color", colorlastanswer);
           d3.select("tr.position").style("display", "table-row");
           break;
@@ -849,6 +850,7 @@ function manageSec5 (pos){
   } else if (alpha<=1){
     // On s'assure que la fiche est à sa place
     CONST.QUEST.D3.select("rect").attr("y", CONST.QUEST.FICHE.y);
+
     // On rend visible les cercles de l'étape thème
     var beta = abTo01(alphasteps[1],1,alpha)
     CONST.QUEST.ARCS[0].style("display", "block");
@@ -858,6 +860,9 @@ function manageSec5 (pos){
   } else {
     // On s'assure que les cercles sont bien visibles
     CONST.QUEST.ARCS[0].attr("opacity", 1);
+
+    // ajout de la mention : "cliquez"
+    //createScrollText3 ();
   }
   // On rend les cercles cliquables si alpha>=1
   // On annule le clickable sinon

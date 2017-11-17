@@ -1,11 +1,11 @@
-/* 
+/*
  * Sections
  *
  * Permet de configurer les différentes sections de l'appliction.
- * chaque section est représentée par une fonction retournant 
+ * chaque section est représentée par une fonction retournant
  * un objet doté de la forme suivante:
  * {
- *  id: '' // optionnel. permet juste de s'y retrouver plus simplement. 
+ *  id: '' // optionnel. permet juste de s'y retrouver plus simplement.
  *  clusters: [{x:0,y:0, nodeIDS:[0,1]], // tableau de clusters permettant de grouper les noeuds.
  *  data: {
  *    nodes: [], // les noeuds à utiliser pour cette section
@@ -20,7 +20,7 @@
 var getSize = function(){
   var $canvas = d3.select('.experimentation');
   return [
-    parseInt($canvas.attr('width')), parseInt($canvas.attr('height')) 
+    parseInt($canvas.attr('width')), parseInt($canvas.attr('height'))
   ];
 }
 
@@ -42,33 +42,33 @@ var getClusterColor = function(data, cluster){
 
 var contactCollide = function(d){
   var kernelRadius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
-  return (d.radius > kernelRadius ? d.radius : kernelRadius) 
+  return (d.radius > kernelRadius ? d.radius : kernelRadius)
     + CONSTANTS.FORCES.COLLIDE_PADDING;
 }
 
 var spaceCollide =  function(d){
   var kernelRadius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
-  return (d.radius > kernelRadius ? d.radius : kernelRadius) 
+  return (d.radius > kernelRadius ? d.radius : kernelRadius)
     + CONSTANTS.FORCES.COLLIDE_PADDING + CONSTANTS.FORCES.SPACE_PADDING;
 }
 
 var firstSection = function(data){
   var clusters = [];
   var nodes = data.utils.nodes.lobbies();
-  
+
   // cluster par position sur le theme choisi (support vs oppose)
-  var nest = d3.nest().key(function(d){ return d[data.userChoice.theme]; }); 
+  var nest = d3.nest().key(function(d){ return d[data.userChoice.theme]; });
   var hierarchy = d3.hierarchy({
       values: nest.entries(nodes)
     }, function(d){ return d.values; })
     .sum(function(node){ return node.radius; });
 
-  
-  // applique le layout de placement.  
+
+  // applique le layout de placement.
   packLayout(hierarchy);
   // utile pour tracer les clusters par la suite.
   hierarchy.children.forEach(function(c){
-    var color = getClusterColor(data, c); 
+    var color = getClusterColor(data, c);
     var cluster = {
       key: c.data.key+'',
       color: color,
@@ -89,14 +89,14 @@ var firstSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   };
 }
-/* 
- * Deuxième section 
- * Agrégat par type de scruture (ONG, think tank, etc.) et par position. 
- */ 
+/*
+ * Deuxième section
+ * Agrégat par type de scruture (ONG, think tank, etc.) et par position.
+ */
 var secondSection = function(data){
   var clusters = [];
   var clusterKey = function(c){
@@ -111,10 +111,10 @@ var secondSection = function(data){
   var nodes = data.utils.nodes.lobbies();
   var nested = nest.entries(nodes);
   var hierarchy = d3.hierarchy({ values: nested }, function(d){ return d.values; })
-    .sum(function(node){ return node.radius; }); 
+    .sum(function(node){ return node.radius; });
   var packed = packLayout(hierarchy);
   var position = data.userChoice.position;
-  // creation des clusters 
+  // creation des clusters
   hierarchy.children.forEach(function(c){
     c.children.forEach(function(d){
       var color = getClusterColor(data, d);
@@ -130,7 +130,7 @@ var secondSection = function(data){
 
   return {
     id: 1,
-    clusters: clusters, 
+    clusters: clusters,
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
@@ -138,14 +138,14 @@ var secondSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
 
-/* 
- * Troisième section 
- * Agrégat par secteur d'activité et par position. 
+/*
+ * Troisième section
+ * Agrégat par secteur d'activité et par position.
  */
 var thirdSection = function(data){
   var clusters = [];
@@ -161,9 +161,9 @@ var thirdSection = function(data){
   var nodes = data.utils.nodes.lobbies();
   var nested = nest.entries(nodes);
   var hierarchy = d3.hierarchy({ values: nested }, function(d){ return d.values; })
-    .sum(function(node){ return node.radius; }); 
+    .sum(function(node){ return node.radius; });
   var packed = packLayout(hierarchy);
-  // creation des clusters 
+  // creation des clusters
   hierarchy.children.forEach(function(c){
     c.children.forEach(function(d){
       var color = getClusterColor(data, d);
@@ -179,7 +179,7 @@ var thirdSection = function(data){
 
   return {
     id: 2,
-    clusters: clusters, 
+    clusters: clusters,
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
@@ -187,15 +187,15 @@ var thirdSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
 
-/* 
- * Quatrième section 
- * Agrégat par secteurs (avec comme couleur la "moyenne" des position). 
- */ 
+/*
+ * Quatrième section
+ * Agrégat par secteurs (avec comme couleur la "moyenne" des position).
+ */
 var fourthSection = function(data){
   var colors = CONSTANTS.COLORS;
   var valueScale = d3.scaleLinear().range([0.0,1.0]);
@@ -221,7 +221,7 @@ var fourthSection = function(data){
     .sum(function(node){ return node.radius; });
 
   var packed = packLayout(hierarchy);
-  // creation des clusters 
+  // creation des clusters
   hierarchy.children.forEach(function(c){
     // montant total pour ce cluster
     var total = d3.sum(c.children, function(d){
@@ -236,15 +236,15 @@ var fourthSection = function(data){
       } else {
         return d.data.key == "Pour";
       }
-      
+
     });
-    var samePositionTotal = samePositionCluster ? samePositionCluster.data.total : 0; 
+    var samePositionTotal = samePositionCluster ? samePositionCluster.data.total : 0;
     var clusterNodes = c.children
       .map(function(d){ return d.children; })
       .reduce(function(a,b){ return a.concat(b); });
 
     var ratio = samePositionTotal / total;
-    
+
     var clusterColor = colorScale(ratio);
     clusters.push({
       key: c.data.key,
@@ -256,7 +256,7 @@ var fourthSection = function(data){
   });
   return {
     id: 4,
-    clusters: clusters, 
+    clusters: clusters,
     data: { nodes: nodes, links: []},
     showMembranes: true,
     showLinks: false,
@@ -264,7 +264,7 @@ var fourthSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors", "#legcolorscale"],
-      inactive: ["#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -290,7 +290,7 @@ var fifthSection = function(data){
     .sum(function(node){ return node.radius; });
 
   var packed = packLayout(hierarchy);
-  // creation des clusters 
+  // creation des clusters
   hierarchy.children.forEach(function(c){
     clusters.push({
       key: c.data.key,
@@ -301,27 +301,27 @@ var fifthSection = function(data){
   });
   return {
     id: 4,
-    clusters: clusters, 
+    clusters: clusters,
     data: { nodes: nodes, links: []},
     showMembranes: false,
     showLinks: false,
     collideRadius: contactCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors"],
+      active: ["#legcolors","#legdiam"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
-/* 
- * Sixième section 
+/*
+ * Sixième section
  */
 var sixthSection = function(data){
   return {
     id: 5,
     clusters: [],
     data: {
-      nodes:data.utils.nodes.lobbies(), 
+      nodes:data.utils.nodes.lobbies(),
       links:data.utils.links.affiliations()
     },
     showMembranes: false,
@@ -329,7 +329,7 @@ var sixthSection = function(data){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff"],
+      active: ["#legcolors", "#legdiam","#legaff"],
       inactive: ["#legcolorscale", "#legprop", "#legstory"],
     },
   };
@@ -347,7 +347,7 @@ var seventhSection = function(data){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop"],
       inactive: ["#legcolorscale", "#legstory"],
     },
   };
@@ -366,7 +366,7 @@ CONSTANTS.STORY_SECTION = {
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop"],
       inactive: ["#legcolorscale"],
     },
   };
@@ -374,8 +374,8 @@ var eighthSection = function(data){
   return CONSTANTS.STORY_SECTION;
 };
 
-// Etant donné qu'on ajoute que les noeuds story, ne pas tenir de compte de absentinnides, 
-// Au cas ou, le premier paragraphe de code permet d'éviter les doublons de noeuds. 
+// Etant donné qu'on ajoute que les noeuds story, ne pas tenir de compte de absentinnides,
+// Au cas ou, le premier paragraphe de code permet d'éviter les doublons de noeuds.
 function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
   for (var j=0; j<CONSTANTS.STORIES.Histoires[i][key].length; j++){
     var absentinnodes = true;
@@ -423,7 +423,7 @@ var updateEighthSection = function (i){
   var links = [];
 
   var spendingDomain = [1, d3.max(CONSTANTS.NOTPROCESSEDDATA.nodes, function(d){
-    return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0; 
+    return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0;
   })];
   var spendingScale = CONSTANTS.CIRCLE.SCALE().domain(spendingDomain).range(CONSTANTS.CIRCLE.RADIUS_RANGE);
 
@@ -483,7 +483,7 @@ var updateEighthSection = function (i){
       nodes[j].points = circlePoints(nodes[j].radius);
     }
   }
-  
+
   // Ajout des nouveaux noeuds
   var newsID = [];
   if (CONSTANTS.STORIES.Histoires[i]["Nouveau noeud"]){
@@ -547,7 +547,7 @@ var updateEighthSection = function (i){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop", "#legstory"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop", "#legstory"],
       inactive: ["legcolorscale"],
     },
   };
@@ -585,7 +585,7 @@ var configureSections = function(data){
       });
 
       cluster.hasNode = function(node){
-        var test = cluster.objIDS[node.ID]; 
+        var test = cluster.objIDS[node.ID];
         return test != null && test;
       };
     });
@@ -787,11 +787,8 @@ d3.select("img#stories").on("mouseout", function (){
     .attr("src", "img/icon_Story.svg")
 });
 
-
-
-
 function anonymizeUser (){
-  // On redéfinit les couleurs et on les applique. 
+  // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
     var colors = CONSTANTS.COLORS;
@@ -870,6 +867,7 @@ function anonymizeUser (){
     })(i);
   }
   drawlegcolors(false);
+  drawlegdiam(false);
   drawlegcolorscale(false);
   drawlegaff(false);
   drawlegprop(false);
@@ -877,7 +875,7 @@ function anonymizeUser (){
 }
 
 function rebornUser (){
-  // On redéfinit les couleurs et on les applique. 
+  // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
     var colors = CONSTANTS.COLORS;
@@ -964,6 +962,7 @@ function rebornUser (){
     d3.select("img#bestallyworstrival").style("display", "inline-block");
   }
   drawlegcolors(true);
+  drawlegdiam(true);
   drawlegcolorscale(true);
   drawlegaff(true);
   drawlegprop(true);

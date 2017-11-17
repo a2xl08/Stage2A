@@ -1,6 +1,6 @@
 #legend text {
   fill: white;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 svg > text.membranetext > tspan {
@@ -12,7 +12,7 @@ svg > text.membranetext > tspan {
 
 svg > text.lobbytext > tspan {
   fill: white;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   pointer-events: none;
   text-anchor: middle;

@@ -36,7 +36,7 @@ function createInitFigure (){
                   .attr("width", CONST.FICHE1.RECT.width)
                   .attr("height", CONST.FICHE1.RECT.height)
                   .attr("stroke-width", CONST.strokewidth)
-                  .attr("stroke", "#111627")
+                  .attr("stroke", "#111628")
                   .attr("fill", "rgb(176,176,176)")//fiche intro
   CONST.FICHE1.D3.append("foreignObject")
     .attr("class", "textintro")
@@ -44,7 +44,7 @@ function createInitFigure (){
     .attr("height", CONST.FICHE1.RECT.height-CONST.FICHE1.foreignpadding)
     .attr("x", CONST.FICHE1.foreignpadding)
     .attr("y", CONST.FICHE1.foreignpadding)
-    .html("<p>Le problème climatique est global. Il menace les écosystèmes, la vie animale et la vie humaine à moyen terme. Cet état d’urgence devrait inciter les gouvernements, animés par la défense de l’intérêt général, à prendre des mesures radicales et immédiates. Or, malgré une apparente prise de conscience et certains engagements de la part des états, les avancées réelles sont jusque là bien trop timides pour renverser la tendance. Pourquoi est-il aussi difficile de concrétiser, par la loi, la transition vers davantage d’énergies renouvelables ou des mesures d’efficacité et d’économie énergétique ? Où se situent les freins ? Pourquoi le politique semble aussi impuissant ? Où se situe le véritable pouvoir et quels sont les contre-pouvoirs ?</p>")
+    .html("<p>Le problème climatique est global. Il menace les écosystèmes, la vie animale et la vie humaine à moyen terme. Cet état d’urgence devrait inciter les gouvernements, animés par la défense de l’intérêt général, à prendre des mesures radicales et immédiates. Or, malgré une apparente prise de conscience et certains engagements de la part des états, les avancées réelles sont, jusque là, bien trop timorées pour renverser la tendance. Pourquoi est-il aussi difficile de concrétiser, par la loi, la transition vers davantage d’énergies renouvelables et vers des mesures d’efficacité ou d’économie énergétique ? Où se situent les freins ? Pourquoi le politique semble-t-il aussi impuissant ? Comment se partage le pouvoir et quels sont les contre-pouvoirs ?</p>")
 }
 
 function displayInitFigure (){
@@ -57,32 +57,79 @@ function displayInitFigure (){
 }
 
 // Création du texte SCROLL
-function createScrollText (){
+/*function createScrollText (){
   CONST.SCROLL = {
-    text: "SCROLL !",
-    x: 0.05*CONST.VUE.WIDTH,
-    y: 0.85*CONST.VUE.HEIGHT
+    text: "Scrollez pour avancer",
+    x: 0,//.05*CONST.VUE.WIDTH,//d3.mouse[0],
+    y: 0//.85*CONST.VUE.HEIGHT //d3.mouse[1]
   };
   CONST.SCROLL.D3 = svg.append("text")
                       .attr("class", "scroll")
                       .text(CONST.SCROLL.text)
-                      .attr("x", CONST.SCROLL.x)
-                      .attr("y", CONST.SCROLL.y)
                       // 1138 est la taille de VUE sur mon navigateur en plein écran, dans ce cas -> taille 200
-                      .attr("font-size", Math.round(200*CONST.VUE.WIDTH/1138)+"px")
-                      .attr("opacity", 0)
+                      .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
+                      .attr("text-anchor","middle")
+                      .attr("opacity", 0);
 
-  d3.select(window).on("click", function (){
-    if (document.body.scrollTop===0){
+  d3.select(window).on("mousemove", function (){
+    //if (document.body.scrollTop===0){
+    if (window.pageYOffset<150){
       CONST.SCROLL.D3.attr("opacity", 1);
+      CONST.SCROLL.D3.attr("x", d3.event.x-(CONST.VUE.WIDTH*26/100));//CONST.SCROLL.x)
+      CONST.SCROLL.D3.attr("y", d3.event.y);//CONST.SCROLL.y)
+    }else{
+      CONST.SCROLL.D3.transition()
+          .duration(CONST.TIMETRANSITION)
+          .attr("opacity", 0);
     }
     d3.select(window).on("click", function (){})
-    d3.select(window).on("scroll.scroller", function (){
-      CONST.SCROLL.D3.remove();
-      position();
-    })
+  })
+}*/
+
+function createScrollText2 (){
+  CONST.SCROLL = {
+    text: "Scrollez pour avancer",
+  };
+  CONST.SCROLL.D3 = svg.append("text")
+                      .attr("class", "scroll")
+                      .text("Scrollez pour avancer")
+                      .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
+                      .attr("x",0)
+                      .attr("y",0)
+                      .attr("text-anchor","middle")
+                      .attr("opacity", 0);
+
+  d3.select(window).on("mousemove", function (){
+    if (window.pageYOffset<150){
+      CONST.SCROLL.D3.attr("opacity", 1);
+      CONST.SCROLL.D3.attr("x", d3.event.x-(CONST.VUE.WIDTH*26/100));//CONST.SCROLL.x)
+      CONST.SCROLL.D3.attr("y", d3.event.y);//CONST.SCROLL.y)
+    }else{
+      CONST.SCROLL.D3.transition()
+          .duration(CONST.TIMETRANSITION)
+          .attr("opacity", 0);
+    }
+    //d3.select(window).on("click", function (){})
   })
 }
+
+/*function createScrollText3 (){
+  CONST.SCROLL.D3 = svg.append("text")
+                      .attr("class", "scroll")
+                      .text("Cliquez pour faire un choix")
+                      .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
+                      .attr("x",0)
+                      .attr("y",0)
+                      .attr("text-anchor","middle")
+                      .attr("opacity", 1);
+
+  d3.select(window).on("mousemove", function (){
+      CONST.SCROLL.D3.attr("x", d3.event.x-(CONST.VUE.WIDTH*26/100));//CONST.SCROLL.x)
+      CONST.SCROLL.D3.attr("y", d3.event.y);//CONST.SCROLL.y)
+  })
+  //d3.select(window).on("click", function (){})
+}*/
+
 
 // Section 1 : Données sur les éléments de positionnement
 // de la Fiche
@@ -124,7 +171,7 @@ function setupFiche(){
       .attr("width", CONST.FICHE.width)
       .attr("height", CONST.FICHE.height)
       .attr("stroke-width", CONST.strokewidth)
-      .attr("stroke", "#111627")
+      .attr("stroke", "#111628")
       .attr("fill", "rgb(209,213,235)")//fiche consultation
   CONST.FICHE.D3.append("image")
       .attr("class", "commission")
@@ -193,7 +240,7 @@ function setupBadge(){
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "#111627")
+                .attr("stroke", "#111628")
   var textelem = CONST.BADGE.D3.append("text")
                 .attr("x", 0)
                 .attr("y", CONST.BADGE.TEXT.dy)
@@ -211,7 +258,7 @@ function setupBadge(){
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.width)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "#111627")
+                .attr("stroke", "#111628")
   CONST.BADGE.D3.append("image")
                 .attr("x", 0)
                 .attr("y", CONST.BADGE.width)
@@ -249,7 +296,7 @@ function setupFicheQuestion (){
                 .attr("width", CONST.QUEST.FICHE.width)
                 .attr("height", CONST.QUEST.FICHE.height)
                 .attr("stroke-width", CONST.strokewidth)
-                .attr("stroke", "#111627")
+                .attr("stroke", "#111628")
                 .attr("fill", "rgb(189,198,206)"); // fiche questions
 }
 // L'appel à cette fonction se fait au cours su chargement des données dans importdata.js
@@ -454,4 +501,4 @@ d3.json("data/Index/intrologo.json", function (data){
 createInitFigure();
 setupFiche();
 setupBadge();
-createScrollText();
+createScrollText2();

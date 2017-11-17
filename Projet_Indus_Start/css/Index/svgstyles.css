@@ -15,7 +15,7 @@ svg foreignObject {
 
 svg foreignObject.textintro {
   pointer-events: auto;
-  color: black;
+  color: #111628;
   font-weight: bold;
   font-size: 25;
   font-family: 'Antique Olive Standard Compact';
@@ -140,6 +140,9 @@ svg g.result > text > tspan.item {
 
 svg g.result rect {
   fill: rgb(0,255,165);
+}
+svg g.result rect:hover {
+  fill: white;
 }
 
 svg g.result tspan.linktext {

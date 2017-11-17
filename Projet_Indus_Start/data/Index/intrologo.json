@@ -3,7 +3,7 @@
         {
           "id": 539,
           "nom": "Vice Organique",
-		  "Dépenses Lobby (€)": 18850000
+		  "Dépenses Lobby (€)": 28850000
         },
 		{
           "id": 540,
@@ -133,36 +133,6 @@
             "source": 549,
             "target": 547
           }
-        ],
-		"compose aussi ": [
-          {
-            "source": 550,
-            "target": 539
-          },
-		  {
-            "source": 544,
-            "target": 539
-          },
-		  {
-            "source": 546,
-            "target": 539
-          },
-		  {
-            "source": 545,
-            "target": 539
-          },
-		  {
-            "source": 548,
-            "target": 539
-          },
-		  {
-            "source": 547,
-            "target": 539
-          },
-		  {
-            "source": 549,
-            "target": 539
-          }
-		]
+        ]
       }
 }

@@ -14,6 +14,9 @@ var legend = d3.select("#legend");
 legend.append("svg").attr("id", "legcolors")
   .attr("width", answerwidth)
   .attr("height", CONSTANTS.LEGEND.svgheightcolors)
+legend.append("svg").attr("id", "legdiam")
+  .attr("width", answerwidth)
+  .attr("height", 0)
 legend.append("svg").attr("id", "legcolorscale")
   .attr("width", answerwidth)
   .attr("height", 0)
@@ -29,6 +32,7 @@ legend.append("svg").attr("id", "legstory")
 
 CONSTANTS.LEGEND.HEIGHTSTABLE = {};
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"] = CONSTANTS.LEGEND.svgheightcolors;
+CONSTANTS.LEGEND.HEIGHTSTABLE["#legdiam"] = CONSTANTS.LEGEND.svgheightcolors;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolorscale"] = CONSTANTS.LEGEND.svgheightcolorscale;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legaff"] = CONSTANTS.LEGEND.svgheightaff;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legprop"] = CONSTANTS.LEGEND.svgheightprop;
@@ -45,7 +49,8 @@ function drawlegcolors (bool){
     .attr("y1", 0)
     .attr("x2", answerwidth)
     .attr("y2", 0)
-    .attr("stroke", "rgb(45,82,252)")
+    .attr("stroke-width",2)
+    .attr("stroke", "rgb(0, 255, 165)")
 
   if (bool && getUserChoice().lobbyist){
     toile.append("circle")
@@ -54,7 +59,7 @@ function drawlegcolors (bool){
       .attr("r", radius)
       .attr("fill", CONSTANTS.COLORS.ALLY)
     toile.append("text")
-      .attr("x", xinit + 1.3*radius)
+      .attr("x", xinit + 1.35*radius)
       .attr("y", yinit + 0.35*fontsize)
       .attr("font-size", fontsize+"px")
       .text("Vos alliés")
@@ -64,7 +69,7 @@ function drawlegcolors (bool){
       .attr("r", radius)
       .attr("fill", CONSTANTS.COLORS.ENEMY)
     toile.append("text")
-      .attr("x", xinit + 0.3*answerwidth + 1.3*radius)
+      .attr("x", xinit + 0.3*answerwidth + 1.35*radius)
       .attr("y", yinit + 0.35*fontsize)
       .attr("font-size", fontsize+"px")
       .text("Vos rivaux")
@@ -74,7 +79,7 @@ function drawlegcolors (bool){
       .attr("r", radius)
       .attr("fill", CONSTANTS.COLORS.USER)
     toile.append("text")
-      .attr("x", xinit + 0.6*answerwidth + 1.3*radius)
+      .attr("x", xinit + 0.6*answerwidth + 1.35*radius)
       .attr("y", yinit + 0.35*fontsize)
       .attr("font-size", fontsize+"px")
       .text("Vous")
@@ -102,6 +107,59 @@ function drawlegcolors (bool){
   }
 }
 
+function drawlegdiam (bool){
+  var toile = d3.select("#legdiam");
+  var xinit = 0.4*CONSTANTS.LEGEND.svgheightcolors;
+  var yinit = 0.5*CONSTANTS.LEGEND.svgheightcolors;
+  var radius = 0.2*CONSTANTS.LEGEND.svgheightcolors;
+  toile.selectAll("*").remove();
+  toile.append("line")
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", answerwidth)
+    .attr("y2", 0)
+    .attr("stroke-width",2)
+    .attr("stroke", "rgb(0, 255, 165)")
+
+  if (bool && getUserChoice().lobbyist){
+    toile.append("circle")
+      .attr("cx", xinit)
+      .attr("cy", yinit)
+      .attr("r", radius/2)
+      .attr("opacity",0.5)
+      .attr("fill", CONSTANTS.COLORS.ALLY)
+    toile.append("circle")
+        .attr("cx", xinit+radius*2)
+        .attr("cy", yinit)
+        .attr("r", radius)
+        .attr("opacity",0.5)
+        .attr("fill", CONSTANTS.COLORS.ENEMY)
+    toile.append("text")
+      .attr("x", xinit + 3.5*radius)
+      .attr("y", yinit + 0.35*fontsize)
+      .attr("font-size", fontsize+"px")
+      .text("Diamètre : dépenses de lobbying estimées")
+  } else {
+    toile.append("circle")
+      .attr("cx", xinit)
+      .attr("cy", yinit)
+      .attr("r", radius/2)
+      .attr("opacity",0.5)
+      .attr("fill", CONSTANTS.COLORS.SUPPORT)
+    toile.append("circle")
+        .attr("cx", xinit+radius*2)
+        .attr("cy", yinit)
+        .attr("r", radius)
+        .attr("opacity",0.5)
+        .attr("fill", CONSTANTS.COLORS.OPPOSE)
+    toile.append("text")
+      .attr("x", xinit + 3.5*radius)
+      .attr("y", yinit + 0.35*fontsize)
+      .attr("font-size", fontsize+"px")
+      .text("Diamètre = dépenses de lobbying")
+  }
+}
+
 function editdoubletext (toile, fontsize, anchor, xpos, ypos, text1, text2){
   toile.append("text")
       .attr("font-size", fontsize)
@@ -126,7 +184,8 @@ function drawlegcolorscale (bool){
     .attr("y1", 0)
     .attr("x2", answerwidth)
     .attr("y2", 0)
-    .attr("stroke", "rgb(45,82,252)")
+    .attr("stroke-width",2)
+    .attr("stroke", "rgb(0, 255, 165)")
 
   if (bool && getUserChoice().lobbyist){
     var gradient = toile.select("defs").append("linearGradient")
@@ -138,14 +197,14 @@ function drawlegcolorscale (bool){
       .attr("offset", "100%")
       .attr("stop-color", CONSTANTS.COLORS.ENEMY)
     toile.append("rect")
-      .attr("x", 0.05*answerwidth)
+      .attr("x", 0.02*answerwidth)
       .attr("y", 0.55*CONSTANTS.LEGEND.svgheightcolorscale)
-      .attr("width", 0.9*answerwidth)
+      .attr("width", 0.96*answerwidth)
       .attr("height", 0.25*CONSTANTS.LEGEND.svgheightcolorscale)
       .attr("fill", "url(#colorscale)")
-    editdoubletext(toile, fontsize, "start", 0.05*answerwidth, 0.55*CONSTANTS.LEGEND.svgheightcolorscale, "100% alliés", "0% rivaux");
+    editdoubletext(toile, fontsize, "start", 0.02*answerwidth, 0.55*CONSTANTS.LEGEND.svgheightcolorscale, "100% alliés", "0% rivaux");
     editdoubletext(toile, fontsize, "middle", 0.5*answerwidth, 0.55*CONSTANTS.LEGEND.svgheightcolorscale, "50% alliés", "50% rivaux");
-    editdoubletext(toile, fontsize, "end", 0.95*answerwidth, 0.55*CONSTANTS.LEGEND.svgheightcolorscale, "0% alliés", "100% rivaux");
+    editdoubletext(toile, fontsize, "end", 0.97*answerwidth, 0.55*CONSTANTS.LEGEND.svgheightcolorscale, "0% alliés", "100% rivaux");
   } else {
     var gradient = toile.select("defs").append("linearGradient")
       .attr("id", "colorscale");
@@ -175,7 +234,7 @@ function drawlegaff(bool){
     .attr("y1", 0)
     .attr("x2", answerwidth)
     .attr("y2", 0)
-    .attr("stroke", "rgb(45,82,252)")
+    .attr("stroke", "rgb(0, 255, 165)")
   var color1 = CONSTANTS.COLORS.SUPPORT;
   var color2 = CONSTANTS.COLORS.OPPOSE;
   if (bool && getUserChoice().lobbyist){
@@ -220,55 +279,55 @@ function drawlegaff(bool){
     .classed('link-base', true)
     .attr('d', radialLine(falselink1.data.source.kernelPoints))
     .attr('fill', color1)
-    .attr("transform", "translate("+0.15*answerwidth+", "+(0.55*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.57*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-body', true)
     .attr('fill', color1)
     .attr('d', areaPath(areaPoints(falselink1)))
-    .attr("transform", "translate("+0.15*answerwidth+", "+(0.55*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.57*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-base', true)
     .attr('d', radialLine(falselink2.data.source.kernelPoints))
     .attr('fill', color2)
-    .attr("transform", "translate("+0.15*answerwidth+", "+(0.85*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.87*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-body', true)
     .attr('fill', color2)
     .attr('d', areaPath(areaPoints(falselink2)))
-    .attr("transform", "translate("+0.15*answerwidth+", "+(0.85*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.87*CONSTANTS.LEGEND.svgheightaff-0.5*fontsize)+")")
 
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
+    .attr("x", 0.03*answerwidth)
     .attr("y", fontsize+8)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("Liens d'affiliation")
   toile.append("text")
-    .attr("x", 0.1*answerwidth)
+    .attr("x", 0.03*answerwidth)
     .attr("y", 0.55*CONSTANTS.LEGEND.svgheightaff)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("A")
   toile.append("text")
-    .attr("x", 0.1*answerwidth)
+    .attr("x", 0.03*answerwidth)
     .attr("y", 0.85*CONSTANTS.LEGEND.svgheightaff)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("A")
   toile.append("text")
-    .attr("x", 0.5*answerwidth)
+    .attr("x", 0.45*answerwidth)
     .attr("y", 0.55*CONSTANTS.LEGEND.svgheightaff)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("B")
   toile.append("text")
-    .attr("x", 0.5*answerwidth)
+    .attr("x", 0.45*answerwidth)
     .attr("y", 0.85*CONSTANTS.LEGEND.svgheightaff)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("B")
   toile.append("text")
-    .attr("x", 0.6*answerwidth)
+    .attr("x", 0.5*answerwidth)
     .attr("y", 0.7*CONSTANTS.LEGEND.svgheightaff)
     .attr("font-size", fontsize)
     .text("A est affilié à B")
@@ -283,76 +342,76 @@ function drawlegprop (bool){
     .attr("y1", 0)
     .attr("x2", answerwidth)
     .attr("y2", 0)
-    .attr("stroke", "rgb(45,82,252)")
+    .attr("stroke", "rgb(0, 255, 165)")
 
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
+    .attr("x", 0.03*answerwidth)
     .attr("y", fontsize+8)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("Liens de propriété")
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
-    .attr("y", 0.4*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.03*answerwidth)
+    .attr("y", 0.34*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("A")
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
-    .attr("y", 0.55*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.03*answerwidth)
+    .attr("y", 0.49*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("A")
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
-    .attr("y", 0.7*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.03*answerwidth)
+    .attr("y", 0.64*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("A")
   toile.append("text")
-    .attr("x", 0.35*answerwidth)
-    .attr("y", 0.4*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.45*answerwidth)
+    .attr("y", 0.34*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("B")
   toile.append("text")
-    .attr("x", 0.35*answerwidth)
-    .attr("y", 0.55*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.45*answerwidth)
+    .attr("y", 0.49*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("B")
   toile.append("text")
-    .attr("x", 0.35*answerwidth)
-    .attr("y", 0.7*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.45*answerwidth)
+    .attr("y", 0.64*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
     .text("B")
   toile.append("text")
-    .attr("x", 0.4*answerwidth)
-    .attr("y", 0.4*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.5*answerwidth)
+    .attr("y", 0.35*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-size", fontsize)
     .text("A possède entre 1% et 10% de B")
   toile.append("text")
-    .attr("x", 0.4*answerwidth)
-    .attr("y", 0.55*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.5*answerwidth)
+    .attr("y", 0.50*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-size", fontsize)
     .text("A possède entre 10% et 50% de B")
   toile.append("text")
-    .attr("x", 0.4*answerwidth)
-    .attr("y", 0.7*CONSTANTS.LEGEND.svgheightprop)
+    .attr("x", 0.5*answerwidth)
+    .attr("y", 0.65*CONSTANTS.LEGEND.svgheightprop)
     .attr("font-size", fontsize)
     .text("A possède plus de 50% de B")
 
   var falselink1 = {
     data: {
       source: {
-        x: 0.1*answerwidth,
-        y: 0.4*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.08*answerwidth,
+        y: 0.35*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
       target: {
-        x: 0.35*answerwidth,
-        y: 0.4*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.42*answerwidth,
+        y: 0.35*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
     },
@@ -365,22 +424,22 @@ function drawlegprop (bool){
     .classed('link-base', true)
     .attr('d', radialLine(falselink1.data.source.kernelPoints))
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink1)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.4*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.35*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-body', true)
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink1)))
     .attr('d', areaPath(areaPoints(falselink1)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.4*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.35*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
   var falselink2 = {
     data: {
       source: {
-        x: 0.1*answerwidth,
-        y: 0.55*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.08*answerwidth,
+        y: 0.50*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
       target: {
-        x: 0.35*answerwidth,
-        y: 0.55*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.42*answerwidth,
+        y: 0.50*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
     },
@@ -393,22 +452,22 @@ function drawlegprop (bool){
     .classed('link-base', true)
     .attr('d', radialLine(falselink2.data.source.kernelPoints))
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink2)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.55*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.50*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-body', true)
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink2)))
     .attr('d', areaPath(areaPoints(falselink2)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.55*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.50*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
   var falselink3 = {
     data: {
       source: {
-        x: 0.1*answerwidth,
-        y: 0.7*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.08*answerwidth,
+        y: 0.65*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
       target: {
-        x: 0.35*answerwidth,
-        y: 0.7*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
+        x: 0.42*answerwidth,
+        y: 0.65*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize,
         kernelPoints: circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS),
       },
     },
@@ -421,12 +480,12 @@ function drawlegprop (bool){
     .classed('link-base', true)
     .attr('d', radialLine(falselink3.data.source.kernelPoints))
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink3)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.7*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.65*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
   toile.append('path')
     .classed('link-body', true)
     .attr('fill', Color.fade(CONSTANTS.LINK.PROPRIETARY_COLOR, CONSTANTS.COLORS.BACKGROUND, proprietaryOpacity(falselink3)))
     .attr('d', areaPath(areaPoints(falselink3)))
-    .attr("transform", "translate("+0.1*answerwidth+", "+(0.7*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
+    .attr("transform", "translate("+0.08*answerwidth+", "+(0.65*CONSTANTS.LEGEND.svgheightprop-0.5*fontsize)+")")
 
   var gradient = toile.select("defs").append("radialGradient").attr("id", "propgradient")
   gradient.append("stop")
@@ -436,21 +495,21 @@ function drawlegprop (bool){
     .attr("offset", "100%")
     .attr("stop-color", CONSTANTS.COLORS.BACKGROUND)
   toile.append("circle")
-    .attr("cx", 0.3*answerwidth)
-    .attr("cy", 0.85*CONSTANTS.LEGEND.svgheightprop)
-    .attr("r", 0.1*CONSTANTS.LEGEND.svgheightprop)
+    .attr("cx", 0.05*answerwidth)
+    .attr("cy", 0.81*CONSTANTS.LEGEND.svgheightprop)
+    .attr("r", 0.10*CONSTANTS.LEGEND.svgheightprop)
     .attr("fill", "url(#propgradient)")
   toile.append("text")
-    .attr("x", 0.4*answerwidth)
-    .attr("y", 0.85*CONSTANTS.LEGEND.svgheightprop + 0.5*fontsize)
+    .attr("x", 0.1*answerwidth)
+    .attr("y", 0.81*CONSTANTS.LEGEND.svgheightprop + 0.5*fontsize)
     .text("Actionnaires en commun")
 }
 
 function drawlegstory(i){
   var toile = d3.select("#legstory");
   var radius = 0.2*CONSTANTS.LEGEND.svgheightcolors;
-  var xinit = 0.4*CONSTANTS.LEGEND.svgheightcolors+fontsize+8;
-  var yinit = 0.35*CONSTANTS.LEGEND.svgheightcolors+fontsize+8;
+  var xinit = 0.4*CONSTANTS.LEGEND.svgheightcolors;//+fontsize+8;
+  var yinit = 0.37*CONSTANTS.LEGEND.svgheightcolors+fontsize+8;
 
   toile.selectAll("*").remove();
   toile.append("line")
@@ -458,9 +517,9 @@ function drawlegstory(i){
     .attr("y1", 0)
     .attr("x2", answerwidth)
     .attr("y2", 0)
-    .attr("stroke", "rgb(45,82,252)")
+    .attr("stroke", "rgb(0, 255, 165)")
   toile.append("text")
-    .attr("x", 0.05*answerwidth)
+    .attr("x", 0.03*answerwidth)
     .attr("y", fontsize+8)
     .attr("font-weight", "bold")
     .attr("font-size", fontsize)
@@ -473,8 +532,8 @@ function drawlegstory(i){
         .attr("r", radius)
         .attr("fill", CONSTANTS.COLORS.STORYNODE)
     toile.append("text")
-        .attr("x", xinit + 1.3*radius)
-        .attr("y", yinit + 0.35*fontsize)
+        .attr("x", xinit + 1.30*radius)
+        .attr("y", yinit + 0.40*fontsize)
         .attr("font-size", fontsize+"px")
         .text("Organisation ou énénement concerné")
     toile.append("circle")
@@ -483,7 +542,7 @@ function drawlegstory(i){
         .attr("r", radius)
         .attr("fill", CONSTANTS.COLORS.NSPP_CONTROV)
     toile.append("text")
-        .attr("x", xinit + 1.3*radius)
+        .attr("x", xinit + 1.4*radius)
         .attr("y", yinit+2*radius+5 + 0.35*fontsize)
         .attr("font-size", fontsize+"px")
         .text("Organisation n'ayant pas pris position")
@@ -494,18 +553,18 @@ function drawlegstory(i){
         .attr("r", radius)
         .attr("fill", CONSTANTS.COLORS.NSPP_CONTROV)
     toile.append("text")
-        .attr("x", xinit + 1.3*radius)
+        .attr("x", xinit + 1.4*radius)
         .attr("y", yinit+radius+5 + 0.35*fontsize)
         .attr("font-size", fontsize+"px")
         .text("Organisation n'ayant pas pris position")
   }
 
-  
+
 
   if (CONSTANTS.STORIES.Histoires[i].Liens){
     // On update la taille de la section de légende
     CONSTANTS.LEGEND.HEIGHTSTABLE["#legstory"] = CONSTANTS.LEGEND.svgheightstory;
-    // On déssine les liens dans la légende
+    // On dessine les liens dans la légende
     linktypes = Object.keys(CONSTANTS.STORIES.Histoires[i].Liens);
     var falselink1 = {
       data: {
@@ -528,27 +587,27 @@ function drawlegstory(i){
       .classed('link-base', true)
       .attr('d', radialLine(falselink1.data.source.kernelPoints))
       .attr('fill', CONSTANTS.COLORS.STORYNODE)
-      .attr("transform", "translate("+0.15*answerwidth+", "+(yinit+radius+0.35*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
+      .attr("transform", "translate("+0.08*answerwidth+", "+(yinit+radius+0.38*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
     toile.append('path')
       .classed('link-body', true)
       .attr('fill', CONSTANTS.COLORS.STORYNODE)
       .attr('d', areaPath(areaPoints(falselink1)))
-      .attr("transform", "translate("+0.15*answerwidth+", "+(yinit+radius+0.35*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
+      .attr("transform", "translate("+0.08*answerwidth+", "+(yinit+radius+0.38*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
     toile.append("text")
-      .attr("x", 0.1*answerwidth)
-      .attr("y", yinit+radius+0.35*CONSTANTS.LEGEND.svgheightprop)
+      .attr("x", 0.03*answerwidth)
+      .attr("y", yinit+radius+0.31*CONSTANTS.LEGEND.svgheightprop)
       .attr("font-weight", "bold")
       .attr("font-size", fontsize)
       .text("A")
     toile.append("text")
-      .attr("x", 0.5*answerwidth)
-      .attr("y", yinit+radius+0.35*CONSTANTS.LEGEND.svgheightprop)
+      .attr("x", 0.45*answerwidth)
+      .attr("y", yinit+radius+0.31*CONSTANTS.LEGEND.svgheightprop)
       .attr("font-weight", "bold")
       .attr("font-size", fontsize)
       .text("B")
     toile.append("text")
-      .attr("x", 0.6*answerwidth)
-      .attr("y", yinit+radius+0.35*CONSTANTS.LEGEND.svgheightprop)
+      .attr("x", 0.5*answerwidth)
+      .attr("y", yinit+radius+0.31*CONSTANTS.LEGEND.svgheightprop)
       .attr("font-size", fontsize)
       .text(linktypes[0])
     if (linktypes[1]){
@@ -573,27 +632,27 @@ function drawlegstory(i){
         .classed('link-base', true)
         .attr('d', radialLine(falselink2.data.source.kernelPoints))
         .attr('fill', CONSTANTS.COLORS.STORYLINK2)
-        .attr("transform", "translate("+0.15*answerwidth+", "+(yinit+radius+0.5*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
+        .attr("transform", "translate("+0.08*answerwidth+", "+(yinit+radius+0.54*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
       toile.append('path')
         .classed('link-body', true)
         .attr('fill', CONSTANTS.COLORS.STORYLINK2)
         .attr('d', areaPath(areaPoints(falselink2)))
-        .attr("transform", "translate("+0.15*answerwidth+", "+(yinit+radius+0.5*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
+        .attr("transform", "translate("+0.08*answerwidth+", "+(yinit+radius+0.54*CONSTANTS.LEGEND.svgheightstory-0.5*fontsize)+")")
       toile.append("text")
-        .attr("x", 0.1*answerwidth)
-        .attr("y", yinit+radius+0.5*CONSTANTS.LEGEND.svgheightprop)
+        .attr("x", 0.03*answerwidth)
+        .attr("y", yinit+radius+0.46*CONSTANTS.LEGEND.svgheightprop)
         .attr("font-weight", "bold")
         .attr("font-size", fontsize)
         .text("A")
       toile.append("text")
-        .attr("x", 0.5*answerwidth)
-        .attr("y", yinit+radius+0.5*CONSTANTS.LEGEND.svgheightprop)
+        .attr("x", 0.45*answerwidth)
+        .attr("y", yinit+radius+0.46*CONSTANTS.LEGEND.svgheightprop)
         .attr("font-weight", "bold")
         .attr("font-size", fontsize)
         .text("B")
       toile.append("text")
-        .attr("x", 0.6*answerwidth)
-        .attr("y", yinit+radius+0.5*CONSTANTS.LEGEND.svgheightprop)
+        .attr("x", 0.5*answerwidth)
+        .attr("y", yinit+radius+0.46*CONSTANTS.LEGEND.svgheightprop)
         .attr("font-size", fontsize)
         .text(linktypes[1])
     }
@@ -624,6 +683,7 @@ function updateLegendContent (){
   setTimeout(updaterectcoords, 1100);
 }
 
+// Dissimuler le tableau d'identification //
 function hideanswers (){
   if (answershow){
     answershow = false;

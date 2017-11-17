@@ -5,12 +5,12 @@ CONST.INTROLOGO = {};
 CONST.INTROLOGO.DATA = {};
 CONST.INTROLOGO.CIRCLECURVE = d3.curveBasisClosed;
 CONST.INTROLOGO.NBPOINTS = 50;
-CONST.INTROLOGO.JITTER = 0.01;
+CONST.INTROLOGO.JITTER = 0.02;
 CONST.INTROLOGO.PHI = Math.PI * 4;
-CONST.INTROLOGO.RADIUS_RANGE = [15, 30];
+CONST.INTROLOGO.RADIUS_RANGE = [24, 70];
 CONST.INTROLOGO.CIRCLEKERNEL = 3;
-CONST.INTROLOGO.LINK_KERNEL_SCALE = 1.33;
-CONST.INTROLOGO.LINK_END_SCALE = 0.1;
+CONST.INTROLOGO.LINK_KERNEL_SCALE = 2.33;
+CONST.INTROLOGO.LINK_END_SCALE = 0.2;
 var baseLinkWidth = CONST.INTROLOGO.CIRCLEKERNEL * CONST.INTROLOGO.LINK_KERNEL_SCALE - 2;
 var endLinkWidth = baseLinkWidth*CONST.INTROLOGO.LINK_END_SCALE;
 CONST.LINK_DEFAULT_BODY = [
@@ -210,9 +210,9 @@ var updatenodeposition = function (){
 var firsttick = true;
 var configSimulation = function (simulation){
   simulation.nodes(nodes)
-    .force("center", d3.forceCenter(CONST.VUE.WIDTH/2,CONST.VUE.HEIGHT/3))
+    .force("center", d3.forceCenter(CONST.VUE.WIDTH/2.4,CONST.VUE.HEIGHT/2.4))
     .force("collide", d3.forceCollide().radius(function (d){
-        return 1.5*spendingScale(parseInt(d["Dépenses Lobby (€)"]));
+        return 1.4*spendingScale(parseInt(d["Dépenses Lobby (€)"]));
       }))
       simulation.on("tick", function (){
         if (firsttick){

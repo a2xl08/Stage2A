@@ -47,7 +47,7 @@ CONST.HOVERTEXT.pluriel[1] = "organisations ont pris cette position sur le sujet
 CONST.HOVERTEXT.pluriel[2] = "organisations qui ont la même position que vous sur le sujet sélectionné sont de ce type";
 CONST.HOVERTEXT.pluriel[3] = "organisations qui sont de même type et ont la même position que vous proviennent de ce secteur d'activité";
 CONST.HOVERTEXT.pluriel[4] = "organisations qui sont du même secteur, même type et même position que vous proviennent de cette région";
-CONST.HOVERTEXT.width = 170;
+CONST.HOVERTEXT.width = 135;
 CONST.HOVERTEXT.height = 135;
 
 // Cette fonction ajuste la taille des disques en fonction de la donnée
@@ -58,7 +58,7 @@ function scalablesize (intselect,d){
 
 // Cette fonction est appelée pour positionner le texte
 // Elle permet d'éviter les recoupements entre les dernières
-// tranches de la pie. 
+// tranches de la pie.
 function coefeloign (intselect, d){
   if ((d.index>3) && (d.index!==CONST.ALLPIEZEDDATA[intselect].length-1)){
     return 1.5 - 0.3*(d.index%2);
@@ -124,9 +124,9 @@ d3.csv("data/Noeud27juilletNS_controv.csv", function (data){
   // On doit charger ici les données pour la première étape en section 5
 
   // On cherche la liste des thèmes
-  // Par élimination, chaque ligne correspond à 
+  // Par élimination, chaque ligne correspond à
   // l'élimination d'un attribut qui n'est pas un thème
-  // climatique. 
+  // climatique.
   CONST.ALLTHEMELIST[0] = Object.keys(data[0]);
   CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("ID"), 1);
   CONST.ALLTHEMELIST[0].splice(CONST.ALLTHEMELIST[0].indexOf("Lobby ID"), 1);
@@ -141,7 +141,7 @@ d3.csv("data/Noeud27juilletNS_controv.csv", function (data){
   console.log(CONST.ALLTHEMELIST[0]);
   idToTheme = CONST.ALLTHEMELIST[0].slice();
 
-  
+
   // On cherche le nombre d'acteurs qui se sont prononcés sur chaque thème
   nbthemes = CONST.ALLTHEMELIST[0].length;
   piedata = [];
@@ -176,11 +176,11 @@ d3.csv("data/Noeud27juilletNS_controv.csv", function (data){
           .attr("transform", function (d,i){
             var angle = 0.5 * (CONST.ALLPIEZEDDATA[0][i].startAngle + CONST.ALLPIEZEDDATA[0][i].endAngle);
             if (angle>Math.PI){
-              return "translate("+(0.5*CONST.VUE.WIDTH+0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"    
+              return "translate("+(0.5*CONST.VUE.WIDTH+0.2*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.2*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
             } else {
               return "translate("+(0.5*CONST.VUE.WIDTH+0.15*CONST.VUE.WIDTH*Math.sin(angle))+", "+(0.5*CONST.VUE.HEIGHT+(-0.15*CONST.VUE.HEIGHT*Math.cos(angle)))+")"
             }
-            
+
           })
           .attr("opacity", 0)
           );

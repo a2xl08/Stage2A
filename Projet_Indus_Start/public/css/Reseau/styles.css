@@ -131,13 +131,13 @@ th, td {
 }
 
 th {
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   border-left: none;
   width: 2%;
 }
 
 td {
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   border-right: none;
   width: 100%;
   padding-left: 6px;
@@ -151,7 +151,10 @@ td {
   background-color: #222c4f;
   height: auto;
   width: 24%;
-  padding: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 0px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
@@ -173,16 +176,25 @@ td {
   margin-top: 15px;
   margin-bottom: 1px;
   width: 100px;
+  color: rgb(0,255,165);
+}
+
+#answers p.small:hover {
+  color: white;
+}
+
+#answers a:hover {
+  color: white;
 }
 
 #answers > p a {
   text-decoration: none;
-  color: rgb(186, 186, 186);;
+  color: rgb(0,255,165);
 }
 
 #answers > p > span {
   box-sizing: content-box;
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   padding-top: 0px;
   padding-bottom: 4px;
   padding-left: 4px;
@@ -285,16 +297,21 @@ div.menu {
 }
 
 div.menu > p#togglelegend {
-  margin: 5px;
+  margin-top : 10px;
+  margin-bottom : 0px;
   display: inline-block;
   cursor: pointer;
-  font-size: 30px;
-  width: 40px;
-  height: 40px;
-  -ms-transform: rotate(90deg);
-  -moz-transform: rotate(90deg);
-  -webkit-transform: rotate(90deg);
-  transform: rotate(90deg);
+  font-size: 14px;
+  vertical-align: text-bottom;
+  width: 180px;
+  height:40px;
+  padding-top: 12px;
+  padding-bottom: 0px;
+  color: rgb(0,255,165);
+  /*-ms-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);*/
 }
 
 div.menu > p#togglelegend:hover {
@@ -419,7 +436,11 @@ a#backloby:hover {
   overflow: scroll;
   overflow-x: hidden;
   z-index: 10;
-  padding: 20px;
+  /*padding: 20px;*/
+  padding-top: 10px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  padding-left: 40px;
 }
 
 #credits > #closecredits {
@@ -431,12 +452,12 @@ a#backloby:hover {
   border: solid black 2px;
   border-radius: 10px;
   padding: 5px;*/
-  color: white;
+  color: rgb(0,255,165);
   font-weight: bold;
 }
 
 #credits > #closecredits:hover {
-  color: rgba(76, 144, 255, 0.6);
+  color: white;
   /*background-color: white;*/
   cursor: pointer;
 }
@@ -446,9 +467,10 @@ p#opencredits:hover {
 }
 
 #credits > h1 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 25px;
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+  font-size: 30px;
+  /*font-weight: bold;*/
+  margin-top: 40px;
 }
 
 #credits > p {

@@ -142,13 +142,13 @@ th, td {
 }
 
 th {
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   border-left: none;
   width: 25%;
 }
 
 td {
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   border-right: none;
   width: 100%;
   padding-left: 6px;
@@ -166,16 +166,25 @@ td {
 #answers p.small {
   margin-top: 15px;
   width: 80px;
+  color: rgb(0,255,165);
 }
 
 #answers > p > a {
   text-decoration: none;
-  color: rgb(186, 186, 186);;
+  color: rgb(0,255,165);
+}
+
+#answers p.small:hover {
+  color: white;
+}
+
+#answers a:hover {
+  color: white;
 }
 
 #answers > p > span {
   box-sizing: content-box;
-  border: solid rgb(45, 82, 252) 1px;
+  border: solid rgb(0, 255, 165) 1px;
   padding-top: 0px;
   padding-bottom: 4px;
   padding-left: 4px;
@@ -255,7 +264,11 @@ span.fonction {
   overflow: scroll;
   overflow-x: hidden;
   z-index: 10;
-  padding: 20px;
+  /*padding: 40px;*/
+  padding-top: 10px;
+  padding-right: 40px;
+  padding-bottom: 40px;
+  padding-left: 40px;
 }
 
 #credits > #closecredits {
@@ -267,12 +280,12 @@ span.fonction {
   border: solid black 2px;
   border-radius: 10px;
   padding: 5px;*/
-  color: white;
+  color: rgb(0,255,165);
   font-weight: bold;
 }
 
 #credits > #closecredits:hover {
-  color: rgba(76, 144, 255, 0.6);
+  color: white;
   /*background-color: white;*/
   cursor: pointer;
 }
@@ -282,9 +295,10 @@ p#opencredits:hover {
 }
 
 #credits > h1 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 25px;
+  font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+  font-size: 30px;
+  /*font-weight: bold;*/
+  margin-top: 40px;
 }
 
 #credits > p {

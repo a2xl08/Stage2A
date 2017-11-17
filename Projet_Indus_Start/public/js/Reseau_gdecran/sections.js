@@ -89,7 +89,7 @@ var firstSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   };
 }
@@ -138,7 +138,7 @@ var secondSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -187,7 +187,7 @@ var thirdSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors"],
-      inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -264,7 +264,7 @@ var fourthSection = function(data){
     nodepadding: CONSTANTS.VUE.AGREG_PADDING,
     legend: {
       active: ["#legcolors", "#legcolorscale"],
-      inactive: ["#legaff", "#legprop", "#legstory"],
+      inactive: ["#legdiam","#legaff", "#legprop", "#legstory"],
     },
   }
 };
@@ -308,7 +308,7 @@ var fifthSection = function(data){
     collideRadius: contactCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors"],
+      active: ["#legcolors","#legdiam"],
       inactive: ["#legcolorscale", "#legaff", "#legprop", "#legstory"],
     },
   }
@@ -329,7 +329,7 @@ var sixthSection = function(data){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff"],
+      active: ["#legcolors", "#legdiam","#legaff"],
       inactive: ["#legcolorscale", "#legprop", "#legstory"],
     },
   };
@@ -347,7 +347,7 @@ var seventhSection = function(data){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop"],
       inactive: ["#legcolorscale", "#legstory"],
     },
   };
@@ -366,7 +366,7 @@ CONSTANTS.STORY_SECTION = {
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop"],
       inactive: ["#legcolorscale"],
     },
   };
@@ -547,7 +547,7 @@ var updateEighthSection = function (i){
     collideRadius: spaceCollide,
     nodepadding: CONSTANTS.VUE.NODE_PADDING,
     legend: {
-      active: ["#legcolors", "#legaff", "#legprop", "#legstory"],
+      active: ["#legcolors", "#legdiam","#legaff", "#legprop", "#legstory"],
       inactive: ["legcolorscale"],
     },
   };
@@ -754,9 +754,6 @@ function onclickStories (){
 socket.on("pull click stories", function (message){
   onclickStories();
 });
-
-
-
 
 function anonymizeUser (){
   // On redéfinit les couleurs et on les applique.

@@ -14,7 +14,11 @@ function GETURL(param) {
 }
 
 var params = GETURL();
-
+var connection = (params["connect"]==="pilot");
 
 // On transmet à la page esclave
-socket.emit("push reseau", JSON.stringify(params));
+if (connection){
+  var socket = io.connect("http://localhost:8080");
+  socket.emit("push reseau", JSON.stringify(params));
+  document.getElementById("backlink").href = "index.html?connect=pilot";
+}

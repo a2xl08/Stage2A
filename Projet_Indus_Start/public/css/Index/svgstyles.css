@@ -51,6 +51,7 @@ svg text.scroll {
   fill: rgba(76, 144, 255, 0.6);
   font-weight: bolder;
   font-family: 'Antique Olive Standard Compact', Arial, sans-serif;
+  pointer-events: none;
 }
 
 svg g text {

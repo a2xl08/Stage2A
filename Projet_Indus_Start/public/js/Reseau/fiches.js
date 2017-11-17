@@ -60,7 +60,9 @@ function setUpClickFiche (node){
 
   d3.select("svg.experimentation").on("mouseleave", function (){
     d3.select("#fiche"+node.ID).remove();
-    socket.emit("push close node fiche", node.ID);
+    if (connection){
+      socket.emit("push close node fiche", node.ID);
+    }
     d3.select("svg.experimentation").on("mouseleave", null);
   })
 }

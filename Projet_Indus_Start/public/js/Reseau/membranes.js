@@ -172,7 +172,9 @@ var drawMembranes = function(nodes, membranes){
   $membranes.on("mouseover", function (membrane){
     var message = purgeSpaces(membrane.key.split("-")[0]);
     console.log(message)
-    socket.emit("push mouseover membrane", message);
+    if (connection){
+      socket.emit("push mouseover membrane", message);
+    }
     canvas.selectAll(".membranetext"+message).selectAll("tspan.name").attr("fill-opacity", 1);
     canvas.selectAll(".membranetext"+message).selectAll("tspan.count").attr("fill-opacity", 1);
     canvas.selectAll(".membranetext"+message).selectAll("tspan.budget").attr("fill-opacity", 1);
@@ -182,7 +184,9 @@ var drawMembranes = function(nodes, membranes){
 
   $membranes.on("mouseout", function (membrane){
     var message = purgeSpaces(membrane.key.split("-")[0]);
-    socket.emit("push mouseout membrane", message);
+    if (connection){
+      socket.emit("push mouseout membrane", message);
+    }
     canvas.selectAll(".membranetext"+message).selectAll("tspan.name").attr("fill-opacity", 0);
     canvas.selectAll(".membranetext"+message).selectAll("tspan.count").attr("fill-opacity", 0);
     canvas.selectAll(".membranetext"+message).selectAll("tspan.budget").attr("fill-opacity", 0);

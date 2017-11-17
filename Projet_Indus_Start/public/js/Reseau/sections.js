@@ -653,7 +653,9 @@ function emphacizeMainNodes (i){
 }
 
 function onclickStory (i){
-  socket.emit("push story", i);
+  if (connection){
+    socket.emit("push story", i);
+  }
   storyonread = i;
   updateTypesLinks(i);
   drawlegstory(i);
@@ -668,7 +670,9 @@ function onclickStory (i){
   d3.select("#themes").style("display", "none");
   d3.select("svg#closestory")
     .on("click", function (){
-      socket.emit("push closestory", "");
+      if (connection){
+        socket.emit("push closestory", "");
+      }
       storyonread = false;
       simulation.previousSection();
       resetMouseOut();
@@ -725,7 +729,9 @@ function eventsStoriesCircles (){
     .on("mouseover", function (){
       d3.select(this).style("cursor", "pointer");
       var numid = Number(d3.select(this).attr("class").slice(23));
-      socket.emit("push storycircle mouseover", numid);
+      if (connection){
+        socket.emit("push storycircle mouseover", numid);
+      }
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", CONSTANTS.COLORS.STORY_VISITED);
       fadeNotInvolved(numid);
@@ -734,7 +740,9 @@ function eventsStoriesCircles (){
     .on("mouseout", function (){
       d3.select(this).style("cursor", "default");
       var numid = Number(d3.select(this).attr("class").slice(23));
-      socket.emit("push storycircle mouseout", numid);
+      if (connection){
+        socket.emit("push storycircle mouseout", numid);
+      }
       d3.selectAll(".storyitem:not(#listory"+numid+")")
         .style("color", function (){
           var numid2 = Number(d3.select(this).attr("id").slice(7));
@@ -761,14 +769,18 @@ function stopeventsStoriesCircles (){
 }
 
 function onclickStories (){
-  socket.emit("push click stories", "");
+  if (connection){
+    socket.emit("push click stories", "");
+  }
   eraseLastSectionContent();
   writeStoriesTextInLastSection();
   addStoriesCircles();
   eventsStoriesCircles();
   storyactive = true;
   d3.select("img#stories").on("click", function (){
-    socket.emit("push close stories", "");
+    if (connection){
+      socket.emit("push close stories", "");
+    }
     eraseLastSectionContent();
     writeBaseTextInLastSection();
     storyactive = false;
@@ -981,13 +993,17 @@ function rebornUser (){
 }
 
 function onclickNewTheme (){
-  socket.emit("push newtheme", "");
+  if (connection){
+    socket.emit("push newtheme", "");
+  }
   eraseLastSectionContent();
   writeNewThemeTextInLastSection();
   showanswers();
   anonymizeUser();
   d3.select("img#themes").on("click", function (){
-    socket.emit("push backtheme", "");
+    if (connection){
+      socket.emit("push backtheme", "");
+    }
     eraseLastSectionContent();
     writeBaseTextInLastSection();
     showanswers();

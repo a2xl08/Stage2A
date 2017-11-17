@@ -387,7 +387,9 @@ var drawNodes = function(nodes){
 
   $nodes.on('mouseover', function(node){
     // On fait réagir la page esclave
-    socket.emit("push mouseover node", JSON.stringify(node));
+    if (connection){
+      socket.emit("push mouseover node", JSON.stringify(node));
+    }
     //fadeNotNeighbours(node);
     if (currentIndex>=5){
       fadeNotNeighbours(node);
@@ -411,7 +413,9 @@ var drawNodes = function(nodes){
     }
   }).on('mouseout', function(node){
     // On fait réagir la page esclave
-    socket.emit("push mouseout node", JSON.stringify(node));
+    if (connection){
+      socket.emit("push mouseout node", JSON.stringify(node));
+    }
     // On écrase le texte
     canvas.select("#lobbytext"+node.ID).select("tspan.name").attr("fill-opacity", opacityNotOn(node));
     canvas.select("#lobbytext"+node.ID).select("tspan.budget").attr("fill-opacity", 0);
@@ -430,7 +434,9 @@ var drawNodes = function(nodes){
   }).on("click", function (node){
     if (node.type === TYPES.LOBBY && !clicklocknode){
       setUpClickFiche(node);
-      socket.emit("push click node", JSON.stringify(node));
+      if (connection){
+        socket.emit("push click node", JSON.stringify(node));
+      }
     }
   });
 

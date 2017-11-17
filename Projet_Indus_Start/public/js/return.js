@@ -5,13 +5,17 @@ via F5 ainsi que le bouton #reloadbox qui recharge la page depuis
 /* ATTENTION : Ce script est commun aux deux pages ! */
 
 window.onbeforeunload = function(){
-  socket.emit("push reload", "");
+  if (connection){
+    socket.emit("push reload", "");
+  }
   window.scrollTo(0,0);
 }
 
-socket.on("pull reload", function (message){
-  window.location.reload();
-})
+if (connection){
+  socket.on("pull reload", function (message){
+    window.location.reload();
+  })
+}
 
 // L'affichage des crédits
 var opener = document.getElementById("opencredits");

@@ -33,7 +33,7 @@ var CONSTANTS = {
     ALLY: '#5092A1',
     SUPPORT: '#36A86D',
     OPPOSE: '#d13b35',
-    NSPP_CONTROV: "#3E5A31",
+    NSPP_CONTROV: "#796539",
     USER: '#00ffa5',
     UNSELECTED_MEMBRANE: "#404040",
     UNSELECTED: '#A0A0A0',
@@ -41,7 +41,7 @@ var CONSTANTS = {
     // Ne pas oublier de modifier la valeur correspondante dans styles.css : a.sourcelink
     STORY: "white",
     STORY_VISITED: "gray",
-    STORYNODE: "#996c6c",
+    STORYNODE: "#af879e",
     STORYLINK2: "#754fff",
   },
   VUE: {

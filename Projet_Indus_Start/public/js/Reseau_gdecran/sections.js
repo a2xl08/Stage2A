@@ -660,15 +660,15 @@ function onclickStory (i){
   simulation.nextSection();
   resetMouseOut(); // Et emphacize
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
-    socket.on("pull closestory", function (){
-      storyonread = false;
-      simulation.previousSection();
-      resetMouseOut();
-      eventsStoriesCircles();
-    })
 }
 socket.on("pull story", function (i){
   onclickStory(i);
+})
+socket.on("pull closestory", function (){
+  storyonread = false;
+  simulation.previousSection();
+  resetMouseOut();
+  eventsStoriesCircles();
 })
 
 function addStoriesCircles (){
@@ -742,17 +742,17 @@ function onclickStories (){
   addStoriesCircles();
   eventsStoriesCircles();
   storyactive = true;
-  socket.on("pull close stories", function (message){
-    storyactive = false;
-    if (storyonread!==false){
-      storyonread = false;
-      simulation.previousSection();
-    }
-    d3.select("svg.experimentation").selectAll(".storycircle").remove();
-  });
 }
 socket.on("pull click stories", function (message){
   onclickStories();
+});
+socket.on("pull close stories", function (message){
+  storyactive = false;
+  if (storyonread!==false){
+    storyonread = false;
+    simulation.previousSection();
+  }
+  d3.select("svg.experimentation").selectAll(".storycircle").remove();
 });
 
 function anonymizeUser (){

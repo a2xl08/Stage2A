@@ -1,11 +1,16 @@
-d3.select("body").transition().duration(1000).style("background-color", CONSTANTS.COLORS.BACKGROUND);
-d3.select("#answers").transition().duration(1000).style("background-color", CONSTANTS.COLORS.BACKGROUND);
+function setupBackground(color){
+  d3.select("body").transition().duration(1000).style("background-color", color);
+  d3.select("#answers").transition().duration(1000).style("background-color", color);
+}
+var backgroundcolor = CONSTANTS.COLORS.BACKGROUND;
+setupBackground(backgroundcolor);
+
 
 var setupScene = function(){
   var shouldUseCanvas = CONSTANTS.USE_CANVAS;
   var tagName = shouldUseCanvas ? 'canvas' : 'svg';
   var scene = null;
-  // on ajoute une classe de debug au contoles si nécessaire pour pouvoir cliquer dessus. 
+  // on ajoute une classe de debug au contoles si nécessaire pour pouvoir cliquer dessus.
   d3.select('.controls').classed('controls--debug', CONSTANTS.DEBUG);
   if(CONSTANTS.DEBUG){
     stats = new Stats();
@@ -17,11 +22,11 @@ var setupScene = function(){
     .attr("width", CONSTANTS.VUE.WIDTH)
     .attr("height", CONSTANTS.VUE.HEIGHT)
     .canvas(shouldUseCanvas);
-  
+
   var defs = scene.append('defs');
   var gradient = defs.append('radialGradient')
     .attr('id', 'radialGradient');
- 
+
   var stopColor = function(opacity){
     var propColor = chroma(CONSTANTS.COLORS.PROPRIETARY);
     var c = propColor.alpha(opacity).rgba();
@@ -37,7 +42,7 @@ var setupScene = function(){
   */
   gradient.append('stop')
     .attr('offset', '100%')
-    .attr('stop-color', stopColor(0)); 
+    .attr('stop-color', stopColor(0));
   return {
     updateSize: function(){ this.size = this._getSize();},
     getCanvas: function(){ return scene; },
@@ -50,4 +55,3 @@ var setupScene = function(){
     _getSize: function(){ return [ parseInt(scene.attr('width')), parseInt(scene.attr('height')) ]; }
   };
 };
-

@@ -95,6 +95,18 @@ function majvue(simulation, index, preced) {
     if (connection){
       socket.emit("push Prev");
     }
+  } else if (index===8 && preced===7){
+    if (connection){
+      socket.emit("push newtheme", "");
+    }
+    anonymizeUser();
+    showanswers();
+  } else if (index===7 && preced===8){
+    if (connection){
+      socket.emit("push backtheme", "");
+    }
+    rebornUser();
+    showanswers();
   }
   if (index===7){
     clicklocknode = true;
@@ -102,6 +114,7 @@ function majvue(simulation, index, preced) {
   } else {
     d3.select("#bestally").remove();
     d3.select("#worstrival").remove();
+    clicklocknode = false;
   }
   if (index===9){
     d3.selectAll("div.menu img").style("display", "inline-block");

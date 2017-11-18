@@ -756,6 +756,7 @@ socket.on("pull close stories", function (message){
 });
 
 function anonymizeUser (){
+  d3.select("body").transition().duration(1000).style("background-color", CONSTANTS.COLORS.BACKGROUND_ADVANCED);
   // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
@@ -792,6 +793,7 @@ function anonymizeUser (){
 }
 
 function rebornUser (){
+  d3.select("body").transition().duration(1000).style("background-color", CONSTANTS.COLORS.BACKGROUND);
   // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
@@ -847,14 +849,9 @@ function rebornUser (){
   d3.selectAll(".link path").attr("fill", Color.link)
 }
 
-function onclickNewTheme (){
-  anonymizeUser();
-  socket.on("pull backtheme", function (message){
-    rebornUser();
-  })
-  // On remet en place les events des autres
-  d3.select("img#bestallyworstrival").on("click", onclickBestAlly);
-}
 socket.on("pull newtheme", function (message){
-  onclickNewTheme();
+  anonymizeUser();
 });
+socket.on("pull backtheme", function (message){
+  rebornUser();
+})

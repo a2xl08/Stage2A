@@ -766,7 +766,6 @@ function onclickStories (){
     }
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
     d3.select("img#stories").on("click", onclickStories);
-    d3.select("img#themes").style("display", "inline-block");
   });
 }
 d3.select("img#stories").on("click", onclickStories);
@@ -783,6 +782,7 @@ d3.select("img#stories").on("mouseout", function (){
 
 
 function anonymizeUser (){
+  backgroundcolor = CONSTANTS.COLORS.BACKGROUND_ADVANCED;
   // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
@@ -869,6 +869,7 @@ function anonymizeUser (){
 }
 
 function rebornUser (){
+  backgroundcolor = CONSTANTS.COLORS.BACKGROUND;
   // On redéfinit les couleurs et on les applique.
   nodeColor = function(d){
     var TYPES = CONSTANTS.DATA.TYPES.NODE;
@@ -965,33 +966,3 @@ function rebornUser (){
       .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
   }
 }
-
-function onclickNewTheme (){
-  if (connection){
-    socket.emit("push newtheme", "");
-  }
-  eraseLastSectionContent();
-  writeNewThemeTextInLastSection();
-  showanswers();
-  anonymizeUser();
-  d3.select("img#themes").on("click", function (){
-    if (connection){
-      socket.emit("push backtheme", "");
-    }
-    eraseLastSectionContent();
-    writeBaseTextInLastSection();
-    showanswers();
-    rebornUser();
-    d3.select("img#themes").on("click", onclickNewTheme);
-  })
-  // On remet en place les events des autres
-}
-d3.select("img#themes").on("click", onclickNewTheme);
-d3.select("img#themes").on("mouseover", function (){
-  d3.select("img#themes")
-    .attr("src", "img/icon_Theme_blanc.svg")
-});
-d3.select("img#themes").on("mouseout", function (){
-  d3.select("img#themes")
-    .attr("src", "img/icon_Theme.svg")
-});

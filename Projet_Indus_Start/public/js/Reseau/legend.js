@@ -703,6 +703,9 @@ function showanswers (){
       .duration(1000)
       .style("bottom", 0)
   }
+  setTimeout(function (){
+    setupBackground(backgroundcolor);
+  }, 1100)
 }
 
 function toggleanswers (){

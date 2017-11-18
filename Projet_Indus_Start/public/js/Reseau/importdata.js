@@ -209,30 +209,8 @@ var writeTextInSection = function (i){
 var writeBaseTextInLastSection = function (){
   var element = d3.select("#secfin");
   element.select("h1").html(CONSTANTS.SCENARIO[8]["Titre"]);
-  element.select("p.texte").html(CONSTANTS.SCENARIO[8]["Texte"])
-  var bloc2 = element.select("p.appel")
-    .append("div")
-    .classed("blocfin", true)
-  bloc2.append("img")
-    .attr("src", "img/icon_Story.svg")
-    .attr("width", CONSTANTS.FINAL_IMGS.width)
-    .attr("height", CONSTANTS.FINAL_IMGS.height)
-  bloc2.append("p").html(CONSTANTS.SCENARIO[8]["bloc2"]);
-  var bloc3 = element.select("p.appel")
-    .append("div")
-    .classed("blocfin", true)
-  bloc3.append("img")
-    .attr("src", "img/icon_Theme.svg")
-    .attr("width", CONSTANTS.FINAL_IMGS.width)
-    .attr("height", CONSTANTS.FINAL_IMGS.height)
-  bloc3.append("p").html(CONSTANTS.SCENARIO[8]["bloc3"]);
-}
-
-var writeBestAllyEnnemyTextInLastSection = function (){
-  var element = d3.select("#secfin");
-  element.select("h1").html(CONSTANTS.SCENARIO[7]["Titre"]);
-  element.select("p.texte").html(CONSTANTS.SCENARIO[7]["Texte"])
-  element.select("p.appel").html(CONSTANTS.SCENARIO[7]["Appel d’action"])
+  element.select("p.texte").html(CONSTANTS.SCENARIO[8]["Texte"]);
+  element.select("p.appel").html(CONSTANTS.SCENARIO[8]["Appel d’action"]);
 }
 
 var writeStoriesTextInLastSection = function (){

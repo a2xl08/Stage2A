@@ -209,6 +209,7 @@ td {
   display: flex;
   justify-content: flex-start;
   flex-wrap: nowrap;
+  width: 100%;
 }
 
 #answers > p.sujet > span.sujets {

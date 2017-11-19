@@ -100,13 +100,13 @@ function majvue(simulation, index, preced) {
       socket.emit("push newtheme", "");
     }
     anonymizeUser();
-    showanswers();
   } else if (index===7 && preced===8){
     if (connection){
       socket.emit("push backtheme", "");
     }
     rebornUser();
-    showanswers();
+  } else if (index===8 && preced===9){
+    updateLegendContent();
   }
   if (index===7){
     clicklocknode = true;
@@ -119,6 +119,7 @@ function majvue(simulation, index, preced) {
   if (index===9){
     d3.selectAll("div.menu img").style("display", "inline-block");
     updaterectcoords();
+    setTimeout(showanswers, 50);
   } else {
     d3.selectAll("div.menu img").style("display", "none");
     updaterectcoords();

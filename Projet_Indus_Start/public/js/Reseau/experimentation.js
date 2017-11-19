@@ -1,11 +1,11 @@
 "use strict";
 /**
- * Actuellement la mise à jour de la position d'une node de façon fluide est 
+ * Actuellement la mise à jour de la position d'une node de façon fluide est
  * impossible lors d'une transition. Pour qu'elle le devienne il faut changer
- * la façon de dessiner les nodes. À la place de tracer de façon "bête" les 
+ * la façon de dessiner les nodes. À la place de tracer de façon "bête" les
  * nodes (avec des boucles) nous devons en prioriété utiliser le mécanisme
  * de jointure des données. En effet il nous faut mettre à jour la position
- * des noeuds et non pas recréer des données. 
+ * des noeuds et non pas recréer des données.
  *
  * Ceci implique:
  * - Qu'afin de faire fonctionner la mise à jour des membrane nous devons avoir
@@ -45,7 +45,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
   var currentSectionIndex = 0;
   var previousSectionIndex = 0;
   var sections = sectionsConfig;
-  
+
   var findNodeCluster = function(d){
     var section = getCurrentSection();
     var clusters = section.clusters;
@@ -53,7 +53,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
     return clusters.find(function(cluster){
       return cluster.nodeIDS.indexOf(d['ID']) >= 0;
     });
-  }; 
+  };
 
   var getSectionAt = function(i){
     return sections[i];
@@ -101,7 +101,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
     var drawn = drawMembranes(section.data.nodes, membranes);
     $membranes = drawn.membranes;
     $membranesExit = drawn.membranesExit;
-    
+
   };
 
   var updateNodes = function(){
@@ -144,7 +144,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
       node.y = node.y || cluster.y;
     });
   };
-  
+
   var initializeSimulation = function(){
     var kernelRadius = CONSTANTS.CIRCLE.KERNEL_RADIUS;
     var collidePadding = CONSTANTS.FORCES.COLLIDE_PADDING;
@@ -154,7 +154,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
     updateLinks();
     updateNodes();
     updateMembranes();
-    
+
     _simulation = d3.forceSimulation(nodes)
       .on('tick', onTick)
       .force('movement', randomMovementForce().strength(0))
@@ -170,7 +170,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
           .id(function(node){ return node.ID; }))
       .force('collide', d3.forceCollide()
           .radius(function(d){
-            return (d.radius > kernelRadius ? d.radius : kernelRadius) 
+            return (d.radius > kernelRadius ? d.radius : kernelRadius)
               + collidePadding;
           }))
       .force('center', d3.forceCenter().x(0.4*CONSTANTS.VUE.WIDTH).y(0.5*CONSTANTS.VUE.HEIGHT))
@@ -180,7 +180,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
           return cluster;
         })
         .centerInertia(1));
-    
+
     _simulation.on('end', function(){
       _simulation.alphaTarget(0.4).restart();
     });
@@ -210,11 +210,11 @@ var configureSimulation = function(scene, data, sectionsConfig){
   var updateAnimations = function(){
     var previousSection = getSectionAt(previousSectionIndex);
     var section = getCurrentSection();
-    // les conditions des différentes transitions de liens 
+    // les conditions des différentes transitions de liens
     // 1. ajout des liens
     var addLinkTransition = section.showLinks && !previousSection.showLinks;
     // 2. suppression des liens
-    var removeLinkTransition = !section.showLinks && previousSection.showLinks; 
+    var removeLinkTransition = !section.showLinks && previousSection.showLinks;
     // 3. transition entre lien
     var linkTransition = section.showLinks && previousSection.showLinks;
     // 4. autre type de transition.
@@ -335,7 +335,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
     if (storyactive && (storyonread===false)){
       updateStoriesCircles();
     }
-    
+
     $links.filter(':not(.hidden)')
       .attr('transform', function(d){ return Utils.transform(constraintNode(d.source)); })
       .select('.link-body').attr('d', linkBodyPath);
@@ -365,7 +365,7 @@ var runExperimentation = function(data){
   scene = setupScene();
   canvas = scene.getCanvas();
 
-  // nous configurons les sections 
+  // nous configurons les sections
   // voir Experimentation/sections.js
   sections = configureSections(data);
 
@@ -384,7 +384,9 @@ var runExperimentation = function(data){
   d3.select(window)
   .on("scroll.scroller", function (){
     majsectionspos();
-    hideanswers();
+    if (currentIndex!==9){
+      hideanswers();
+    }
     position(simulation);
   });
 };

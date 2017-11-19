@@ -12,11 +12,13 @@ var CONSTANTS = {
   HEIGHT: 600,
   LEGEND: {
     svgheightcolors: 50,
+    svgheightstories: 50,
     svgheightcolorscale: 80,
     svgheightaff: 80,
     svgheightprop: 140,
     svgheightstoryshort: 110,
     svgheightstory: 124,
+    delay: 500,
   },
   COLORS: {
     PROPRIETARY: '#7d7d7d',

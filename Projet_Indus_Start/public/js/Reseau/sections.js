@@ -644,7 +644,7 @@ function onclickStory (i){
   CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY_VISITED;
   d3.select("#bestallyworstrival").style("display", "none");
   d3.select("#themes").style("display", "none");
-  d3.select("svg#closestory")
+  d3.select("#legstories")
     .on("click", function (){
       if (connection){
         socket.emit("push closestory", "");
@@ -655,10 +655,23 @@ function onclickStory (i){
       eraseLastSectionContent();
       writeStoriesTextInLastSection();
       eventsStoriesCircles();
-      d3.select("#bestallyworstrival").style("display", "inline-block");
-      d3.select("#themes").style("display", "inline-block");
+      d3.select("#legstories").on("click", function (){
+        if (connection){
+          socket.emit("push close stories", "");
+        }
+        eraseLastSectionContent();
+        writeBaseTextInLastSection();
+        storyactive = false;
+        if (storyonread!==false){
+          storyonread = false;
+          simulation.previousSection();
+        }
+        d3.select("svg.experimentation").selectAll(".storycircle").remove();
+        d3.select("#legstories").on("click", onclickStories);
+        d3.select("#legstories").select("image")
+          .attr("href", "img/icon_Story.svg");
+      });
     })
-    .style("display", "inline-block");
 }
 
 function addStoriesCircles (){
@@ -753,7 +766,9 @@ function onclickStories (){
   addStoriesCircles();
   eventsStoriesCircles();
   storyactive = true;
-  d3.select("img#stories").on("click", function (){
+  d3.select("#legstories").select("image")
+    .attr("href", "img/retour.svg");
+  d3.select("#legstories").on("click", function (){
     if (connection){
       socket.emit("push close stories", "");
     }
@@ -765,18 +780,11 @@ function onclickStories (){
       simulation.previousSection();
     }
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
-    d3.select("img#stories").on("click", onclickStories);
+    d3.select("#legstories").on("click", onclickStories);
+    d3.select("#legstories").select("image")
+      .attr("href", "img/icon_Story.svg");
   });
 }
-d3.select("img#stories").on("click", onclickStories);
-d3.select("img#stories").on("mouseover", function (){
-  d3.select("img#stories")
-    .attr("src", "img/icon_Story_blanc.svg")
-});
-d3.select("img#stories").on("mouseout", function (){
-  d3.select("img#stories")
-    .attr("src", "img/icon_Story.svg")
-});
 
 
 
@@ -866,6 +874,10 @@ function anonymizeUser (){
   drawlegaff(false);
   drawlegprop(false);
   updaterectcoords();
+  if (!answershow){
+    d3.select("#answers")
+      .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
+  }
 }
 
 function rebornUser (){

@@ -498,6 +498,7 @@ var importData = function(){
 
     // On remplit la légende
     drawlegcolors(true);
+    drawlegstories();
     drawlegdiam(true);
     drawlegcolorscale(true);
     drawlegaff(true);

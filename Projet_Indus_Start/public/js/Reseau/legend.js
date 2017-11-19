@@ -4,6 +4,7 @@ var answershow = true;
 var rectcoords = document.getElementById("answers").getBoundingClientRect();
 var answerwidth = rectcoords.right - rectcoords.left;
 var fontsize = 13;
+var visiblestories = false;
 
 function updaterectcoords (){
   rectcoords = document.getElementById("answers").getBoundingClientRect();
@@ -14,6 +15,11 @@ var legend = d3.select("#legend");
 legend.append("svg").attr("id", "legcolors")
   .attr("width", answerwidth)
   .attr("height", CONSTANTS.LEGEND.svgheightcolors)
+legend.append("svg").attr("id", "legstories")
+  .attr("width", answerwidth)
+  .attr("height", 0)
+  .style("cursor", "pointer")
+d3.select("#legstories").on("click", onclickStories);
 legend.append("svg").attr("id", "legdiam")
   .attr("width", answerwidth)
   .attr("height", 0)
@@ -32,6 +38,7 @@ legend.append("svg").attr("id", "legstory")
 
 CONSTANTS.LEGEND.HEIGHTSTABLE = {};
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"] = CONSTANTS.LEGEND.svgheightcolors;
+CONSTANTS.LEGEND.HEIGHTSTABLE["#legstories"] = CONSTANTS.LEGEND.svgheightstories;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legdiam"] = CONSTANTS.LEGEND.svgheightcolors;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolorscale"] = CONSTANTS.LEGEND.svgheightcolorscale;
 CONSTANTS.LEGEND.HEIGHTSTABLE["#legaff"] = CONSTANTS.LEGEND.svgheightaff;
@@ -105,6 +112,34 @@ function drawlegcolors (bool){
       .attr("font-size", fontsize+"px")
       .text("Contre")
   }
+}
+
+function drawlegstories (){
+  var toile = d3.select("#legstories");
+  var xinit = 0.4*CONSTANTS.LEGEND.svgheightcolors;
+  var yinit = 0.5*CONSTANTS.LEGEND.svgheightcolors;
+  var radius = 0.2*CONSTANTS.LEGEND.svgheightcolors;
+  toile.selectAll("*").remove();
+  toile.append("line")
+    .attr("x1", 0)
+    .attr("y1", 0)
+    .attr("x2", answerwidth)
+    .attr("y2", 0)
+    .attr("stroke-width",2)
+    .attr("stroke", "rgb(0, 255, 165)")
+
+  toile.append("image")
+    .attr("x", xinit)
+    .attr("y", 5)
+    .attr("width", 40)
+    .attr("height", 40)
+    .attr("href", "img/icon_Story.svg")
+  toile.append("text")
+    .attr("x", xinit + 50)
+    .attr("y", yinit + 0.35*fontsize)
+    .attr("font-size", fontsize+"px")
+    .attr("fill", "gray")
+    .text("Histoires et Révélations")
 }
 
 function drawlegdiam (bool){
@@ -671,25 +706,46 @@ function updateLegendContent (){
   for (var i=0; i<selectors.active.length; i++){
     d3.select(selectors.active[i])
       .transition()
-      .duration(1000)
+      .duration(CONSTANTS.LEGEND.delay)
       .attr("height", CONSTANTS.LEGEND.HEIGHTSTABLE[selectors.active[i]])
   }
   for (var i=0; i<selectors.inactive.length; i++){
     d3.select(selectors.inactive[i])
       .transition()
-      .duration(1000)
+      .duration(CONSTANTS.LEGEND.delay)
       .attr("height", 0)
   }
-  setTimeout(updaterectcoords, 1100);
+  if (currentIndex===9){
+    visiblestories = true;
+    d3.select("#legstories")
+      .transition()
+      .duration(CONSTANTS.LEGEND.delay)
+      .attr("height", CONSTANTS.LEGEND.HEIGHTSTABLE["#legstories"])
+  } else {
+    visiblestories = false;
+    d3.select("#legstories")
+      .transition()
+      .duration(CONSTANTS.LEGEND.delay)
+      .attr("height", 0)
+  }
+  setTimeout(function (){
+    updaterectcoords();
+  }, 1.2*CONSTANTS.LEGEND.delay);
 }
 
 // Dissimuler le tableau d'identification //
 function hideanswers (){
-  if (answershow){
+  if (answershow && visiblestories){
     answershow = false;
     d3.select("#answers")
       .transition()
-      .duration(1000)
+      .duration(CONSTANTS.LEGEND.delay)
+      .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"]+CONSTANTS.LEGEND.HEIGHTSTABLE["#legstories"])
+  } else if (answershow) {
+    answershow = false;
+    d3.select("#answers")
+      .transition()
+      .duration(CONSTANTS.LEGEND.delay)
       .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
   }
 }
@@ -700,12 +756,12 @@ function showanswers (){
     updateLegendContent();
     d3.select("#answers")
       .transition()
-      .duration(1000)
+      .duration(CONSTANTS.LEGEND.delay)
       .style("bottom", 0)
   }
   setTimeout(function (){
     setupBackground(backgroundcolor);
-  }, 1100)
+  }, 1.2*CONSTANTS.LEGEND.delay)
 }
 
 function toggleanswers (){

@@ -670,6 +670,7 @@ function onclickStory (i){
         d3.select("#legstories").on("click", onclickStories);
         d3.select("#legstories").select("image")
           .attr("href", "img/icon_Story.svg");
+        d3.select("html").style("overflow-y", "auto");
       });
     })
 }
@@ -768,6 +769,9 @@ function onclickStories (){
   storyactive = true;
   d3.select("#legstories").select("image")
     .attr("href", "img/retour.svg");
+  // On supprime la barre de définalement
+  d3.select("html").style("overflow-y", "hidden");
+  document.getElementById("secfin").scrollIntoView();
   d3.select("#legstories").on("click", function (){
     if (connection){
       socket.emit("push close stories", "");
@@ -783,6 +787,7 @@ function onclickStories (){
     d3.select("#legstories").on("click", onclickStories);
     d3.select("#legstories").select("image")
       .attr("href", "img/icon_Story.svg");
+    d3.select("html").style("overflow-y", "auto");
   });
 }
 

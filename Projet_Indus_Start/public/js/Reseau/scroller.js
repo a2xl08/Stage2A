@@ -108,6 +108,13 @@ function majvue(simulation, index, preced) {
   } else if (index===8 && preced===9){
     updateLegendContent();
   }
+  if (index===4 && preced===3){
+    toscroll = false;
+    createClickText();
+  }
+  if (index===3 && preced===4){
+    toscroll = true;
+  }
   if (index===7){
     clicklocknode = true;
     displayBesties();

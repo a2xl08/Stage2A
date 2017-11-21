@@ -27,7 +27,7 @@ function majsectionspos(){
   maxindex = sectionPositions.length-1;
 }
 
-// Détermine notre position sur la page et adapte la vue. 
+// Détermine notre position sur la page et adapte la vue.
 function position() {
 
   // Repérage de la position sur la page
@@ -133,4 +133,7 @@ d3.select(window)
   .on("scroll.scroller", function(){
     majsectionspos();
     position();
+    if (!toscroll && !displayed){
+      createClickText();
+    }
   });

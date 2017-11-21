@@ -742,6 +742,10 @@ function resetEvents(){
 // Gestion du choix utilisateur : click
 function clickable (intselect,alpha){
   if (alpha>=1){
+    // On doit cliquer      pour enlever le bug au result
+    if (toscroll && nbloby!==1){
+      toscroll=false;
+    }
     var cercles = d3.selectAll("g.loby"+intselect+" path")
             .style("cursor", "pointer");
     cercles.on("click", function (d,i){
@@ -808,14 +812,20 @@ function clickable (intselect,alpha){
         resultindex=intselect+6;
         setlinkURL();
         resetEvents();
+        toscroll=true;
       } else {
         // Création des nouvelles sections
         createsection(intselect+1+CONST.SECTIONSJUMPED.length);
         majsectionspos();
         generatePie(intselect+1);
       }
+      toscroll=true;
     })
   } else {
+    // On doit scroll
+    if (!toscroll){
+      toscroll=true;
+    }
     var cercles = d3.selectAll("path")
             .style("cursor", "default");
     cercles.on("click", function (){});

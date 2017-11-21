@@ -52,7 +52,6 @@ function displayInitFigure (){
     // Rien
   } else {
     // On n'affiche pas le texte SCROLL
-    d3.select(window).on("click", function (){})
   }
 }
 
@@ -85,33 +84,6 @@ function displayInitFigure (){
     d3.select(window).on("click", function (){})
   })
 }*/
-
-function createScrollText2 (){
-  CONST.SCROLL = {
-    text: "Scrollez pour avancer",
-  };
-  CONST.SCROLL.D3 = svg.append("text")
-                      .attr("class", "scroll")
-                      .text("Scrollez pour avancer")
-                      .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
-                      .attr("x",0)
-                      .attr("y",0)
-                      .attr("text-anchor","middle")
-                      .attr("opacity", 0);
-
-  d3.select(window).on("mousemove", function (){
-    if (window.pageYOffset<150){
-      CONST.SCROLL.D3.attr("opacity", 1);
-      CONST.SCROLL.D3.attr("x", d3.event.x-(CONST.VUE.WIDTH*26/100));//CONST.SCROLL.x)
-      CONST.SCROLL.D3.attr("y", d3.event.y);//CONST.SCROLL.y)
-    }else{
-      CONST.SCROLL.D3.transition()
-          .duration(CONST.TIMETRANSITION)
-          .attr("opacity", 0);
-    }
-    //d3.select(window).on("click", function (){})
-  })
-}
 
 /*function createScrollText3 (){
   CONST.SCROLL.D3 = svg.append("text")
@@ -501,4 +473,4 @@ d3.json("data/Index/intrologo.json", function (data){
 createInitFigure();
 setupFiche();
 setupBadge();
-createScrollText2();
+//createScrollText();

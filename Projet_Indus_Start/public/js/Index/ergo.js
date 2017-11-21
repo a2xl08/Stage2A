@@ -3,6 +3,8 @@
   false -> il doit click */
 var toscroll = true;
 var displayed = false;
+// Correction affichage du choix (arrière) lors du parcours normal
+var hidebecausechoice = false;
 
 function createScrollText (){
   CONST.SCROLL = {

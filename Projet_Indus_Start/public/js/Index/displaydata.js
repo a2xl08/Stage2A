@@ -743,7 +743,7 @@ function resetEvents(){
 function clickable (intselect,alpha){
   if (alpha>=1){
     // On doit cliquer      pour enlever le bug au result
-    if (toscroll && nbloby!==1){
+    if (toscroll && nbloby!==1 && !hidebecausechoice){
       toscroll=false;
     }
     var cercles = d3.selectAll("g.loby"+intselect+" path")
@@ -820,6 +820,7 @@ function clickable (intselect,alpha){
         generatePie(intselect+1);
       }
       toscroll=true;
+      hidebecausechoice=true;
     })
   } else {
     // On doit scroll
@@ -941,11 +942,15 @@ function manageSecX (intselect,pos){
     }
   }
   if (alpha<=0){
+    // Gestion du hide indication de choix au clic
+    hidebecausechoice=false;
     // On s'assure que beta=0
     var old = d3.selectAll("g.loby"+(intselect-1));
     var newer = d3.selectAll("g.loby"+intselect);
     transitOpacity(old, newer, 0);
   } else if (alpha<=alphasteps[1]){
+    // Gestion du hide indication de choix au clic
+    hidebecausechoice=false;
     // On gère la transparence en fonction du scroll
     var old = d3.selectAll("g.loby"+(intselect-1));
     var newer = d3.selectAll("g.loby"+intselect);

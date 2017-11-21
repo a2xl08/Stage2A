@@ -987,6 +987,8 @@ function manageSecX (intselect,pos){
   }
 }
 
+CONST.FINAL_RADIUS = 2.5*outerRadius;
+
 function displayResult(intselect,pos){
   var startsection = sectionPositions[4+intselect];
   var alpha = (pos - startsection)/scrollheight;
@@ -1010,7 +1012,7 @@ function displayResult(intselect,pos){
     // On déploie le cercle et efface le label
     var beta = abTo01(0,alphasteps[1],alpha);
     CONST.LASTCIRCLE.select("path").attr("d", arc.outerRadius(function (){
-      return (1+1.5*beta)*outerRadius
+      return (1-beta)*outerRadius + beta*(CONST.FINAL_RADIUS)
     }))
     CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 1-beta);
     CONST.LASTCIRCLE.attr("transform", "translate("+(0.5*CONST.VUE.WIDTH)+","+(0.5*CONST.VUE.HEIGHT)+")");
@@ -1019,7 +1021,7 @@ function displayResult(intselect,pos){
   } else if (alpha<=1) {
     // On s'assure que le cercle est à la bonne taille et le label effacé
     CONST.LASTCIRCLE.select("path").attr("d", arc.outerRadius(function (){
-      return 2.5*outerRadius
+      return CONST.FINAL_RADIUS;
     }))
     CONST.LASTCIRCLE.select("foreignObject").attr("opacity", 0);
     // On rend le texte visible

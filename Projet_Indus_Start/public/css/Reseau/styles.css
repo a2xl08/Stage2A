@@ -501,15 +501,44 @@ p#opencredits:hover {
 
 /* Pour les petits écrans : mobiles */
 @media (max-width: 990px){
+  p {
+    font-size: 13px;
+  }
 
+  section > h1 {
+    font-size: 20;
+  }
 }
 
 /* Pour les écrans moyens : tablettes */
-@media (min-width: 991px) and (max-width: 1199px){
+@media (min-width: 991px) and (max-width: 1360px){
+  p {
+    font-size: 13px;
+  }
 
+  section > h1 {
+    font-size: 20;
+  }
 }
 
 /* Pour les grands écrans : ordinateurs */
-@media (min-width: 1200px){
+@media (min-width: 1361px)and (max-width: 1899px){
+  p {
+    font-size: 15px;
+  }
 
+  section > h1 {
+    font-size: 23;
+  }
+}
+
+/* Pour les très grands écrans : ordinateurs */
+@media (min-width: 1900px){
+  p {
+    font-size: 18px;
+  }
+
+  section > h1 {
+    font-size: 30;
+  }
 }

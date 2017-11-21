@@ -104,11 +104,16 @@ svg foreignObject.bestiesfiche {
 }
 
 /* Pour les écrans moyens : tablettes */
-@media (min-width: 991px) and (max-width: 1199px){
+@media (min-width: 991px) and (max-width: 1360px){
 
 }
 
 /* Pour les grands écrans : ordinateurs */
-@media (min-width: 1200px){
+@media (min-width: 1361px)and (max-width: 1899px){
+
+}
+
+/* Pour les très grands écrans : ordinateurs */
+@media (min-width: 1900px){
 
 }

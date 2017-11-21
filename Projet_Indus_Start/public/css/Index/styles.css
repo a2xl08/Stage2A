@@ -328,15 +328,60 @@ p#opencredits:hover {
 
 /* Pour les petits écrans : mobiles */
 @media (max-width: 990px){
+  section > p.texte {
+    font-size: 13px;
+  }
 
+  section > p.appel {
+    font-size: 13px;
+  }
+
+  section > h1 {
+    font-size: 20;
+  }
 }
 
 /* Pour les écrans moyens : tablettes */
-@media (min-width: 991px) and (max-width: 1199px){
+@media (min-width: 991px) and (max-width: 1360px){
+  section > p.texte {
+    font-size: 13px;
+  }
 
+  section > p.appel {
+    font-size: 13px;
+  }
+
+  section > h1 {
+    font-size: 20;
+  }
 }
 
 /* Pour les grands écrans : ordinateurs */
-@media (min-width: 1200px){
+@media (min-width: 1361px)and (max-width: 1899px){
+  section > p.texte {
+    font-size: 14px;
+  }
 
+  section > p.appel {
+    font-size: 14px;
+  }
+
+  section > h1 {
+    font-size: 22;
+  }
+}
+
+/* Pour les très grands écrans : ordinateurs */
+@media (min-width: 1900px){
+  section > p.texte {
+    font-size: 18px;
+  }
+
+  section > p.appel {
+    font-size: 18px;
+  }
+
+  section > h1 {
+    font-size: 30;
+  }
 }

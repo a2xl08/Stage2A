@@ -12,8 +12,8 @@ function createScrollText (){
                       .attr("class", "scroll")
                       .text(CONST.SCROLL.text)
                       .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
-                      .attr("x",0.2*CONST.VUE.WIDTH)
-                      .attr("y",0.2*CONST.VUE.HEIGHT)
+                      /*.attr("x",0)
+                      .attr("y",0)*/
                       .attr("text-anchor","middle")
                       .attr("opacity", 0)
   displayed=true;
@@ -53,7 +53,7 @@ function createClickText (){
                       .text(CONST.SCROLL.text)
                       .attr("font-size", Math.round(14*CONST.VUE.WIDTH/1138)+"px")
                       .attr("x",0.2*CONST.VUE.WIDTH)
-                      .attr("y",0.2*CONST.VUE.HEIGHT)
+                      .attr("y",0.1*CONST.VUE.HEIGHT)
                       .attr("text-anchor","middle")
                       .attr("opacity", 1)
   displayed=true;

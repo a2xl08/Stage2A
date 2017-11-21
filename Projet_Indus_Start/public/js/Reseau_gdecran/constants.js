@@ -114,7 +114,7 @@ var CONSTANTS = {
       }
     },
     CSV_FILES: {
-      NODES: "data/Noeud27juilletNS_controv.csv",
+      NODES: "data/Noeud21novNS_controv.csv",
       NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect27juillet.csv",
       LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
       LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",

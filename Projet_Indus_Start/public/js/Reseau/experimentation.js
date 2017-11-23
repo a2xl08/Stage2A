@@ -44,7 +44,7 @@ var configureSimulation = function(scene, data, sectionsConfig){
   var userChoice = data.userChoice;
   var currentSectionIndex = 0;
   var previousSectionIndex = 0;
-  var sections = sectionsConfig;
+  sections = sectionsConfig;
 
   var findNodeCluster = function(d){
     var section = getCurrentSection();
@@ -352,7 +352,9 @@ var configureSimulation = function(scene, data, sectionsConfig){
     setCurrentSection: setCurrentSection,
     getCurrentSection: getCurrentSection,
     previousSection: previousSection,
-    start: initializeSimulation
+    start: initializeSimulation,
+    sections: sections,
+    update: updateSimulation
   };
 };
 

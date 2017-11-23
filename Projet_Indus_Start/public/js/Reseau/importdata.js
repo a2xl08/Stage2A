@@ -32,10 +32,10 @@ var filterNodesByTheme = function(nodes, theme){
 var filterLinksByNodes = function(links, nodes){
   return links.filter(function(link){
     var targetPresent = nodes.find(function(node){
-      return parseInt(node['ID']) === parseInt(link.target);
+      return parseInt(node['ID']) === parseInt(link.data.target.ID);
     }) != null;
     var sourcePresent = nodes.find(function(node){
-      return parseInt(node['ID']) === parseInt(link.source);
+      return parseInt(node['ID']) === parseInt(link.data.source.ID);
     }) != null;
     return targetPresent && sourcePresent;
   });
@@ -75,6 +75,7 @@ var processData = function(files){
   // filtrage des liens & noeuds de propriétés indirect
   var indirectProprietaryLinks = filterLinksByTargets(files[3], lobbyNodes);
   var proprietaryNodes = filterNodesByLinkSource(files[1], indirectProprietaryLinks);
+  console.log(proprietaryNodes)
 
   var spendingDomain = [1, d3.max(files[0], function(d){
     return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0;
@@ -120,6 +121,8 @@ var processData = function(files){
   // affecte le nombre de lien de chaque noeud de propriété.
   proprietaryNodes.forEach(function(node){
     var links = allLinks.filter(function(link){
+      //console.log(link)
+      //console.log(node)
       return parseInt(link.data.source.ID) === parseInt(node.ID);
     });
     node.links = links.length;

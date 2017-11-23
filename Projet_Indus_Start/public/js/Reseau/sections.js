@@ -797,6 +797,30 @@ function onclickStories (){
 
 
 
+function changetheme(i){
+  var files = [CONSTANTS.NOTPROCESSEDDATA.nodes,
+               CONSTANTS.NOTPROCESSEDDATA.proprietaries,
+               CONSTANTS.NOTPROCESSEDDATA.linksproprietary,
+               CONSTANTS.NOTPROCESSEDDATA.undirectlinks,
+               CONSTANTS.NOTPROCESSEDDATA.linksaffiliation]
+
+  userChoice = {
+     lobbyID: undefined,
+     theme: CONSTANTS.THEMELIST[i],
+     position: undefined,
+     lobbyist: undefined
+   };
+
+  var data = processData(files);
+
+  sections = configureSections(data);
+  simulation.update();
+  console.log(files);
+  console.log(userChoice);
+  console.log(data);
+  console.log(sections);
+}
+
 function anonymizeUser (){
   backgroundcolor = CONSTANTS.COLORS.BACKGROUND_ADVANCED;
   // On redéfinit les couleurs et on les applique.

@@ -10,6 +10,10 @@ function updaterectcoords (){
   rectcoords = document.getElementById("answers").getBoundingClientRect();
 }
 
+function updatesecfinheight (){
+  d3.select("#secfin").style("height", rectcoords.top - 10);
+}
+
 var legend = d3.select("#legend");
 
 legend.append("svg").attr("id", "legcolors")
@@ -730,6 +734,7 @@ function updateLegendContent (){
   }
   setTimeout(function (){
     updaterectcoords();
+    updatesecfinheight();
   }, 1.2*CONSTANTS.LEGEND.delay);
 }
 
@@ -748,6 +753,11 @@ function hideanswers (){
       .duration(CONSTANTS.LEGEND.delay)
       .style("bottom", -rectcoords.height+55+CONSTANTS.LEGEND.HEIGHTSTABLE["#legcolors"])
   }
+  setTimeout(function (){
+    setupBackground(backgroundcolor);
+    updaterectcoords();
+    updatesecfinheight();
+  }, 1.2*CONSTANTS.LEGEND.delay)
 }
 
 function showanswers (){
@@ -761,6 +771,8 @@ function showanswers (){
   }
   setTimeout(function (){
     setupBackground(backgroundcolor);
+    updaterectcoords();
+    updatesecfinheight();
   }, 1.2*CONSTANTS.LEGEND.delay)
 }
 

@@ -671,6 +671,7 @@ function onclickStory (i){
         d3.select("#legstories").select("image")
           .attr("href", "img/icon_Story.svg");
         d3.select("html").style("overflow-y", "auto");
+        d3.select("#secfin").style("overflow-y", "auto");
       });
     })
 }
@@ -771,6 +772,7 @@ function onclickStories (){
     .attr("href", "img/retour.svg");
   // On supprime la barre de définalement
   d3.select("html").style("overflow-y", "hidden");
+  d3.select("#secfin").style("overflow-y", "scroll");
   document.getElementById("secfin").scrollIntoView();
   d3.select("#legstories").on("click", function (){
     if (connection){
@@ -788,6 +790,7 @@ function onclickStories (){
     d3.select("#legstories").select("image")
       .attr("href", "img/icon_Story.svg");
     d3.select("html").style("overflow-y", "auto");
+    d3.select("#secfin").style("overflow-y", "auto");
   });
 }
 
@@ -841,13 +844,22 @@ function anonymizeUser (){
     .classed("sujet", true)
     .html("<span class='sujets'>Sujets : </span><span class='allthemes'></span>")
   d3.select("#answers").select("span.allthemes")
+  var activetheme = params["theme"];
   for (var i=0; i<CONSTANTS.THEMELIST.length; i++){
     // i2 vaut la valeur courante de i
-    (function (i2){
-    d3.select("#answers").select("span.allthemes")
-      .append("a")
-      .attr("href", "reseau.html?theme="+i2)
-      .text(CONSTANTS.THEMELIST[i2])
+    (function (i2){          // cast to string
+    if (activetheme===i2+""){
+      d3.select("#answers").select("span.allthemes")
+          .append("a")
+          .text(CONSTANTS.THEMELIST[i2])
+          .attr("onclick", function (){})
+          .style("color", "white")
+    } else {
+      d3.select("#answers").select("span.allthemes")
+          .append("a")
+          .attr("href", "reseau.html?theme="+i2+"&connect="+params["connect"])
+          .text(CONSTANTS.THEMELIST[i2])
+    }
     d3.select("#answers").select("span.allthemes")
       .append("img")
       .attr("width", 13)

@@ -992,7 +992,7 @@ function manageSecX (intselect,pos){
   }
 }
 
-CONST.FINAL_RADIUS = 2.5*outerRadius;
+CONST.FINAL_RADIUS = 0.4*CONST.QUEST.FICHE.height;
 
 function displayResult(intselect,pos){
   var startsection = sectionPositions[4+intselect];

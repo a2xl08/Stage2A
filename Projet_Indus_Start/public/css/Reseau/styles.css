@@ -105,6 +105,10 @@ section > h1.titlesource {
   margin-top: 300px;
 }
 
+#secfin {
+  height: 80%;
+}
+
 #fixpart {
   position: fixed;
   z-index: 1;

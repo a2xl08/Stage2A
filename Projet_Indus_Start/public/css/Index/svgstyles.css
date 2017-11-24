@@ -153,15 +153,144 @@ svg g.result tspan.linktext {
 
 /* Pour les petits écrans : mobiles */
 @media (max-width: 990px){
+  svg foreignObject.textintro {
+    font-size: 15;
+  }
 
+  svg.BADGE > text > tspan {
+    font-size: 13px;
+  }
+
+  svg g.result > text > tspan.mainname {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 18px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.fullname {
+    font-family: 'Antique Olive Roman';
+    font-size: 12px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.paragtitle {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 12px;
+  }
+
+  svg g.result > text > tspan.item {
+    font-family: 'Antique Olive Roman';
+    font-size: 11px;
+  }
+
+  .linktext {
+    font-size: 12px;
+  }
 }
 
 /* Pour les écrans moyens : tablettes */
-@media (min-width: 991px) and (max-width: 1199px){
+@media (min-width: 991px) and (max-width: 1360px){
+  svg foreignObject.textintro {
+    font-size: 20;
+  }
 
+  svg.BADGE > text > tspan {
+    font-size: 13px;
+  }
+
+  svg g.result > text > tspan.mainname {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 24px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.fullname {
+    font-family: 'Antique Olive Roman';
+    font-size: 12px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.paragtitle {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 14px;
+  }
+
+  svg g.result > text > tspan.item {
+    font-family: 'Antique Olive Roman';
+    font-size: 11px;
+  }
+
+  .linktext {
+    font-size: 14px;
+  }
 }
 
 /* Pour les grands écrans : ordinateurs */
-@media (min-width: 1200px){
+@media (min-width: 1361px)and (max-width: 1899px){
+  svg foreignObject.textintro {
+    font-size: 24;
+  }
 
+  svg.BADGE > text > tspan {
+    font-size: 18px;
+    }
+
+    svg g.result > text > tspan.mainname {
+      font-family: 'Antique Olive Standard Compact';
+      font-size: 34px;
+      text-anchor: middle;
+    }
+
+    svg g.result > text > tspan.fullname {
+      font-family: 'Antique Olive Roman';
+      font-size: 15px;
+      text-anchor: middle;
+    }
+
+    svg g.result > text > tspan.paragtitle {
+      font-family: 'Antique Olive Standard Compact';
+      font-size: 18px;
+    }
+
+    svg g.result > text > tspan.item {
+      font-family: 'Antique Olive Roman';
+      font-size: 12px;
+    }
+
+    .linktext {
+      font-size: 16px;
+    }
+}
+
+/* Pour les très grands écrans : ordinateurs */
+@media (min-width: 1900px){
+  svg foreignObject.textintro {
+    font-size: 33;
+  }
+
+  svg.BADGE > text > tspan {
+    font-size: 24px;
+  }
+
+  svg g.result > text > tspan.mainname {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 36px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.fullname {
+    font-family: 'Antique Olive Roman';
+    font-size: 17px;
+    text-anchor: middle;
+  }
+
+  svg g.result > text > tspan.paragtitle {
+    font-family: 'Antique Olive Standard Compact';
+    font-size: 21px;
+  }
+
+  svg g.result > text > tspan.item {
+    font-family: 'Antique Olive Roman';
+    font-size: 14px;
+  }
 }

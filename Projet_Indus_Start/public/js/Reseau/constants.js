@@ -108,7 +108,7 @@ var CONSTANTS = {
       }
     },
     CSV_FILES: {
-      NODES: "data/Noeud27juilletNS_controv.csv",
+      NODES: "data/Noeud21novNS_controv.csv",
       NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect27juillet.csv",
       LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
       LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",
@@ -134,13 +134,41 @@ CONSTANTS.CLICK_FICHE = {
   height: 0.5*CONSTANTS.VUE.HEIGHT,
 };
 
-CONSTANTS.BESTIES_FICHES = {
-  x: 0.7*CONSTANTS.VUE.WIDTH,
-  y1: 0.01*CONSTANTS.VUE.HEIGHT,
-  y2: 0.51*CONSTANTS.VUE.HEIGHT,
-  width: 0.3*CONSTANTS.VUE.WIDTH,
-  height: 0.48*CONSTANTS.VUE.HEIGHT,
-};
+if (document.body.clientWidth <=990){
+  CONSTANTS.BESTIES_FICHES = {
+    x: 0.5*CONSTANTS.VUE.WIDTH,
+    y1: 0.01*CONSTANTS.VUE.HEIGHT,
+    y2: 0.51*CONSTANTS.VUE.HEIGHT,
+    width: 0.5*CONSTANTS.VUE.WIDTH,
+    height: 0.48*CONSTANTS.VUE.HEIGHT,
+  };
+
+}else if(document.body.clientWidth <1360){
+  CONSTANTS.BESTIES_FICHES = {
+    x: 0.6*CONSTANTS.VUE.WIDTH,
+    y1: 0.01*CONSTANTS.VUE.HEIGHT,
+    y2: 0.51*CONSTANTS.VUE.HEIGHT,
+    width: 0.4*CONSTANTS.VUE.WIDTH,
+    height: 0.48*CONSTANTS.VUE.HEIGHT,
+  };
+}else if(document.body.clientWidth <1899){
+  CONSTANTS.BESTIES_FICHES = {
+    x: 0.65*CONSTANTS.VUE.WIDTH,
+    y1: 0.01*CONSTANTS.VUE.HEIGHT,
+    y2: 0.51*CONSTANTS.VUE.HEIGHT,
+    width: 0.35*CONSTANTS.VUE.WIDTH,
+    height: 0.48*CONSTANTS.VUE.HEIGHT,
+  };
+}else{
+  CONSTANTS.BESTIES_FICHES = {
+    x: 0.7*CONSTANTS.VUE.WIDTH,
+    y1: 0.01*CONSTANTS.VUE.HEIGHT,
+    y2: 0.51*CONSTANTS.VUE.HEIGHT,
+    width: 0.3*CONSTANTS.VUE.WIDTH,
+    height: 0.48*CONSTANTS.VUE.HEIGHT,
+  };
+}
+
 
 CONSTANTS.MEMBRANE.TEXTdx = -0.11*CONSTANTS.VUE.WIDTH;
 CONSTANTS.MEMBRANE.TEXTdy = 0.02*CONSTANTS.VUE.HEIGHT;

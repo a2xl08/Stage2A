@@ -100,15 +100,160 @@ svg foreignObject.bestiesfiche {
 
 /* Pour les petits écrans : mobiles */
 @media (max-width: 990px){
+  svg foreignObject.clickfiche > div.foreigncontainer > h1 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
 
+  svg foreignObject.clickfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > h2 {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > p {
+    font-family: 'Antique Olive Roman';
+    font-size: 11px;
+    margin: 1px;
+  }
+
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h2 {
+    font-size: 13px;
+    margin-top: 3px;
+    margin-bottom: 2px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > p {
+    font-size: 11px;
+    margin: 0px;
+  }
 }
 
 /* Pour les écrans moyens : tablettes */
-@media (min-width: 991px) and (max-width: 1199px){
+@media (min-width: 991px) and (max-width: 1360px){
+  svg foreignObject.clickfiche > div.foreigncontainer > h1 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
 
+  svg foreignObject.clickfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > h2 {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > p {
+    font-size: 11px;
+    margin: 2px;
+  }
+
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h2 {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > p {
+    font-size: 11px;
+    margin: 2px;
+  }
 }
 
 /* Pour les grands écrans : ordinateurs */
-@media (min-width: 1200px){
+@media (min-width: 1361px)and (max-width: 1899px){
+  svg foreignObject.clickfiche > div.foreigncontainer > h1 {
+    font-size: 20px;
+    margin-bottom: 13px;
+  }
 
+  svg foreignObject.clickfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > h2 {
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > p {
+    font-size: 13px;
+    margin: 2px;
+  }
+
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1 {
+    font-size: 20px;
+    margin-bottom: 11px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1.smallname {
+    font-size: 11px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h2 {
+    font-size: 13px;
+    margin-top: 5px;
+    margin-bottom: 3px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > p {
+    font-size: 13px;
+    margin: 1px;
+  }
+}
+
+/* Pour les très grands écrans : ordinateurs */
+@media (min-width: 1900px){
+  svg foreignObject.clickfiche > div.foreigncontainer > h1 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > h1.smallname {
+    font-size: 14px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > h2 {
+    font-size: 20px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+  }
+
+  svg foreignObject.clickfiche > div.foreigncontainer > p {
+    font-size: 15px;
+    margin: 3px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1 {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h1.smallname {
+    font-size: 14px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > h2 {
+    font-size: 20px;
+    margin-top: 8px;
+    margin-bottom: 5px;
+  }
+  svg foreignObject.bestiesfiche > div.foreigncontainer > p {
+    font-size: 15px;
+    margin: 3px;
+  }
 }

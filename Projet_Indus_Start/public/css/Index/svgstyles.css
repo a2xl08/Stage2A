@@ -154,7 +154,6 @@ svg g.result tspan.linktext {
 /* Pour les petits écrans : mobiles */
 @media (max-width: 990px){
   svg foreignObject.textintro {
-    color: green;
     font-size: 15;
   }
 
@@ -183,12 +182,15 @@ svg g.result tspan.linktext {
     font-family: 'Antique Olive Roman';
     font-size: 11px;
   }
+
+  .linktext {
+    font-size: 12px;
+  }
 }
 
 /* Pour les écrans moyens : tablettes */
 @media (min-width: 991px) and (max-width: 1360px){
   svg foreignObject.textintro {
-    color: red;
     font-size: 20;
   }
 
@@ -217,12 +219,15 @@ svg g.result tspan.linktext {
     font-family: 'Antique Olive Roman';
     font-size: 11px;
   }
+
+  .linktext {
+    font-size: 14px;
+  }
 }
 
 /* Pour les grands écrans : ordinateurs */
 @media (min-width: 1361px)and (max-width: 1899px){
   svg foreignObject.textintro {
-    color: blue;
     font-size: 24;
   }
 
@@ -252,12 +257,14 @@ svg g.result tspan.linktext {
       font-size: 12px;
     }
 
+    .linktext {
+      font-size: 16px;
+    }
 }
 
 /* Pour les très grands écrans : ordinateurs */
 @media (min-width: 1900px){
   svg foreignObject.textintro {
-    color: yellow;
     font-size: 33;
   }
 

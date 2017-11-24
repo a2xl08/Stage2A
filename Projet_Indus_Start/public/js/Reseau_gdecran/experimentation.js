@@ -301,7 +301,6 @@ var configureSimulation = function(scene, data, sectionsConfig){
     }
     if(!ticked){
       ticked = true;
-      console.log('onTick started');
     }
     var section = getCurrentSection();
     var DEBUG = CONSTANTS.DEBUG;

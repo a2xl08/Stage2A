@@ -239,8 +239,8 @@ var storestories = function (jsondata){
       CONSTANTS.STORIES.colors[i] = CONSTANTS.COLORS.STORY;
     }
   }
-
-  computeStoryCircles();
+  // Calcul des cercles pour les stories
+  setTimeout(computeStoryCircles, 2000);
 }
 
 var importData = function(){
@@ -272,7 +272,6 @@ var importData = function(){
     }
     // on récupère tout les noms de fichiers passés en argument.
     var files = Array.from(arguments).slice(1).map(function(csv){ return csv.slice(); });
-    console.log("files = ",files)
     CONSTANTS.NOTPROCESSEDDATA = {};
     CONSTANTS.NOTPROCESSEDDATA.nodes = files[0];
     CONSTANTS.NOTPROCESSEDDATA.proprietaries = files[1];

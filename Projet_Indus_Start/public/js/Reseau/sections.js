@@ -670,8 +670,9 @@ function onclickStory (i){
         d3.select("#legstories").on("click", onclickStories);
         d3.select("#legstories").select("image")
           .attr("href", "img/icon_Story.svg");
-        d3.select("html").style("overflow-y", "auto");
-        d3.select("#secfin").style("overflow-y", "auto");
+        lockscrollend=false;
+        d3.select("#sections").selectAll("section:not(#secfin)").style("display", "block")
+        document.getElementById("secfin").scrollIntoView();
       });
     })
 }
@@ -759,6 +760,8 @@ function stopeventsStoriesCircles (){
     .attr("opacity", 0)
 }
 
+var lockscrollend=false;
+
 function onclickStories (){
   if (connection){
     socket.emit("push click stories", "");
@@ -771,8 +774,8 @@ function onclickStories (){
   d3.select("#legstories").select("image")
     .attr("href", "img/retour.svg");
   // On supprime la barre de définalement
-  d3.select("html").style("overflow-y", "hidden");
-  d3.select("#secfin").style("overflow-y", "auto");
+  lockscrollend=true;
+  d3.select("#sections").selectAll("section:not(#secfin)").style("display", "none")
   document.getElementById("secfin").scrollIntoView();
   d3.select("#legstories").on("click", function (){
     if (connection){
@@ -789,8 +792,9 @@ function onclickStories (){
     d3.select("#legstories").on("click", onclickStories);
     d3.select("#legstories").select("image")
       .attr("href", "img/icon_Story.svg");
-    d3.select("html").style("overflow-y", "auto");
-    d3.select("#secfin").style("overflow-y", "auto");
+    lockscrollend=false;
+    d3.select("#sections").selectAll("section:not(#secfin)").style("display", "block")
+    document.getElementById("secfin").scrollIntoView();
   });
 }
 

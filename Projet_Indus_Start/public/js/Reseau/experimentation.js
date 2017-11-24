@@ -387,6 +387,8 @@ var runExperimentation = function(data){
     if (currentIndex!==9){
       hideanswers();
     }
-    position(simulation);
+    if (!lockscrollend){
+      position(simulation);
+    }
   });
 };

@@ -6,15 +6,11 @@ via F5 ainsi que le bouton #reloadbox qui recharge la page depuis
 
 window.onbeforeunload = function(){
   if (connection){
-    socket.emit("push reload", "");
+    setTimeout(function (){
+      socket.emit("push reload", "");
+    }, 100)
   }
   window.scrollTo(0,0);
-}
-
-if (connection){
-  socket.on("pull reload", function (message){
-    window.location.reload();
-  })
 }
 
 // L'affichage des crédits

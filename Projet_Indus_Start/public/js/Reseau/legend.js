@@ -3,7 +3,8 @@ var answers = d3.select("#answers")
 var answershow = true;
 var rectcoords = document.getElementById("answers").getBoundingClientRect();
 var answerwidth = rectcoords.right - rectcoords.left;
-var fontsize = 13;
+var fontsize = 11;
+var fontstory = 17;
 var visiblestories = false;
 
 function updaterectcoords (){
@@ -139,9 +140,10 @@ function drawlegstories (){
     .attr("height", 40)
     .attr("href", "img/icon_Story.svg")
   toile.append("text")
+    .attr("id", "histoires")
     .attr("x", xinit + 50)
-    .attr("y", yinit + 0.35*fontsize)
-    .attr("font-size", fontsize+"px")
+    .attr("y", yinit + 0.35*fontstory)
+    .attr("font-size", fontstory+"px")
     .attr("fill", "gray")
     .text("Histoires et Révélations")
 }

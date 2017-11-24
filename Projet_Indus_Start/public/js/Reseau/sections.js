@@ -772,7 +772,7 @@ function onclickStories (){
     .attr("href", "img/retour.svg");
   // On supprime la barre de définalement
   d3.select("html").style("overflow-y", "hidden");
-  d3.select("#secfin").style("overflow-y", "scroll");
+  d3.select("#secfin").style("overflow-y", "auto");
   document.getElementById("secfin").scrollIntoView();
   d3.select("#legstories").on("click", function (){
     if (connection){

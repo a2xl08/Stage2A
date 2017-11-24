@@ -194,7 +194,6 @@ CONST.BADGE.TEXT.texte = ["Vous", "êtes", "lobbyiste"]
 CONST.BADGE.TEXT.textpadding = CONST.BADGE.width/4.2;
 CONST.BADGE.POINT = {};
 CONST.BADGE.POINT.radius = CONST.BADGE.width/2.5;
-CONST.BADGE.POINT.radius = 45;
 CONST.BADGE.POINT.dx = 0.5*CONST.BADGE.width - CONST.BADGE.POINT.radius/2;
 CONST.BADGE.POINT.dy = 0.71*CONST.BADGE.height - CONST.BADGE.POINT.radius/2;
 

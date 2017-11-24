@@ -4,7 +4,10 @@
 
 #legend text {
   fill: white;
-  font-size: 11px;
+}
+
+#legend > #legstories:hover > #histoires {
+  fill: rgb(0,255,165);
 }
 
 svg text.scroll {

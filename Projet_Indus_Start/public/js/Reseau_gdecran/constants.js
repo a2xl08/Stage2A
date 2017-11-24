@@ -14,7 +14,7 @@ function sep_mille(num) {
 
 var CONSTANTS = {
   USE_CANVAS: false,
-  DEBUG: true,
+  DEBUG: false,
   PHI: Math.PI * 4,
   WIDTH: 1280,
   HEIGHT: 600,

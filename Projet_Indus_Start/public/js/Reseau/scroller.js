@@ -95,12 +95,12 @@ function majvue(simulation, index, preced) {
     if (connection){
       socket.emit("push Prev");
     }
-  } else if (index===8 && preced===7){
+  } else if (index===9 && preced===8){
     if (connection){
       socket.emit("push newtheme", "");
     }
     anonymizeUser();
-  } else if (index===7 && preced===8){
+  } else if (index===8 && preced===9){
     if (connection){
       socket.emit("push backtheme", "");
     }

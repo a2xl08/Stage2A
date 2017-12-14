@@ -271,19 +271,19 @@ svg foreignObject.bestiesfiche {
     margin: 3px;
   }
   svg foreignObject.bestiesfiche > div.foreigncontainer > h1 {
-    font-size: 28px;
-    margin-bottom: 16px;
+    font-size: 25px;
+    margin-bottom: 15px;
   }
   svg foreignObject.bestiesfiche > div.foreigncontainer > h1.smallname {
-    font-size: 14px;
+    font-size: 13px;
   }
   svg foreignObject.bestiesfiche > div.foreigncontainer > h2 {
-    font-size: 20px;
+    font-size: 18px;
     margin-top: 8px;
     margin-bottom: 5px;
   }
   svg foreignObject.bestiesfiche > div.foreigncontainer > p {
-    font-size: 15px;
+    font-size: 13px;
     margin: 3px;
   }
 }

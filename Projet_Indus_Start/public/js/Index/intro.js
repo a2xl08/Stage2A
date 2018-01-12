@@ -149,7 +149,7 @@ function setupFiche(){
       .attr("class", "commission")
       .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.COMMISSION.dx - 0.5*CONST.FICHE.COMMISSION.width)
       .attr("y", CONST.FICHE.COMMISSION.dy - 0.5*CONST.FICHE.COMMISSION.height)
-      .attr("href", "img/Commission.svg")
+      .attr("href", "../public/img/Commission.svg")
       .attr("width", CONST.FICHE.COMMISSION.width)
       .attr("height", CONST.FICHE.COMMISSION.height)
       .attr("opacity", 0);
@@ -157,7 +157,7 @@ function setupFiche(){
       .attr("class", "consultation")
       .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.CONSULTATION.dx - 0.5*CONST.FICHE.CONSULTATION.width)
       .attr("y", CONST.FICHE.CONSULTATION.dy - 0.5*CONST.FICHE.CONSULTATION.height)
-      .attr("href", "img/Consultation.svg")
+      .attr("href", "../public/img/Consultation.svg")
       .attr("width", CONST.FICHE.CONSULTATION.width)
       .attr("height", CONST.FICHE.CONSULTATION.height)
       .attr("opacity", 0);
@@ -165,7 +165,7 @@ function setupFiche(){
       .attr("class", "fleche")
       .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.FLECHE.dx - 0.5*CONST.FICHE.FLECHE.width)
       .attr("y", CONST.FICHE.FLECHE.dy - 0.5*CONST.FICHE.FLECHE.height)
-      .attr("href", "img/fleche.svg")
+      .attr("href", "../public/img/fleche.svg")
       .attr("width", CONST.FICHE.FLECHE.width)
       .attr("height", CONST.FICHE.FLECHE.height)
       .attr("opacity", 0);
@@ -173,7 +173,7 @@ function setupFiche(){
       .attr("class", "organisation")
       .attr("x", Number(CONST.FICHE.D3.select("rect").attr("x"))+CONST.FICHE.ORGS.dx - 0.5*CONST.FICHE.ORGS.width)
       .attr("y", CONST.FICHE.ORGS.dy - 0.5*CONST.FICHE.ORGS.height)
-      .attr("href", "img/Organisation.svg")
+      .attr("href", "../public/img/Organisation.svg")
       .attr("width", CONST.FICHE.ORGS.width)
       .attr("height", CONST.FICHE.ORGS.height)
       .attr("opacity", 0);
@@ -236,14 +236,14 @@ function setupBadge(){
                 .attr("y", CONST.BADGE.width)
                 .attr("width", CONST.BADGE.width)
                 .attr("height", CONST.BADGE.width)
-                .attr("href", "img/silhouette.svg")
+                .attr("href", "../public/img/silhouette.svg")
   svg.append("image")
                 .attr("class", "point")
                 .attr("x", CONST.BADGE.POINT.dx + Number(CONST.BADGE.D3.attr("x")))
                 .attr("y", CONST.BADGE.POINT.dy + Number(CONST.BADGE.D3.attr("y")))
                 .attr("width", CONST.BADGE.POINT.radius)
                 .attr("height", CONST.BADGE.POINT.radius)
-                .attr("href", "img/svg-24.svg");
+                .attr("href", "../public/img/svg-24.svg");
 }
 
 CONST.QUEST = {};

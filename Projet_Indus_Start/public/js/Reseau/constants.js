@@ -117,7 +117,20 @@ var CONSTANTS = {
       RESULTAT: "data/Reseau/texteResultat.csv",
       NOMS_DEPLOYES: "data/nomsDeploye27juillet.csv"
     },
+    CSV_FILES_EN: {
+      NODES: "data/Noeud21novNS_controv.csv",
+      NODES_PROPRIETARY:"data/Noeuds-ActionnairesIndirect27juillet.csv",
+      LINKS_PROPRIETARY:"data/liensActionnairesDirect.csv",
+      LINKS_INDIRECT_PROPRIETARY:"data/liensActionnairesIndirect.csv",
+      LINKS_AFFILIATION:"data/Affiliation27juillet.csv",
+      SCENARIO: "data/Reseau/Scenario.csv",
+      RESULTAT: "data/Reseau/texteResultat.csv",
+      NOMS_DEPLOYES: "data/nomsDeploye27juillet.csv"
+    },
     JSON_FILES: {
+      STORIES: "data/Reseau/stories.json"
+    },
+    JSON_FILES_EN: {
       STORIES: "data/Reseau/stories.json"
     }
   },

@@ -466,7 +466,7 @@ function generatePie (inttosee){
     })
     .html(function (d,i){
       if (inttosee===2 || inttosee===3){
-        return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p><img src='img/i.svg' class='information loby"+inttosee+"'/>"
+        return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p><img src='../public/img/i.svg' class='information loby"+inttosee+"'/>"
       } else {
         return "<p>"+CONST.ALLTHEMELIST[inttosee][i]+"</p>"
       }
@@ -668,7 +668,7 @@ function generateResult (){
         .attr("y", (1.1*CONST.VUE.HEIGHT-CONST.RESULT.LINK.y)+CONST.RESULT.LINK.y + CONST.RESULT.LINK.width+CONST.RESULT.LINK.width/4)
         .attr("width", CONST.RESULT.LINK.width/2)
         .attr("height", CONST.RESULT.LINK.width/2) // oui c'est bien width !
-        .attr("href", "img/pointIdentification.svg");
+        .attr("href", "../public/img/pointIdentification.svg");
 }
 
 var linkshow = false;

@@ -337,7 +337,15 @@ var storestories = function (jsondata){
 }
 
 var importData = function(){
-  var csv = CONSTANTS.DATA.CSV_FILES;
+  var csv;
+  var storyfile;
+  if (lang==="en"){
+    csv = CONSTANTS.DATA.CSV_FILES_EN;
+    storyfile = CONSTANTS.DATA.JSON_FILES_EN.STORIES;
+  } else {
+    csv = CONSTANTS.DATA.CSV_FILES;
+    storyfile = CONSTANTS.DATA.JSON_FILES.STORIES;
+  }
   var queue = d3.queue();
   // cette façon de faire nous permet d'assurer l'ordre du chargement des fichiers.
   // c'est particulièrement utile pour permettre à la fonction processData de savoir

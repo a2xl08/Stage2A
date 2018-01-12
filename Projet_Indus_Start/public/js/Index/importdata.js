@@ -90,8 +90,19 @@ function valueNAN(x){
   }
 }
 
+var scenar;
+var datafile;
+if (lang==="en"){
+  scenar = "data/Index/Scenario.csv";
+  datafiledeploy = "data/nomsDeploye27juillet.csv";
+  datafile = "data/Noeud21novNS_controv.csv";
+} else {
+  scenar = "data/Index/Scenario.csv";
+  datafiledeploy = "data/nomsDeploye27juillet.csv";
+  datafile = "data/Noeud21novNS_controv_en.csv";
+}
 
-d3.csv("data/Index/Scenario.csv", function (data){
+d3.csv(scenar, function (data){
 
   CONST.SCENARIO = data;
 
@@ -102,7 +113,7 @@ d3.csv("data/Index/Scenario.csv", function (data){
 
 });
 
-d3.csv("data/nomsDeploye27juillet.csv", function (data){
+d3.csv(datafiledeploy, function (data){
 
   CONST.NOMSDEPLOYES = {};
   for (var i=0; i<data.length; i++){
@@ -221,7 +232,7 @@ d3.csv("data/Noeud21novNS_controv.csv", function (data){
           return string;
     })
     .html(function (d,i){
-      return "<p>"+CONST.ALLTHEMELIST[0][i]+"</p><img src='img/i.svg' class='information'/>"
+      return "<p>"+CONST.ALLTHEMELIST[0][i]+"</p><img src='../public/img/i.svg' class='information'/>"
     });
     svg.selectAll("g.arc").style("display", "none")
 

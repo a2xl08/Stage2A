@@ -1,0 +1,138 @@
+{
+	  "Noeuds": [
+        {
+          "id": 539,
+          "nom": "Vice Organique",
+		  "Dépenses Lobby (€)": 28850000
+        },
+		{
+          "id": 540,
+          "nom": "Réseau",
+          "Dépenses Lobby (€)": 8850000
+        },
+		{
+          "id": 541,
+          "nom": "Climat",
+          "Dépenses Lobby (€)": 8850000
+        },
+		{
+          "id": 542,
+          "nom": "Europe",
+          "Dépenses Lobby (€)": 8850000
+        },
+		{
+          "id": 543,
+          "nom": "Lobby",
+          "Dépenses Lobby (€)": 8850000
+        },
+		{
+          "id": 550,
+          "nom": "Exploration",
+          "Dépenses Lobby (€)": 850000
+        },
+		{
+          "id": 544,
+          "nom": "Information",
+          "Dépenses Lobby (€)": 1850000
+        },
+		{
+          "id": 545,
+          "nom": "Politique",
+          "Dépenses Lobby (€)": 2850000
+        },
+		{
+          "id": 546,
+          "nom": "Economie",
+          "Dépenses Lobby (€)": 2350000
+        },
+		{
+          "id": 548,
+          "nom": "Commission Européenne",
+          "Dépenses Lobby (€)": 850000
+        },
+		{
+          "id": 549,
+          "nom": "Influence",
+          "Dépenses Lobby (€)": 1850000
+        },
+		{
+          "id": 547,
+          "nom": "Intérêt public",
+          "Dépenses Lobby (€)": 2350000
+        }
+      ],
+	  "Liens": {
+        "est au fondement de": [
+          {
+            "source": 540,
+            "target": 539
+          },
+          {
+            "source": 541,
+            "target": 539
+          },
+          {
+            "source": 542,
+            "target": 539
+          },
+		  {
+            "source": 543,
+            "target": 539
+          }
+		],
+		"est essentiel à ": [
+          {
+            "source": 550,
+            "target": 540
+          },
+          {
+            "source": 540,
+            "target": 544
+          },
+          {
+            "source": 544,
+            "target": 543
+          },
+          {
+            "source": 545,
+            "target": 542
+          },
+          {
+            "source": 545,
+            "target": 546
+          },
+          {
+            "source": 545,
+            "target": 548
+          },
+          {
+            "source": 546,
+            "target": 542
+          },
+          {
+            "source": 542,
+            "target": 548
+          },
+          {
+            "source": 543,
+            "target": 548
+          },
+          {
+            "source": 547,
+            "target": 545
+          },
+          {
+            "source": 541,
+            "target": 547
+          },
+          {
+            "source": 549,
+            "target": 543
+          },
+          {
+            "source": 549,
+            "target": 547
+          }
+        ]
+      }
+}

@@ -669,7 +669,7 @@ function onclickStory (i){
         d3.select("svg.experimentation").selectAll(".storycircle").remove();
         d3.select("#legstories").on("click", onclickStories);
         d3.select("#legstories").select("image")
-          .attr("href", "img/icon_Story.svg");
+          .attr("href", "../public/img/icon_Story.svg");
         lockscrollend=false;
         d3.select("#sections").selectAll("section:not(#secfin)").style("display", "block")
         document.getElementById("secfin").scrollIntoView();
@@ -772,7 +772,7 @@ function onclickStories (){
   eventsStoriesCircles();
   storyactive = true;
   d3.select("#legstories").select("image")
-    .attr("href", "img/retour.svg");
+    .attr("href", "../public/img/retour.svg");
   // On supprime la barre de définalement
   lockscrollend=true;
   d3.select("#sections").selectAll("section:not(#secfin)").style("display", "none")
@@ -791,7 +791,7 @@ function onclickStories (){
     d3.select("svg.experimentation").selectAll(".storycircle").remove();
     d3.select("#legstories").on("click", onclickStories);
     d3.select("#legstories").select("image")
-      .attr("href", "img/icon_Story.svg");
+      .attr("href", "../public/img/icon_Story.svg");
     lockscrollend=false;
     d3.select("#sections").selectAll("section:not(#secfin)").style("display", "block")
     document.getElementById("secfin").scrollIntoView();
@@ -868,7 +868,7 @@ function anonymizeUser (){
       .append("img")
       .attr("width", 13)
       .attr("height", 13)
-      .attr("src", "img/i_blanc.svg")
+      .attr("src", "../public/img/i_blanc.svg")
       .on("mouseover", function (){
         console.log("hover")
         console.log(i2);

@@ -138,7 +138,7 @@ function drawlegstories (){
     .attr("y", 5)
     .attr("width", 40)
     .attr("height", 40)
-    .attr("href", "img/icon_Story.svg")
+    .attr("href", "../public/img/icon_Story.svg")
   toile.append("text")
     .attr("id", "histoires")
     .attr("x", xinit + 50)

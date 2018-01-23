@@ -175,7 +175,7 @@ function opacityNotOn (node){
 
 var fadeNotNeighbours = function (node){
   // On grise les noeuds non voisins
-  var alldata = CONSTANTS.NOTPROCESSEDDATA;
+  var alldata = constdata;
   var neighboursID = [node.ID];
   // On récupère les IDs de tous les voisins
   for (var i=0; i<alldata.linksaffiliation.length; i++){
@@ -192,8 +192,8 @@ var fadeNotNeighbours = function (node){
     }
   }
   // On n'oublie pas les voisins actionnaires
-  var directprop = CONSTANTS.NOTPROCESSEDDATA.linksproprietary;
-  var undirectprop = CONSTANTS.NOTPROCESSEDDATA.undirectlinks;
+  var directprop = constdata.linksproprietary;
+  var undirectprop = constdata.undirectlinks;
   for (var i=0; i<directprop.length; i++){
     if (directprop[i].data.source.ID === node.ID){
       neighboursID.push(directprop[i].data.target.ID)
@@ -281,7 +281,7 @@ var fadeNotInvolved = function (i){
 }
 
 var resetMouseOut = function (){
-  var alldata = CONSTANTS.NOTPROCESSEDDATA;
+  var alldata = constdata;
   // On reset les noeuds
   for (var i=0; i<alldata.nodes.length; i++){
     canvas.select("#lobby"+alldata.nodes[i].ID).select(".circle-kernel").attr("fill", Color.node(alldata.nodes[i])).attr("stroke", Color.node(alldata.nodes[i]));

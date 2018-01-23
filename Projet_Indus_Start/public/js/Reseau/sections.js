@@ -386,8 +386,8 @@ function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
       }
     }
                          // On vérifie que le noeud existe
-    if (absentinnodes && CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
-      nodes.push(CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
+    if (absentinnodes && constdata.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
+      nodes.push(constdata.nodes[constdata.indexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
       nodesindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])] = nodes.length-1;
       // On rentre les points, calcule le radius etc...
       var node = nodes[nodes.length-1]
@@ -402,8 +402,8 @@ function addstorynodes (i, nodes, nodesindexor, key, spendingScale){
       node.spending = spending;
       node.kernelPoints = circlePoints(CONSTANTS.CIRCLE.KERNEL_RADIUS);
       node.type = CONSTANTS.DATA.TYPES.NODE.LOBBY;
-    } else if (absentinnodes && CONSTANTS.NOTPROCESSEDDATA.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
-      nodes.push(CONSTANTS.NOTPROCESSEDDATA.proprietaries[CONSTANTS.NOTPROCESSEDDATA.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
+    } else if (absentinnodes && constdata.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]){
+      nodes.push(constdata.proprietaries[constdata.propindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])]]);
       nodesindexor[Number(CONSTANTS.STORIES.Histoires[i][key][j])] = nodes.length-1;
       // On rentre les points, calcule le radius etc...
       var node = nodes[nodes.length-1];
@@ -422,7 +422,7 @@ var updateEighthSection = function (i){
   var nodesindexor = {};
   var links = [];
 
-  var spendingDomain = [1, d3.max(CONSTANTS.NOTPROCESSEDDATA.nodes, function(d){
+  var spendingDomain = [1, d3.max(constdata.nodes, function(d){
     return parseInt(d[CONSTANTS.DATA.SPENDING_KEY])||0;
   })];
   var spendingScale = CONSTANTS.CIRCLE.SCALE().domain(spendingDomain).range(CONSTANTS.CIRCLE.RADIUS_RANGE);
@@ -440,25 +440,25 @@ var updateEighthSection = function (i){
   }
   var idlist = Object.keys(nodesindexor).map(Number);
   console.log(idlist);
-  for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksaffiliation.length; j++){
-    var sourceid = Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data.source.ID);
-    var targetid = Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data.target.ID);
+  for (var j=0; j<constdata.linksaffiliation.length; j++){
+    var sourceid = Number(constdata.linksaffiliation[j].data.source.ID);
+    var targetid = Number(constdata.linksaffiliation[j].data.target.ID);
     if ((idlist.indexOf(sourceid)!==-1) && (idlist.indexOf(targetid)!==-1)){
-      links.push(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j])
+      links.push(constdata.linksaffiliation[j])
     }
   }
-  for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksproprietary.length; j++){
-    var sourceid = Number(CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].data.source.ID);
-    var targetid = Number(CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].data.target.ID);
+  for (var j=0; j<constdata.linksproprietary.length; j++){
+    var sourceid = Number(constdata.linksproprietary[j].data.source.ID);
+    var targetid = Number(constdata.linksproprietary[j].data.target.ID);
     if ((idlist.indexOf(sourceid)!==-1) && (idlist.indexOf(targetid)!==-1)){
-      links.push(CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j])
+      links.push(constdata.linksproprietary[j])
     }
   }
-  for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.undirectlinks.length; j++){
-    var sourceid = Number(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source.ID);
-    var targetid = Number(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.target.ID);
+  for (var j=0; j<constdata.undirectlinks.length; j++){
+    var sourceid = Number(constdata.undirectlinks[j].data.source.ID);
+    var targetid = Number(constdata.undirectlinks[j].data.target.ID);
     if ((idlist.indexOf(sourceid)!==-1) && (idlist.indexOf(targetid)!==-1)){
-      links.push(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j])
+      links.push(constdata.undirectlinks[j])
       links[links.length-1].data.source = nodes[nodesindexor[sourceid]];
       links[links.length-1].data.target = nodes[nodesindexor[targetid]];
       // On incrémente le nombre de liens de source
@@ -615,10 +615,10 @@ function emphacizeMainNodes (i){
   console.log(mainnodes)
   if (mainnodes){
     for (var j=0; j<mainnodes.length; j++){
-      if (CONSTANTS.NOTPROCESSEDDATA.indexor[Number(mainnodes[j])]!==undefined){
+      if (constdata.indexor[Number(mainnodes[j])]!==undefined){
         d3.select("#lobby"+mainnodes[j]).select(".circle-membrane")
           .attr("fill", function (){
-            var node = CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(mainnodes[j])]];
+            var node = constdata.nodes[constdata.indexor[Number(mainnodes[j])]];
             console.log(node)
             return fade(Color.node(node), CONSTANTS.COLORS.BACKGROUND, 0.9)
           })
@@ -798,11 +798,37 @@ function onclickStories (){
 
 
 function changetheme(i){
-  var files = [CONSTANTS.NOTPROCESSEDDATA.nodes,
-               CONSTANTS.NOTPROCESSEDDATA.proprietaries,
-               CONSTANTS.NOTPROCESSEDDATA.linksproprietary,
-               CONSTANTS.NOTPROCESSEDDATA.undirectlinks,
-               CONSTANTS.NOTPROCESSEDDATA.linksaffiliation]
+
+  nodeColor = function(d){
+    var TYPES = CONSTANTS.DATA.TYPES.NODE;
+    var colors = CONSTANTS.COLORS;
+    var color;
+    if(d.type === TYPES.LOBBY){
+      if (d[userChoice.theme]){
+        if (d[userChoice.theme]==="Pour"){
+          color = colors.SUPPORT;
+        } else if (d[userChoice.theme]==="Contre"){
+          color = colors.OPPOSE;
+        } else {
+          color = colors.NSPP_CONTROV;
+        }
+      } else {
+        color = colors.NSPP_CONTROV;
+      }
+    } else {
+      color = colors.PROPRIETARY;
+    }
+    return chroma(color);
+  };
+  Color.node = nodeColor;
+
+  var files = [JSON.parse(JSON.stringify(constdata.nodes)),
+               JSON.parse(JSON.stringify(constdata.proprietaries)),
+               JSON.parse(JSON.stringify(constdata.linksproprietary)),
+               JSON.parse(JSON.stringify(constdata.undirectlinks)),
+               JSON.parse(JSON.stringify(constdata.linksaffiliation))]
+
+  params["theme"] = i+"";
 
   userChoice = {
      lobbyID: undefined,
@@ -812,13 +838,22 @@ function changetheme(i){
    };
 
   var data = processData(files);
+  CONSTANTS.LOADEDDATA = data;
 
   sections = configureSections(data);
+
   simulation.update();
-  console.log(files);
-  console.log(userChoice);
-  console.log(data);
-  console.log(sections);
+  //console.log(files);
+  //console.log(userChoice);
+  //console.log(data);
+  //console.log(sections);
+
+  // Update des couleurs au nouveau thème
+  resetMouseOut();
+  canvas.selectAll("path.membrane")
+    .attr("fill", function (cluster){
+      return chroma(cluster.color);
+    })
 }
 
 function anonymizeUser (){

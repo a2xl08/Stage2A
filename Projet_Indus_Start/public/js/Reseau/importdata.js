@@ -442,6 +442,7 @@ var importData = function(){
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf(CONSTANTS.DATA.SPENDING_KEY), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Personnes impliquées"), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Equivalent Temps plein"), 1);
+    CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("type"), 1);
     // Récupération du thème
     if (params["theme"]){
       var urlthemeid = Number(params["theme"])

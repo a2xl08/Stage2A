@@ -196,6 +196,11 @@ td {
   color: rgb(0,255,165);
 }
 
+#answers > p a:hover {
+  text-decoration: none;
+  color: white;
+}
+
 #answers > p > span {
   box-sizing: content-box;
   border: solid rgb(0, 255, 165) 1px;

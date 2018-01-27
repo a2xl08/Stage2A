@@ -829,6 +829,33 @@ function changetheme(i){
                JSON.parse(JSON.stringify(constdata.linksaffiliation))]
 
   params["theme"] = i+"";
+  d3.select("span.allthemes").selectAll("a")
+    .style("color", function (){
+      if (d3.select(this).text()===CONSTANTS.THEMELIST[i]){
+        return "white";
+      } else {
+        return "rgb(0,255,165)";
+      }
+    })
+    .style("cursor", function (){
+      if (d3.select(this).text()===CONSTANTS.THEMELIST[i]){
+        return "inherit";
+      } else {
+        return "pointer";
+      }
+    })
+    .on("mouseover", function (){
+      d3.select(this).style("color", "white");
+    })
+    .on("mouseout", function (){
+      d3.select(this).style("color", function (){
+        if (d3.select(this).text()===CONSTANTS.THEMELIST[i]){
+          return "white";
+        } else {
+          return "rgb(0,255,165)";
+        }
+      })
+    })
 
   userChoice = {
      lobbyID: undefined,
@@ -911,13 +938,19 @@ function anonymizeUser (){
       d3.select("#answers").select("span.allthemes")
           .append("a")
           .text(CONSTANTS.THEMELIST[i2])
-          .attr("onclick", function (){})
+          .on("click", function (){
+            changetheme(i2);
+          })
           .style("color", "white")
     } else {
       d3.select("#answers").select("span.allthemes")
           .append("a")
-          .attr("href", "reseau.html?theme="+i2+"&connect="+params["connect"])
+          .classed("changetheme", true)
           .text(CONSTANTS.THEMELIST[i2])
+          .style("cursor", "pointer")
+          .on("click", function (){
+            changetheme(i2);
+          })
     }
     d3.select("#answers").select("span.allthemes")
       .append("img")

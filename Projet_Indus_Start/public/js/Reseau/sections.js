@@ -871,6 +871,15 @@ function changetheme(i){
   var data = processData(files);
   CONSTANTS.LOADEDDATA = data;
 
+  d3.select("#sec0").style("display", "none");
+  d3.select("#sec1").style("display", "none");
+  d3.select("#sec2").style("display", "none");
+  d3.select("#sec3").style("display", "none");
+  d3.select("#sec4").style("display", "none");
+  d3.select("#sec5").style("display", "none");
+  d3.select("#sec6").style("display", "none");
+  d3.select("#sec7").style("display", "none");
+
   sections = configureSections(data);
 
   simulation.update();

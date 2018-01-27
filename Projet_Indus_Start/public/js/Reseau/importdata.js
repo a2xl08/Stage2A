@@ -32,10 +32,10 @@ var filterNodesByTheme = function(nodes, theme){
 var filterLinksByNodes = function(links, nodes){
   return links.filter(function(link){
     var targetPresent = nodes.find(function(node){
-      return parseInt(node['ID']) === parseInt(link.target);
+      return parseInt(node['ID']) === parseInt(link.data.target.ID);
     }) != null;
     var sourcePresent = nodes.find(function(node){
-      return parseInt(node['ID']) === parseInt(link.source);
+      return parseInt(node['ID']) === parseInt(link.data.source.ID);
     }) != null;
     return targetPresent && sourcePresent;
   });
@@ -65,6 +65,7 @@ var filterNodesByLinkSource = function(nodes, links){
 // 3:csv.LINKS_INDIRECT_PROPRIETARY
 // 4:csv.LINKS_AFFILIATION
 var processData = function(files){
+  console.log("files ", files)
   // récupération du thème choisi par l'utilisateur
   var theme = getUserChoice().theme;
   // filtrage par theme des lobbies
@@ -104,6 +105,8 @@ var processData = function(files){
       indirectProprietaryLinks,
       affiliationLinks
   ]);
+
+  var proprietaryLinks = flattenArray([directProprietaryLinks, indirectProprietaryLinks]);
   // assignation des source et target à l'avance afin de faciliter
   // le "binding" des données (voir `$links.data(links, function(){})`
   // dans `drawLinks` (links.js)
@@ -119,7 +122,7 @@ var processData = function(files){
 
   // affecte le nombre de lien de chaque noeud de propriété.
   proprietaryNodes.forEach(function(node){
-    var links = allLinks.filter(function(link){
+    var links = proprietaryLinks.filter(function(link){
       return parseInt(link.data.source.ID) === parseInt(node.ID);
     });
     node.links = links.length;
@@ -336,6 +339,14 @@ var storestories = function (jsondata){
   setTimeout(computeStoryCircles, 2000);
 }
 
+function defined (x, y){
+  if (!x){
+    console.log(y)
+  }
+}
+
+var constdata;
+
 var importData = function(){
   var csv;
   var storyfile;
@@ -389,6 +400,7 @@ var importData = function(){
     CONSTANTS.NOTPROCESSEDDATA.indexor = {};
     for (var i=0; i<CONSTANTS.NOTPROCESSEDDATA.nodes.length; i++){
       CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.nodes[i].ID)] = i;
+      CONSTANTS.NOTPROCESSEDDATA.nodes[i].type = CONSTANTS.DATA.TYPES.NODE.LOBBY;
     }
     CONSTANTS.NOTPROCESSEDDATA.propindexor = {};
     for (var i=0; i<CONSTANTS.NOTPROCESSEDDATA.proprietaries.length; i++){
@@ -396,22 +408,22 @@ var importData = function(){
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksaffiliation.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].data = {
-        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].source]],
-        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].target]],
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].source)]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].target)]],
       };
       CONSTANTS.NOTPROCESSEDDATA.linksaffiliation[j].type = CONSTANTS.DATA.TYPES.LINK.AFFILIATION;
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.linksproprietary.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].data = {
-        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].source]],
-        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].target]],
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].source)]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].target)]],
       };
       CONSTANTS.NOTPROCESSEDDATA.linksproprietary[j].type = CONSTANTS.DATA.TYPES.LINK.PROPRIETARY.DIRECT;
     }
     for (var j=0; j<CONSTANTS.NOTPROCESSEDDATA.undirectlinks.length; j++){
       CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data = {
-        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].source]],
-        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].target]],
+        source: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].source)]],
+        target: CONSTANTS.NOTPROCESSEDDATA.nodes[CONSTANTS.NOTPROCESSEDDATA.indexor[Number(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].target)]],
       };
       if (!(CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source)){
         CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].data.source = {};
@@ -423,6 +435,7 @@ var importData = function(){
       }
       CONSTANTS.NOTPROCESSEDDATA.undirectlinks[j].type = CONSTANTS.DATA.TYPES.LINK.PROPRIETARY.INDIRECT;
     }
+    constdata = JSON.parse(JSON.stringify(CONSTANTS.NOTPROCESSEDDATA));
 
     // On obtient la liste des thèmes
     CONSTANTS.THEMELIST = Object.keys(files[0][0]);
@@ -436,6 +449,7 @@ var importData = function(){
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf(CONSTANTS.DATA.SPENDING_KEY), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Personnes impliquées"), 1);
     CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("Equivalent Temps plein"), 1);
+    CONSTANTS.THEMELIST.splice(CONSTANTS.THEMELIST.indexOf("type"), 1);
     // Récupération du thème
     if (params["theme"]){
       var urlthemeid = Number(params["theme"])
